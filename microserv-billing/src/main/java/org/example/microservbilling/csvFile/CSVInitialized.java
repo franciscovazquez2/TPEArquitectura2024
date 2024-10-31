@@ -8,11 +8,16 @@ import java.io.IOException;
 
 @Component
 public class CSVInitialized {
+
     @Autowired
-    private CSVReader csvReader;
+    private CSVReaderBilling csvReaderBilling;
+
+    @Autowired
+    private CSVReaderFee csvReaderFee;
 
     @PostConstruct
     public void init() throws IOException {
-        csvReader.loadData();
+        csvReaderBilling.loadData();
+        csvReaderFee.loadFeeData();
     }
 }
