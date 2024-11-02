@@ -1,10 +1,20 @@
+package org.example.microservbilling.csvFile;
+import org.example.microservbilling.entity.Fee;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.example.microservbilling.repository.FeeRepository;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class CSVReaderFee {
-
     @Autowired
     private FeeRepository feeRepository;
 
-    private static final String PATH = "microserv-billing/src/main/resources/";
+    private static final String PATH = "microserv-billing/src/main/resources/fee.csv";
     private static final String CSVSPLIT = ",";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

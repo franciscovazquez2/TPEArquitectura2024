@@ -1,5 +1,4 @@
 package org.example.microservbilling.controller;
-import org.example.microservbilling.entity.Billing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,14 +10,14 @@ import org.example.microservbilling.services.BillingService;
 @RequestMapping("api/billing")
 public class BillingController {
     @Autowired
-    private MaintenanceService maintenanceService;
+    private BillingService billingService;
 
     // Obtener listado de facturas
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllBillings() {
         try {
             return
-                    ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getAllMaintenances());
+                    ResponseEntity.status(HttpStatus.OK).body(billingService.getAllBillings());
         } catch (Exception e) {
             String errorJson = "{\"message\": \"Error al listar las facturas\", \"details\"}";
             return ResponseEntity

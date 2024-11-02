@@ -12,14 +12,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class CSVReader {
+public class CSVReaderBilling {
 
     @Autowired
     private BillingRepository billingRepository;
 
-    private static final String PATH = "microserv-billing/src/main/resources/";
+    private static final String PATH = "microserv-billing/src/main/resources/billings.csv";
     private static final String CSVSPLIT = ",";
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Ajusta el formato según tu CSV
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public void loadData(){
         readFileBilling();

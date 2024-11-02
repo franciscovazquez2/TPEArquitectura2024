@@ -33,6 +33,14 @@ public class Fee {
         this.tipo = tipo;
     }
 
+    public Fee(Long id, Double monto, LocalDate fechaInicio, LocalDate fechaFin, String tipo) {
+        this.id = id;
+        this.monto = monto;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.tipo = tipo;
+    }
+
     public Fee(Double monto, LocalDate fechaInicio, String tipo) {
         this.monto = monto;
         this.fechaInicio = fechaInicio;

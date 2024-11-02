@@ -1,4 +1,5 @@
-package org.example.microservbilling.repository.FeeRepository;
+package org.example.microservbilling.repository;
+
 import org.example.microservbilling.entity.Fee;
 import org.springframework.data.jpa.repository.JpaRepository;
 

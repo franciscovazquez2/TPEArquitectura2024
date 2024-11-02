@@ -11,12 +11,12 @@ public class BillingService {
     @Autowired
     private BillingRepository billingRepository;
 
-    //lista todos los repositorios
+    //lista de todas las facturas
     public List<Billing> getAllBillings(){
         return billingRepository.findAll();
     }
 
-    //devuelve un repositorio por id
+    //devuelve una factura
     public Optional<Billing> getBilling(Long id){
         return billingRepository.findById(id);
     }
