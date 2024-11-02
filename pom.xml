@@ -11,8 +11,18 @@
 	<groupId>org.example</groupId>
 	<artifactId>ArquitecturaWebTPE2024</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>ArquitecturaWebTPE2024</name>
 	<description>ArquitecturaWebTPE2024</description>
+	<modules>
+		<module>microserv-travel</module>
+		<module>microserv-user-account</module>
+		<module>microserv-scooter</module>
+		<module>microserv-parking</module>
+		<module>microserv-maintenance</module>
+		<module>microserv-billing</module>
+		<module>microserv-auth</module>
+	</modules>
 	<url/>
 	<licenses>
 		<license/>

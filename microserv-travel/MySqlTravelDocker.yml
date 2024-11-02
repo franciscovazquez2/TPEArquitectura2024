@@ -1,11 +1,16 @@
 version: '3.8'
+
 services:
-  db:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: Integrador4
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+  mongodb:
+    image: mongo:latest
+    container_name: mi_mongodb
     ports:
-      - "3306:3306"
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: usuario    # Nombre de usuario root
+      MONGO_INITDB_ROOT_PASSWORD: contraseña # Contraseña del usuario root
+    volumes:
+      - mongodb_data:/data/db      # Volumen para persistir los datos
+
+volumes:
+  mongodb_data:
