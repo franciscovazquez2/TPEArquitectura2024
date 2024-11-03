@@ -10,6 +10,7 @@ import java.util.Date;
 @Document()
 @Data
 public class Travel {
+
     @Id
     private String id_viaje;
 
@@ -24,7 +25,6 @@ public class Travel {
 
     @Field()
     private Long price;
-
 
     public Travel() {
     }
