@@ -17,7 +17,7 @@ public class CSVReaderBilling {
     @Autowired
     private BillingRepository billingRepository;
 
-    private static final String PATH = "microserv-billing/src/main/resources/billings.csv";
+    private static final String PATH = "microserv-billing/src/main/resources/";
     private static final String CSVSPLIT = ",";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
