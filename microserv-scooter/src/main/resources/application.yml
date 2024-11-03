@@ -21,4 +21,9 @@ logging:
                 type:
                     descriptor:
                         sql:
+<<<<<<< HEAD
                             BasicBinder: TRACE
+=======
+                            BasicBinder: TRACE
+
+>>>>>>> main
