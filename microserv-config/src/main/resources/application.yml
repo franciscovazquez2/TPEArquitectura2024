@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  profiles:
+    active: native
+  application:
+    name: microserv-config
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config

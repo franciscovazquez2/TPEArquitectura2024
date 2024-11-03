@@ -1,5 +1,5 @@
 spring:
   application:
-    name: microserv-parking
+    name: microserv-eureka
   config:
     import: optional:configserver:http://localhost:8081
