@@ -1,7 +1,10 @@
 package org.example.microservuseraccount.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +17,8 @@ public class User {
     private String apellido;
     private String email;
     private String telefono;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Account> accounts;
     private int rol;
 
@@ -27,6 +31,7 @@ public class User {
         this.email = email;
         this.telefono = telefono;
         this.rol = rol;
+        this.accounts=new ArrayList<Account>();
     }
 
     public long getId() {
@@ -73,8 +78,8 @@ public class User {
         return accounts;
     }
 
-    public void setAcounts(List<Account> accounts) {
-        this.accounts = accounts;
+    public void addAcount(Account account) {
+        this.accounts.add(account);
     }
 
     public int getRol() {

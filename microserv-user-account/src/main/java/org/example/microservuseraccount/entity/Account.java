@@ -1,7 +1,10 @@
 package org.example.microservuseraccount.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +17,7 @@ public class Account {
     private Date fechaAlta;
     private double saldo;
     @ManyToMany (mappedBy = "accounts")
+    @JsonIgnore
     private List<User> users;
 
     public Account(){}
@@ -23,6 +27,7 @@ public class Account {
         this.cuentaMP = cuentaMP;
         this.fechaAlta = fechaAlta;
         this.saldo = saldo;
+        this.users = new ArrayList<User>();
     }
 
     public long getId() {
@@ -61,7 +66,7 @@ public class Account {
         return users;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void addUser(User user) {
+        this.users.add(user);
     }
 }
