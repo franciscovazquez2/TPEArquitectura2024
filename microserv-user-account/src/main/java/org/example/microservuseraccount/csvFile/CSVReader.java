@@ -1,5 +1,6 @@
 package org.example.microservuseraccount.csvFile;
 
+import jakarta.transaction.Transactional;
 import org.example.microservuseraccount.entity.Account;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.repository.AccountRepository;
@@ -22,10 +23,11 @@ public class CSVReader {
     private static final String PATH = "microserv-user-account/src/main/resources/";
     private static final String CSVSPLIT = ",";
 
+    @Transactional
     public void loadData(){
         readFileUser();
         readFileAccount();
-        //readFileAccountUserRelation();
+        readFileAccountUserRelation();
     }
 
     //lee archivos y los agrega a la base
@@ -62,7 +64,7 @@ public class CSVReader {
             e.printStackTrace();
         }
     }
-    /*
+
     private void readFileAccountUserRelation(){
         String csvFile = PATH+"account-user.csv";
         String line = "";
@@ -71,14 +73,21 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    Account account = new Account(Long.parseLong(datos[0]),Long.parseLong(datos[1]), new Date(Integer.parseInt(datos[2]),Integer.parseInt(datos[3]),Integer.parseInt(datos[4])),Double.parseDouble(datos[5]));
-                    accountRepository.save(account);
+                    User user = userRepository.findById(Long.parseLong(datos[0])).orElse(null);
+                    Account account = accountRepository.findById(Long.parseLong(datos[1])).orElse(null);
+                    if(user!=null && account !=null){
+                    user.addAcount(account);
+                    account.addUser(user);
+                    userRepository.save(user);
+                    }else{
+                        System.out.print(user+""+account +" nulos");
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }
 
 
