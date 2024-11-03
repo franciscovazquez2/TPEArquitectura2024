@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: microserv-travel
+    data:
+        mongodb:
+            uri: mongodb://localhost:27017/Travel_MongoDB
+            auto-index-creation: true
