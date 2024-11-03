@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: microserv-parking
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/Integrador4-Parking?useSSL=false&allowPublicKeyRetrieval=true
+    username: user
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
