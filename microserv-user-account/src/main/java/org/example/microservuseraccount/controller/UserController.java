@@ -44,19 +44,32 @@ public class UserController {
         }
     }
 
-    /*
-    // Obtener ciudad por id
-    @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getCity(@PathVariable(value = "id") Long id){
+    //asocia una cuenta a un usuario
+    @PutMapping("/asociarCuenta/{userId}/{accountId}")
+    public @ResponseBody ResponseEntity<?>asociarCuenta(@PathVariable(value = "userId")Long userId,@PathVariable(value = "accountId")Long accountId) {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(cityService.getCity(id.intValue()));
-        } catch (Exception e){
-            String errorJson = "{\"message\": \"Error al buscar una ciudad determinada\", \"details\"}";
+            return ResponseEntity.status(HttpStatus.OK).body(userService.asociarCuenta(userId,accountId));
+        }catch(Exception e){
+            String errorJson = "{\"message\": \"no se puede asociar cuenta\", \"details\"}";
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errorJson);
         }
     }
-    */
+
+    // Obtener usuario por id
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity<?> getUser(@PathVariable(value = "id") Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(id));
+        } catch (Exception e){
+            String errorJson = "{\"message\": \"Error al buscar el usuario\", \"details\"}";
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorJson);
+        }
+    }
+
 }

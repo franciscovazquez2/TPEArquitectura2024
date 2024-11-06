@@ -19,8 +19,7 @@ public class AccountController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllAccounts() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(accountService.getAllAccounts());
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.getAllAccounts());
         } catch (Exception e) {
             String errorJson = "{\"message\": \"Error al listar las cuentas\", \"details\"}";
             return ResponseEntity
@@ -44,12 +43,12 @@ public class AccountController {
         }
     }
 
-    /*
+
     // Obtener cuenta por id
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getCity(@PathVariable(value = "id") Long id){
+    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id.intValue()));
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
         } catch (Exception e){
             String errorJson = "{\"message\": \"Error al buscar una ciudad determinada\", \"details\"}";
             return ResponseEntity
@@ -58,5 +57,5 @@ public class AccountController {
                     .body(errorJson);
         }
     }
-    */
+
 }
