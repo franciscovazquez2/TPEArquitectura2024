@@ -1,10 +1,10 @@
-package org.example.microserveureka;
+package org.example.microserv_config;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MicroservEurekaApplicationTests {
+class MicroservConfigApplicationTests {
 
 	@Test
 	void contextLoads() {

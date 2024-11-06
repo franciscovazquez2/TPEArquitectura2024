@@ -1,5 +1,6 @@
 package org.example.microservscooter.service;
 
+import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.repository.ScooterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,9 @@ public class ScooterService {
 
     public void delete(Long id) throws EmptyResultDataAccessException,Exception {
         scooterRepository.deleteById(id);
+    }
+
+    public ScooterDTO getScooterByMaintenance(Long id){
+        return scooterRepository.getScooterByMaintenance(id);
     }
 }

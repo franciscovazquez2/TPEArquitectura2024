@@ -30,8 +30,14 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    Scooter scooter = new Scooter(Double.parseDouble(datos[0]),Double.parseDouble(datos[1]),Long.parseLong(datos[2]),Integer.parseInt(datos[3]),Boolean.parseBoolean(datos[4]),Boolean.parseBoolean(datos[5]),Boolean.parseBoolean(datos[5]));
-                    scooterRepository.save(scooter);
+                    scooterRepository.save(Scooter.builder().latitude(Double.parseDouble(datos[0]))
+                                                            .longitude(Double.parseDouble(datos[1]))
+                                                            .kilometers(Long.parseLong(datos[2]))
+                                                            .usageTime(Integer.parseInt(datos[3]))
+                                                            .start(Boolean.parseBoolean(datos[4]))
+                                                            .available(Boolean.parseBoolean(datos[5]))
+                                                            .maintenance(Boolean.parseBoolean(datos[5]))
+                                                    .build());
                 }
             }
         } catch (IOException e) {

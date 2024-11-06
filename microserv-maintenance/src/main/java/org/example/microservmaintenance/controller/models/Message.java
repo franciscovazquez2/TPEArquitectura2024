@@ -1,4 +1,4 @@
-package org.example.microservscooter.controller.models;
+package org.example.microservmaintenance.controller.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

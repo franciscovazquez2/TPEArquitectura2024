@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/scooter")
+@RequestMapping("api/scooter/")
 public class ScooterController {
 
     @Autowired
@@ -75,5 +75,20 @@ public class ScooterController {
         }
     }
 
+    // ENDPOINT PARA QUE EL MICROSERVICIO MAINTENANCE
+    @GetMapping("/search-maintenance/{id}")
+    public @ResponseBody ResponseEntity<?> getScooterMaintenance(@PathVariable(value = "id") Long id){
+        try{
+
+            // VER DE HACER UN METODO EN SCOOTERSERVICE ESPECIFICO PARA ESTE ENDPOINT
+
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByMaintenance(id));
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new Message("Error al buscar elscooter","ID: " + id,HttpStatus.BAD_REQUEST));
+        }
+    }
 
 }

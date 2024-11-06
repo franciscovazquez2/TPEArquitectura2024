@@ -1,5 +1,6 @@
 package org.example.microservmaintenance.controller;
 
+import org.example.microservmaintenance.controller.models.Message;
 import org.example.microservmaintenance.entity.Maintenance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,20 +45,18 @@ public class MaintenanceController {
         }
     }
 
-    /*
-    // Obtener ciudad por id
+    // OBTENER UN MANTENIMIENDO CON LOS DATOS DEL MONOPATIN
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getCity(@PathVariable(value = "id") Long id){
+    public @ResponseBody ResponseEntity<?> getMaintenanceAndScooter(@PathVariable(value = "id") Long id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(cityService.getCity(id.intValue()));
+            return ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getMaintenance(id));
         } catch (Exception e){
-            String errorJson = "{\"message\": \"Error al buscar una ciudad determinada\", \"details\"}";
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+                    .body(Message.builder().message("No se encontro el ID Solicitado").details("Id incorrecto").status(HttpStatus.BAD_REQUEST).build());
         }
     }
-    */
+
 }
 
