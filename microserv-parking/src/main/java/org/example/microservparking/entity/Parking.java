@@ -38,8 +38,8 @@ public class Parking {
         this.actualCapacity=capacity;
     }
 
-    public void decreaseCapacity(){
-        if(this.capacity>0) {
+    public void decreaseCapacity() {
+        if (this.capacity > 0) {
             this.capacity--;
         }
     }
@@ -48,6 +48,10 @@ public class Parking {
         if(this.actualCapacity<this.capacity){
             this.actualCapacity++;
         }
+    }
+
+    public boolean isAvailable(){
+        return this.capacity>0;
     }
 
 }
