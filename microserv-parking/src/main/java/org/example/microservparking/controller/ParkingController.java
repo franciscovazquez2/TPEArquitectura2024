@@ -103,5 +103,48 @@ public class ParkingController {
         }
 
     }
+    //eliminar parada
+    @DeleteMapping("/{id}")
+    public @ResponseBody ResponseEntity<?>deleteParking(@PathVariable(value = "id")Long id){
+        try{
+            parkingService.deleteParking(id);
+            return ResponseEntity.status(HttpStatus.OK).body("El scooter fue eliminado correctamente");
+        }catch (Exception e){
+            String errorJson = "{\"message\":\"Error al eliminar la parada\", \"details\"}";
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorJson);
+        }
+    }
 
+    //ocupar un espacio de la parada (estacionar o dejar un monopatin)
+    @PutMapping("/{id}/estacionar")
+    public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(parkingService.ocuparEstacionamiento(id));
+        }catch (Exception e){
+            String errorJson = "{\"message\":\"Error al intentar estacionar\", \"details\"}";
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorJson);
+        }
+    }
+
+
+
+    //liberar un espacio de la parada (sacar un monopatin)
+    @PutMapping("/{id}/liberarEstacionamiento")
+    public @ResponseBody ResponseEntity<?>liberarEstacionamiento(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(parkingService.liberarEstacionamiento(id));
+        }catch (Exception e){
+            String errorJson = "{\"message\":\"Error al intentar liberar el estacionamiento\", \"details\"}";
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorJson);
+        }
+    }
 }

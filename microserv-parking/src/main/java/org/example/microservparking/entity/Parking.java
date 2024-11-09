@@ -20,8 +20,12 @@ public class Parking {
     @Column(name = "parkinCapacity")
     private int capacity;
 
+    @Column(name="actualCapacity")
+    private int actualCapacity;
+
     @Column(name = "parkingAviable")
     private boolean available;
+
 
     public Parking() {}
 
@@ -31,6 +35,23 @@ public class Parking {
         this.longitude = longitude;
         this.capacity = capacity;
         this.available = available;
+        this.actualCapacity=capacity;
+    }
+
+    public void decreaseCapacity() {
+        if (this.capacity > 0) {
+            this.capacity--;
+        }
+    }
+
+    public void incrementCapacity(){
+        if(this.actualCapacity<this.capacity){
+            this.actualCapacity++;
+        }
+    }
+
+    public boolean isAvailable(){
+        return this.capacity>0;
     }
 
 }

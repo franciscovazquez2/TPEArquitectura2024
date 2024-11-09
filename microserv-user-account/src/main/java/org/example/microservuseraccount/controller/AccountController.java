@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import com.mysql.cj.protocol.Message;
 import org.example.microservuseraccount.entity.Account;
 import org.example.microservuseraccount.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,6 +139,19 @@ public class AccountController {
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errorJson);
+        }
+    }
+
+    //anular una cuenta
+    @PutMapping("/anular/{id}")
+    public @ResponseBody ResponseEntity<?>anularCuenta(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.anularCuenta(id));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("No se puede anular la cuenta");
         }
     }
 

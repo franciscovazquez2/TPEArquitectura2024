@@ -189,5 +189,42 @@ public class ScooterController {
         }
     }
 
+    //	Registrar monopatín en mantenimiento (debe marcarse como no disponible para su uso)
+    @PutMapping("/inicio-mantenimiento/{id}")
+    public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("La consulta no es correcta");
+        }
+    }
+    //fin de mantenimiento de monopatin
+    @PutMapping("/fin-mantenimiento/{id}")
+    public @ResponseBody ResponseEntity<?>finishMaintenance(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.finishMaintenance(id));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("La consulta no es correcta");
+        }
+    }
+
+    //registrar monopatin a una parda
+    @PutMapping("/{id}/ubicar/{id_parada}")
+    public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,@PathVariable(value = "id_parada")Long id_parada){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("no es posible ubicar el monopatin");
+        }
+    }
 
 }
