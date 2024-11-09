@@ -96,6 +96,7 @@ public class FeeController {
         }
     }
 
+    //crea tarifa (se controla el tipo de tarifa)
     @PostMapping
     @Operation(
             summary = "Crear tarifa",
@@ -131,7 +132,14 @@ public class FeeController {
     public ResponseEntity<?> createFee(@RequestBody Fee newFee) {
         try {
             Fee savedFee = feeService.createFee(newFee);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedFee);
+            if(newFee.getTipo().equals("normal")|| newFee.getTipo().equals("extra")){
+                return ResponseEntity.status(HttpStatus.CREATED).body(savedFee);
+            }
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("tipo de tarifa invalido");
+
         } catch (Exception e) {
             String errorJson = "{\"message\": \"Error al crear la tarifa\", \"details\": \"" + e.getMessage() + "\"}";
             return ResponseEntity
