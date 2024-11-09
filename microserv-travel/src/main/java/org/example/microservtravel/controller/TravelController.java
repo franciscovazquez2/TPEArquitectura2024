@@ -1,4 +1,9 @@
 package org.example.microservtravel.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservtravel.controller.models.Message;
 import org.example.microservtravel.entity.Travel;
 import org.example.microservtravel.service.TravelService;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/travel/")
+@Tag(name = "Travel", description = "Controller de viaje")
 public class TravelController {
 
     @Autowired
@@ -18,6 +24,29 @@ public class TravelController {
 
 
     @GetMapping
+    @Operation(
+            summary = "Obtener viajes",
+            description = "Obtiene un listado de todos los viajes",
+            tags = {"Get","Travel"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar los viajes",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> getAllTravels() {
         try {
             return
@@ -31,6 +60,37 @@ public class TravelController {
     }
 
     @PostMapping()
+    @Operation(
+            summary = "Crear viaje",
+            description = "Crea un registro de viaje",
+            tags = {"Post","Scooter"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del viaje a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Travel.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear el viaje",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> createTravel(@RequestBody Travel newTravel) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(travelService.createTravel(newTravel));
@@ -44,6 +104,29 @@ public class TravelController {
 
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Obtener viaje por id",
+            description = "Obtiene un registro de viaje mediante un id ingresado",
+            tags = {"Get","Travel","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al buscar viaje",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> getTravel(@PathVariable(value = "id") Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(travelService.getTravel(id));
@@ -56,6 +139,37 @@ public class TravelController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Borrar viaje por id",
+            description = "Borra un registro de viaje mediante un id ingresado",
+            tags = {"Delete","Travel","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "El viaje fue eliminado correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "El id ingresado no existe",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "La consulta no es correcta",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") Long id){
         try{
             travelService.delete(id);
