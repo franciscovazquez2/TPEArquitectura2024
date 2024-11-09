@@ -191,6 +191,29 @@ public class ScooterController {
 
     //	Registrar monopatín en mantenimiento (debe marcarse como no disponible para su uso)
     @PutMapping("/inicio-mantenimiento/{id}")
+    @Operation(
+            summary = "Comenzar mantenimiento",
+            description = "Se modifica el registro de un monopatin marcando el inicio de un mantenimiento",
+            tags = {"Put","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede iniciar el mantenimiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
@@ -203,6 +226,29 @@ public class ScooterController {
     }
     //fin de mantenimiento de monopatin
     @PutMapping("/fin-mantenimiento/{id}")
+    @Operation(
+            summary = "Finalizar mantenimiento",
+            description = "Se modifica el registro de un monopatin marcando el fin de un mantenimiento",
+            tags = {"Put","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede finalizar el mantenimiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?>finishMaintenance(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.finishMaintenance(id));
@@ -216,6 +262,29 @@ public class ScooterController {
 
     //registrar monopatin a una parda
     @PutMapping("/{id}/ubicar/{id_parada}")
+    @Operation(
+            summary = "Ubicar monopatin en estacionamiento",
+            description = "Se ubica el monopatin en un estacionamiento mediante el id del mismo y el id del estacionamiento",
+            tags = {"Put","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede ubicar el monopatin",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,@PathVariable(value = "id_parada")Long id_parada){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));

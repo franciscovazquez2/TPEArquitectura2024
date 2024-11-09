@@ -144,6 +144,29 @@ public class AccountController {
 
     //anular una cuenta
     @PutMapping("/anular/{id}")
+    @Operation(
+            summary = "Anular cuenta",
+            description = "Se modifica una cuenta marcandola como inactiva",
+            tags = {"Put","Account","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede anular la cuenta",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?>anularCuenta(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(accountService.anularCuenta(id));

@@ -105,12 +105,35 @@ public class ParkingController {
     }
     //eliminar parada
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Borrar estacionamiento por id",
+            description = "Borra un registro de estacionamiento mediante un id ingresado",
+            tags = {"Delete","Parking","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "El estacionamiento fue eliminado correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar el estacionamiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?>deleteParking(@PathVariable(value = "id")Long id){
         try{
             parkingService.deleteParking(id);
-            return ResponseEntity.status(HttpStatus.OK).body("El scooter fue eliminado correctamente");
+            return ResponseEntity.status(HttpStatus.OK).body("El estacionamiento fue eliminado correctamente");
         }catch (Exception e){
-            String errorJson = "{\"message\":\"Error al eliminar la parada\", \"details\"}";
+            String errorJson = "{\"message\":\"Error al eliminar el estacionamiento\", \"details\"}";
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -120,11 +143,34 @@ public class ParkingController {
 
     //ocupar un espacio de la parada (estacionar o dejar un monopatin)
     @PutMapping("/{id}/estacionar")
+    @Operation(
+            summary = "Ocupar espacio de estacionamiento",
+            description = "Ocupa un espacio en el estacionamiento al dejar el monopatin",
+            tags = {"Put","Parking","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede ocupar el espacio del estacionamiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.ocuparEstacionamiento(id));
         }catch (Exception e){
-            String errorJson = "{\"message\":\"Error al intentar estacionar\", \"details\"}";
+            String errorJson = "{\"message\":\"Error al intentar ocupar el espacio de estacionamiento\", \"details\"}";
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -136,6 +182,29 @@ public class ParkingController {
 
     //liberar un espacio de la parada (sacar un monopatin)
     @PutMapping("/{id}/liberarEstacionamiento")
+    @Operation(
+            summary = "Desocupar espacio del estacionamiento",
+            description = "Se libera un espacio del estacionamiento al retirar un monopatin",
+            tags = {"Put","Parking","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede liberar el espacio del estacionamiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?>liberarEstacionamiento(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.liberarEstacionamiento(id));
