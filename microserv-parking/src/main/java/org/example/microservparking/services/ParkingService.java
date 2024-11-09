@@ -25,4 +25,24 @@ public class ParkingService {
     public Parking createParking(Parking newParking){
         return parkingRepository.save(newParking);
     }
+
+    //elimina una parada
+    public void deleteParking(Long id){
+        parkingRepository.deleteById(id);
+    }
+
+    //ocupa un lugar en la parada
+    public Parking ocuparEstacionamiento(Long id){
+        Optional<Parking>parkingOptional=parkingRepository.findById(id);
+        if(parkingOptional.isPresent()){
+            Parking parking = parkingOptional.get();
+            if(parking.isAvailable()){
+                parking.setCapacity(1);
+            }
+        }
+    }
+    //libera un lugar en la parada
+    public Parking liberarEstacionamiento(Long id){
+
+    }
 }
