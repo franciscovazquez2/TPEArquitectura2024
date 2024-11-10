@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
 
 import org.example.microservparking.error.dto.MessageDTO;
+import org.example.microservparking.error.exception.ExistException;
 import org.example.microservparking.error.exception.NotExistsException;
 import org.example.microservparking.error.exception.NotFoundIDException;
 import org.example.microservparking.error.exception.RequestBadException;
@@ -41,6 +42,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .message(ex.getMessage())
                         .details(request.getRequestURI())
                         .status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @ExceptionHandler({ExistException.class})
+    public ResponseEntity<?> handlerExistException(ExistException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.CONFLICT).build());
     }
 
 }

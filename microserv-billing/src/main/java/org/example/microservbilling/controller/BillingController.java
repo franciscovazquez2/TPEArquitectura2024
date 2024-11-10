@@ -1,5 +1,7 @@
 package org.example.microservbilling.controller;
 import org.example.microservbilling.entity.Billing;
+import org.example.microservbilling.error.exception.NotExistsException;
+import org.example.microservbilling.error.exception.RequestBadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,14 +45,9 @@ public class BillingController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllBillings() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(billingService.getAllBillings());
+            return  ResponseEntity.status(HttpStatus.OK).body(billingService.getAllBillings());
         } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al listar las facturas\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new RequestBadException("Error al listar las facturas");
         }
     }
 
@@ -85,11 +82,7 @@ public class BillingController {
         if (billing.isPresent()) {
             return ResponseEntity.ok(billing.get());
         } else {
-            String errorJson = "{\"message\": \"Factura no encontrada\"}";
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new NotExistsException("Factura no encontrada con Id: " + id);
         }
     }
 
@@ -133,11 +126,7 @@ public class BillingController {
             Billing savedBilling = billingService.createBilling(newBilling);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedBilling);
         } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al crear la factura\", \"details\": \"" + e.getMessage() + "\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new RequestBadException("Error al crear la factura " + newBilling.toString());
         }
     }
 }

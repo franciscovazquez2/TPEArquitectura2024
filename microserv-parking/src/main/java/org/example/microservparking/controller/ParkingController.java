@@ -1,12 +1,18 @@
 package org.example.microservparking.controller;
 
+import jakarta.ws.rs.BadRequestException;
 import org.example.microservparking.entity.Parking;
+import org.example.microservparking.error.exception.ExistException;
+import org.example.microservparking.error.exception.NotExistsException;
+import org.example.microservparking.error.exception.ParkingFullExection;
+import org.example.microservparking.error.exception.RequestBadException;
 import org.example.microservparking.services.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/parking")
@@ -46,12 +52,8 @@ public class ParkingController {
     public @ResponseBody ResponseEntity<?> getAllParkings(){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.getAllParkings());
-        } catch (Exception e) {
-            String errorJson = "{\"message\":\"Error al listar las paradas\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        } catch (BadRequestException e) {
+        throw new RequestBadException("No se encontraron Paradas");
         }
     }
 
@@ -90,15 +92,11 @@ public class ParkingController {
     )
      */
     @PostMapping
-    public @ResponseBody ResponseEntity<?> createParking(@RequestBody Parking newParking){
+    public @ResponseBody ResponseEntity<?> createParking(@RequestBody Parking newParking) throws ExistException {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(parkingService.createParking(newParking));
-        } catch (Exception e) {
-            String errorJson = "{\"message\":\"Error al crear la parada\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        } catch (BadRequestException e) {
+            throw new RequestBadException("Error al crear la parada " + newParking.toString());
         }
 
     }
@@ -129,16 +127,11 @@ public class ParkingController {
     )
      */
     @DeleteMapping("/{id}")
-    public @ResponseBody ResponseEntity<?>deleteParking(@PathVariable(value = "id")Long id){
+    public @ResponseBody ResponseEntity<?>deleteParking(@PathVariable(value = "id")Long id)throws NotExistsException{
         try{
-            parkingService.deleteParking(id);
-            return ResponseEntity.status(HttpStatus.OK).body("El estacionamiento fue eliminado correctamente");
-        }catch (Exception e){
-            String errorJson = "{\"message\":\"Error al eliminar el estacionamiento\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            return ResponseEntity.status(HttpStatus.OK).body(parkingService.deleteParking(id));
+        }catch (BadRequestException e){
+            throw new RequestBadException("Fallo al eliminar el ID: " + id);
         }
     }
 
@@ -169,15 +162,11 @@ public class ParkingController {
     )
      */
     @PutMapping("/{id}/estacionar")
-    public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id){
+    public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id)throws ParkingFullExection, NotExistsException {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.ocuparEstacionamiento(id));
-        }catch (Exception e){
-            String errorJson = "{\"message\":\"Error al intentar ocupar el espacio de estacionamiento\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        }catch (BadRequestException e){
+            throw new RequestBadException("No se pudo ocupar el estacionamiento");
         }
     }
 
@@ -211,15 +200,25 @@ public class ParkingController {
 
      */
     @PutMapping("/{id}/liberarEstacionamiento")
-    public @ResponseBody ResponseEntity<?>liberarEstacionamiento(@PathVariable(value="id")Long id){
+    public @ResponseBody ResponseEntity<?>liberarEstacionamiento(@PathVariable(value="id")Long id)throws NotExistsException{
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.liberarEstacionamiento(id));
-        }catch (Exception e){
-            String errorJson = "{\"message\":\"Error al intentar liberar el estacionamiento\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        }catch (BadRequestException e){
+            throw new RequestBadException("error al liberar estacionamiento");
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getParkingById(@PathVariable(name = "id") Long id){
+        try{
+            Optional<Parking> parking = parkingService.getParking(id);
+            if(!parking.isPresent()){
+                throw new NotExistsException("No existe el parking con ID: " + id);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(parking);
+        }catch (BadRequestException e){
+            throw new RequestBadException("Fallo al buscar el parking con id: " +id);
+        }
+    }
+
 }

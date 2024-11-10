@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
 import org.example.microservmaintenance.error.exception.NotExistsException;
 import org.example.microservmaintenance.error.dto.MessageDTO;
-import org.example.microservmaintenance.error.exception.BadRiquestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -5,7 +5,7 @@ import jakarta.ws.rs.BadRequestException;
 
 import org.example.microservbilling.error.dto.MessageDTO;
 import org.example.microservbilling.error.exception.NotExistsException;
-import org.example.microservbilling.error.exception.NotFoundIDException;
+import org.example.microservbilling.error.exception.NotFoundException;
 import org.example.microservbilling.error.exception.RequestBadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +34,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .status(HttpStatus.BAD_REQUEST).build());
     }
 
-    @ExceptionHandler({NotFoundIDException.class})
-    public ResponseEntity<?> handlerNotFoundIDException(NotFoundIDException ex, HttpServletRequest request){
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<?> handlerNotFoundException(NotFoundException ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(MessageDTO.builder()
                         .message(ex.getMessage())
