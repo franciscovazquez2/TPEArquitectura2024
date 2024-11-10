@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({NotExistsException.class})
-    public ResponseEntity<?> handlerNotExistsExcepion(NotExistsException ex, HttpServletRequest request){
+    public ResponseEntity<?> handlerNotExistsException(NotExistsException ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.CONFLICT)
                              .body(MessageDTO.builder()
                                              .message(ex.getMessage())
@@ -24,7 +24,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({BadRiquestException.class})
-    public ResponseEntity<?> handlerBadRequestExcepion(BadRequestException ex, HttpServletRequest request){
+    public ResponseEntity<?> handlerBadRequestException(BadRequestException ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(MessageDTO.builder()
                         .message(ex.getMessage())
