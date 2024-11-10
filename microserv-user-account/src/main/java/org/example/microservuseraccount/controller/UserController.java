@@ -1,5 +1,10 @@
 package org.example.microservuseraccount.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/user")
-//@Tag(name = "User", description = "Controller de usuario")
+@Tag(name = "User", description = "Controller de usuario")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     // Obtener listado de usuarios
-
-    /*@Operation(
+    @Operation(
             summary = "Obtener usuarios",
             description = "Obtiene un listado de todos los usuarios",
             tags = {"Get","User"},
@@ -41,8 +45,6 @@ public class UserController {
                     )
             }
     )
-    * */
-
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllUsers() {
         try {
@@ -57,7 +59,8 @@ public class UserController {
         }
     }
 
-    /*@Operation(
+    // Crear usuario
+    @Operation(
         summary = "Crear usuario",
         description = "Crea un registro de usuario",
         tags = {"Post","User"},
@@ -87,8 +90,7 @@ public class UserController {
                         )
                 )
         }
-)*/
-    // Agregar mantenimiento
+    )
     @PostMapping()
     public @ResponseBody ResponseEntity<?> createUser(@RequestBody User newUser) {
         try {
@@ -103,7 +105,6 @@ public class UserController {
     }
 
     //asocia una cuenta a un usuario
-   /*
     @Operation(
             summary = "Asociar una cuenta a un usuario mediante id de usuario y id de cuenta",
             description = "Asocia una cuenta a un usuario mediante los id ingresados",
@@ -126,7 +127,7 @@ public class UserController {
                             )
                     )
             }
-    )*/
+    )
     @PutMapping("/asociarCuenta/{userId}/{accountId}")
     public @ResponseBody ResponseEntity<?>asociarCuenta(@PathVariable(value = "userId")Long userId,@PathVariable(value = "accountId")Long accountId) {
         try{
@@ -141,7 +142,6 @@ public class UserController {
     }
 
     // Obtener usuario por id
-   /*
     @Operation(
             summary = "Obtener usuario por id",
             description = "Obtiene un registro de usuario mediante un id ingresado",
@@ -164,7 +164,7 @@ public class UserController {
                             )
                     )
             }
-    )*/
+    )
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<?> getUser(@PathVariable(value = "id") Long id){
         try{

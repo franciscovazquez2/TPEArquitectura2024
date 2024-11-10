@@ -1,4 +1,9 @@
 package org.example.microservtravel.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservtravel.error.dto.MessageDTO;
 import org.example.microservtravel.entity.Travel;
 import org.example.microservtravel.service.TravelService;
@@ -11,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/travel/")
-//@Tag(name = "Travel", description = "Controller de viaje")
+@Tag(name = "Travel", description = "Controller de viaje")
 public class TravelController {
 
     @Autowired
     private TravelService travelService;
 
-/*
+
 @Operation(
             summary = "Obtener viajes",
             description = "Obtiene un listado de todos los viajes",
@@ -40,7 +45,7 @@ public class TravelController {
                             )
                     )
             }
-    )*/
+    )
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllTravels() {
         try {
@@ -54,7 +59,7 @@ public class TravelController {
         }
     }
 
-    /*@Operation(
+    @Operation(
             summary = "Crear viaje",
             description = "Crea un registro de viaje",
             tags = {"Post","Scooter"},
@@ -84,7 +89,7 @@ public class TravelController {
                             )
                     )
             }
-    ) */
+    )
     @PostMapping()
     public @ResponseBody ResponseEntity<?> createTravel(@RequestBody Travel newTravel) {
         try {
@@ -97,7 +102,7 @@ public class TravelController {
         }
     }
 
-/*@Operation(
+@Operation(
             summary = "Obtener viaje por id",
             description = "Obtiene un registro de viaje mediante un id ingresado",
             tags = {"Get","Travel","Id"},
@@ -119,7 +124,7 @@ public class TravelController {
                             )
                     )
             }
-    )*/
+    )
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<?> getTravel(@PathVariable(value = "id") Long id){
         try{
@@ -133,7 +138,7 @@ public class TravelController {
     }
 
 
-    /*@Operation(
+    @Operation(
             summary = "Borrar viaje por id",
             description = "Borra un registro de viaje mediante un id ingresado",
             tags = {"Delete","Travel","Id"},
@@ -163,7 +168,7 @@ public class TravelController {
                             )
                     )
             }
-    )*/
+    )
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") Long id){
         try{
@@ -182,6 +187,30 @@ public class TravelController {
         }
     }
 
+    @Operation(
+            summary = "Obtener monopatines por kilometros",
+            description = "Obtiene un listado de uso de los monopatines por kilometros con o sin pausas dependiendo lo ingresado " +
+                    "por defecto devuelve sin pausas",
+            tags = {"Get","Travel"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar los monopatines",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/reporte/scooter/{includePause}")
     public @ResponseBody ResponseEntity<?>reporteScooterPorKilometros(@RequestParam(defaultValue="false")boolean includePause){
         try{
