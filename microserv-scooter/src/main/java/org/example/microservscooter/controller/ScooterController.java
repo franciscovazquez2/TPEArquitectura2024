@@ -1,6 +1,5 @@
 package org.example.microservscooter.controller;
 
-import org.apache.coyote.BadRequestException;
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.error.dto.MessageDTO;
@@ -41,7 +40,7 @@ public class ScooterController {
 
 
     @PostMapping()
-    public @ResponseBody ResponseEntity<?> createTravel(@RequestBody Scooter newScooter) {
+    public @ResponseBody ResponseEntity<?> createScooter(@RequestBody Scooter newScooter) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(scooterService.createScooter(newScooter));
         }catch (Exception e){
@@ -84,6 +83,119 @@ public class ScooterController {
             return scooterDTO;
         } catch (Exception e) {
             throw new RequestBadException("error al querer solicitar el id " + id);
+        }
+    }
+
+
+    //	Registrar monopatín en mantenimiento (debe marcarse como no disponible para su uso)
+
+    /*
+    @Operation(
+            summary = "Comenzar mantenimiento",
+            description = "Se modifica el registro de un monopatin marcando el inicio de un mantenimiento",
+            tags = {"Put","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede iniciar el mantenimiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    ) */
+    @PutMapping("/inicio-mantenimiento/{id}")
+    public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("La consulta no es correcta");
+        }
+    }
+
+    //fin de mantenimiento de monopatin
+   /*
+    @Operation(
+            summary = "Finalizar mantenimiento",
+            description = "Se modifica el registro de un monopatin marcando el fin de un mantenimiento",
+            tags = {"Put","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede finalizar el mantenimiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    ) */
+    @PutMapping("/fin-mantenimiento/{id}")
+    public @ResponseBody ResponseEntity<?>finishMaintenance(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.finishMaintenance(id));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("La consulta no es correcta");
+        }
+    }
+
+    //registrar monopatin a una parda
+    /*
+    @Operation(
+            summary = "Ubicar monopatin en estacionamiento",
+            description = "Se ubica el monopatin en un estacionamiento mediante el id del mismo y el id del estacionamiento",
+            tags = {"Put","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede ubicar el monopatin",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    ) */
+    @PutMapping("/{id}/ubicar/{id_parada}")
+    public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,@PathVariable(value = "id_parada")Long id_parada){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("no es posible ubicar el monopatin");
         }
     }
 

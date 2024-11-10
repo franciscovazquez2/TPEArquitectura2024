@@ -15,6 +15,4 @@ public class ScooterDTO {
     private int usageTime;
     private boolean maintenance;
 
-    public boolean isEmpty() {
-        return (this.id_scooter == null);}
 }

@@ -31,8 +31,6 @@ public class MaintenanceService {
     public MaintenanceDTO createMaintenance(Maintenance newMaintenance){
         ScooterDTO scooterDTO = scooterClient.findScooterBuyId(newMaintenance.getIdScooter());
 
-
-
         if(scooterDTO.isEmpty() &&!scooterDTO.isMaintenence()){
             Maintenance m1 = maintenanceRepository.save(newMaintenance);
             return MaintenanceDTO.builder().id(m1.getId()).id_scooter(m1.getIdScooter()).build();

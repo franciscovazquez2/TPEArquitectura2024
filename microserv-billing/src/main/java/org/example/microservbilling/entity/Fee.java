@@ -1,10 +1,17 @@
 package org.example.microservbilling.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Fee {
 
     @Id
@@ -18,28 +25,11 @@ public class Fee {
     @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaInicio;
 
-    @Column(name = "fecha_fin")
-    private LocalDate fechaFin;
 
     @Column(name = "tipo", nullable = false)
     private String tipo;
 
-    public Fee() {}
 
-    public Fee(Double monto, LocalDate fechaInicio, LocalDate fechaFin, String tipo) {
-        this.monto = monto;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.tipo = tipo;
-    }
-
-    public Fee(Long id, Double monto, LocalDate fechaInicio, LocalDate fechaFin, String tipo) {
-        this.id = id;
-        this.monto = monto;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.tipo = tipo;
-    }
 
     public Fee(Double monto, LocalDate fechaInicio, String tipo) {
         this.monto = monto;

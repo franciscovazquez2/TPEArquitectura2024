@@ -1,10 +1,16 @@
 package org.example.microservmaintenance.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Maintenance {
 
     @Id
@@ -14,12 +20,5 @@ public class Maintenance {
 
     @Column(name = "idScooter")
     private long idScooter;
-
-    public Maintenance() {}
-
-    public Maintenance(long id , long idScooter){
-        this.id=id;
-        this.idScooter=idScooter;
-    }
 
 }

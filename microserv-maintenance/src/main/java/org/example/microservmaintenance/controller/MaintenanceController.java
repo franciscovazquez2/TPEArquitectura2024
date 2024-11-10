@@ -13,11 +13,37 @@ import org.example.microservmaintenance.services.MaintenanceService;
 
 @RestController
 @RequestMapping("api/maintenance")
+//@Tag(name="Maintenance", description = "Controller de mantenimiento")
 public class MaintenanceController {
 
     @Autowired
     private MaintenanceService maintenanceService;
 
+    /*
+    @Operation(
+            summary = "Obtener mantenimientos",
+            description = "Obtiene un listado de todos los mantenimientos",
+            tags = {"Get","Maintenance"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar los mantenimientos",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
+     */
     // Obtener listado de mantenimientos
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllMaintenances() {
@@ -35,6 +61,38 @@ public class MaintenanceController {
         }
     }
 
+
+    /*@Operation(
+            summary = "Crear mantenimiento",
+            description = "Crea un registro de mantenimiento",
+            tags = {"Post","Maintenance"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del mantenimiento a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Maintenance.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear el mantenimiento",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
     // Agregar mantenimiento
     @PostMapping()
     public ResponseEntity<?> createMaintenance(@RequestBody Maintenance newMaintenance) {

@@ -38,4 +38,20 @@ public class Scooter {
     @Column
     private boolean maintenance;
 
+    @Column
+    private Long idParking;
+
+    public Scooter(Long id_scooter, double latitude, double longitude, Long kilometers, int usageTime, boolean start, boolean available, boolean maintenance) {
+        this.id_scooter = id_scooter;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.kilometers = kilometers;
+        this.usageTime = usageTime;
+        this.start = start;
+        this.available = available;
+        this.maintenance = maintenance;
+        this.idParking = 0L;
+    }
+
+
 }
