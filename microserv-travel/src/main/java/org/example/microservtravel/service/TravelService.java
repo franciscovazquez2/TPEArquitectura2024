@@ -1,11 +1,13 @@
 package org.example.microservtravel.service;
-import org.example.microservtravel.dto.KilometrosPorScooterDto;
+import org.example.microservtravel.dto.ScooterReportDto;
+import org.example.microservtravel.dto.TravelScooterReportDto;
 import org.example.microservtravel.entity.Travel;
 import org.example.microservtravel.repository.TravelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,26 +38,27 @@ public class TravelService {
 
     /*reporte de uso de monopatines por kilómetros para establecer si un monopatín requiere de mantenimiento.
      Este reporte debe poder configurarse para incluir (o no) los tiempos de pausa. */
-    public KilometrosPorScooterDto reporteScooterPorKilometros(Long id_scooter, boolean includePause){
+    public List<TravelScooterReportDto> reporteScooterPorKilometros(boolean includePause) {
 
-        List<Travel>travels = travelRepository.reporteScooterPorKilometros(id_scooter,includePause);
-        long kilometers = 0;
-        long usageTime = 0;
+        List<ScooterReportDto> reportesPorScooter = travelRepository.reporteScooterKilometrosTiempo();
+        List<TravelScooterReportDto> reportResult = new ArrayList<>();
 
-        for(Travel travel : travels){
-            kilometers+=travel.getKilometers();
-
+        for(ScooterReportDto report : reportesPorScooter){
+            long usageTime;
             if(includePause){
-                usageTime+= travel.getUsageTime() + travel.getPauseTime();
-            }else{
-                usageTime+= travel.getUsageTime();
+                usageTime=report.getTotalUsageTime()+report.getTotalPauseTime();
+            }else {
+                usageTime=report.getTotalUsageTime();
             }
-        }
-        return KilometrosPorScooterDto.builder()
-                                      .scooterId(id_scooter)
-                                      .totalDistance(kilometers)
-                                      .totalUsageTime(usageTime)
-                                      .includePause(includePause).build();
+            TravelScooterReportDto reportDto = TravelScooterReportDto.builder()
+                    .idScooter(report.getIdScooter())
+                    .kilometers(report.getTotalKilometers())
+                    .usageTime(usageTime)
+                    .includePause(includePause)
+                    .build();
 
+            reportResult.add(reportDto);
+        }
+        return reportResult;
     }
 }

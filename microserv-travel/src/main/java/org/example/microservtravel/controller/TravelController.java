@@ -182,15 +182,15 @@ public class TravelController {
         }
     }
 
-    @GetMapping("/reporte/kilometros/{id_scooter}")
-    public @ResponseBody ResponseEntity<?>reporteScooterPorKilometros(@PathVariable(value="id_scooter")Long id_scooter,@RequestParam(defaultValue="false")boolean includePause){
+    @GetMapping("/reporte/scooter/{includePause}")
+    public @ResponseBody ResponseEntity<?>reporteScooterPorKilometros(@RequestParam(defaultValue="false")boolean includePause){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(travelService.reporteScooterPorKilometros(id_scooter,includePause));
+            return ResponseEntity.status(HttpStatus.OK).body(travelService.reporteScooterPorKilometros(includePause));
         }catch (Exception e ){
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body("No se puede encontrar el scooter");
+                    .body("No se puede acceder al reporte");
         }
     }
 

@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class KilometrosPorScooterDto {
-    private Long scooterId;
-    private long totalDistance;
-    private long totalUsageTime;
+public class TravelScooterReportDto {
+
+    private Long idScooter;
+    private long kilometers;
+    private long usageTime;
     private boolean includePause;
+
 }
