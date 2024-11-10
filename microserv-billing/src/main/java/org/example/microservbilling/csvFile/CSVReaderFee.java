@@ -30,10 +30,9 @@ public class CSVReaderFee {
                     Long id = Long.parseLong(datos[0]);
                     Double monto = Double.parseDouble(datos[1]);
                     LocalDate fechaInicio = LocalDate.parse(datos[2], DATE_FORMATTER);
-                    LocalDate fechaFin = datos[3].isEmpty() ? null : LocalDate.parse(datos[3], DATE_FORMATTER);
-                    String tipo = datos[4];
+                    String tipo = datos[3];
 
-                    Fee fee = new Fee(id, monto, fechaInicio, fechaFin, tipo);
+                    Fee fee = new Fee(id, monto, fechaInicio, tipo);
                     feeRepository.save(fee);
                 }
             }

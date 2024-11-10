@@ -16,7 +16,6 @@ public class ScooterService {
     @Autowired
     private ScooterRepository scooterRepository;
 
-
     public List<Scooter> getAllScooter(){
         return scooterRepository.findAll();
     }
@@ -37,7 +36,6 @@ public class ScooterService {
     public Optional<ScooterDTO> getScooterByMaintenance(Long id){
         return scooterRepository.getScooterByMaintenance(id);
     }
-
 
     //cambia el estado de mantenimiento y disponibilidad
     public Scooter startMaintenance(Long id){
@@ -60,7 +58,7 @@ public class ScooterService {
         if(scooterOptional.isPresent()){
             Scooter scooter = scooterOptional.get();
             //chequear si ya se encuentra en mantenimiento o no
-            if(!scooter.isAvailable()&&scooter.isMaintenance()){
+            if(!scooter.isAvailable() && scooter.isMaintenance()){
                 scooter.setAvailable(true);
                 scooter.setMaintenance(false);
             }

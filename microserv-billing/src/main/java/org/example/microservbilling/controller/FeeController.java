@@ -1,9 +1,11 @@
 package org.example.microservbilling.controller;
 import org.example.microservbilling.entity.Fee;
+import org.example.microservbilling.error.exception.NotExistsException;
+import org.example.microservbilling.error.exception.NotFoundException;
+import org.example.microservbilling.error.exception.RequestBadException;
 import org.example.microservbilling.services.FeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
@@ -47,11 +49,7 @@ public class FeeController {
             return
                     ResponseEntity.status(HttpStatus.OK).body(feeService.getAllFees());
         } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al listar las tarifas\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new RequestBadException("Error al listar las tarifas");
         }
     }
 
@@ -86,11 +84,7 @@ public class FeeController {
         if (fee.isPresent()) {
             return ResponseEntity.ok(fee.get());
         } else {
-            String errorJson = "{\"message\": \"Tarifa no encontrada\"}";
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new NotExistsException("Tarifa no encontrada. ID: " + id);
         }
     }
 
@@ -133,11 +127,7 @@ public class FeeController {
             newFee.setTipo("normal");
             return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
         } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al crear la tarifa\", \"details\": \"" + e.getMessage() + "\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new RequestBadException("No se pudo crear la Tarifa" + newFee.toString());
         }
     }
 
@@ -147,11 +137,7 @@ public class FeeController {
             newFee.setTipo("extra");
             return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
         } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al crear la tarifa\", \"details\": \"" + e.getMessage() + "\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new NotFoundException("Error al crear la tarifa extra " + newFee.toString());
         }
     }
 }
