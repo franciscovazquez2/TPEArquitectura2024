@@ -2,5 +2,5 @@ spring:
     application:
         name: microserv-user-account
     config:
-        import: optional:configserver:http://localhost:8081
+        import: optional:configserver:http://localhost:8888
 

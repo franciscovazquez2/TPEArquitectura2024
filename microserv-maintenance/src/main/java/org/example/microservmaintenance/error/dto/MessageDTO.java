@@ -1,4 +1,4 @@
-package org.example.microservscooter.controller.models;
+package org.example.microservmaintenance.error.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Message {
+public class MessageDTO {
     private String message;
     private String details;
     private HttpStatus status;

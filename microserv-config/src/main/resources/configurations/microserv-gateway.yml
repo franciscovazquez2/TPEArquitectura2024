@@ -1,0 +1,49 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: microserv-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: microserv-maintenance
+            uri: lb://microserv-maintenance
+            predicates:
+              - Path=/api/maintenance/**
+          - id: microserv-scooter
+            uri: lb://microserv-scooter
+            predicates:
+              - Path=/api/scooter/**
+          - id: microserv-billing
+            uri: lb://microserv-billing
+            predicates:
+              - Path=/api/billing/**
+          - id: microserv-parking
+            uri: lb://microserv-parking
+            predicates:
+              - Path=/api/parking/**
+          - id: microserv-travel
+            uri: lb://microserv-travel
+            predicates:
+              - Path=/api/travel/**
+          - id: microserv-user-account
+            uri: lb://microserv-user-account
+            predicates:
+              - Path=/api/user/**
+          - id: microserv-user-account
+            uri: lb://microserv-user-account
+            predicates:
+              - Path=/api/account/**
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    instance:
+      hostname: localhost

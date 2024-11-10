@@ -2,6 +2,7 @@ package org.example.microservscooter.service;
 
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
+import org.example.microservscooter.error.exception.NotExistsException;
 import org.example.microservscooter.repository.ScooterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -30,11 +31,11 @@ public class ScooterService {
         return scooterRepository.findById(id);
     }
 
-    public void delete(Long id) throws EmptyResultDataAccessException,Exception {
+    public void delete(Long id) {
         scooterRepository.deleteById(id);
     }
 
-    public ScooterDTO getScooterByMaintenance(Long id){
+    public Optional<ScooterDTO> getScooterByMaintenance(Long id){
         return scooterRepository.getScooterByMaintenance(id);
     }
 }

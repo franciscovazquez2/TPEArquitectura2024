@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: microserv-scooter
+    name: microserv-user-account
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/Integrador4?useSSL=false&allowPublicKeyRetrieval=true

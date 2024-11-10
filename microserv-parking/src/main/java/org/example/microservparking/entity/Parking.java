@@ -1,15 +1,12 @@
 package org.example.microservparking.entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 public class Parking {
 
-    @id
+    @Id
     @Column(name = "idParking")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

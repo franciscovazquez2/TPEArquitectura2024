@@ -14,4 +14,7 @@ public class ScooterDTO {
     private Long kilometers;
     private int usageTime;
     private boolean maintenance;
+
+    public boolean isEmpty() {
+        return (this.id_scooter == null);}
 }
