@@ -1,5 +1,10 @@
 package org.example.microservscooter.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.error.dto.MessageDTO;
@@ -19,6 +24,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("api/scooter")
+@Tag(name = "Scooter", description = "Controller de monopatin")
 public class ScooterController {
 
     @Autowired
@@ -26,6 +32,29 @@ public class ScooterController {
 
 
     @GetMapping
+    @Operation(
+            summary = "Obtener monopatines",
+            description = "Obtiene un listado de todos los monopatines",
+            tags = {"Get","Scooter"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar los monopatines",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> getAllScooter() {
         try {
             return
@@ -40,6 +69,37 @@ public class ScooterController {
 
 
     @PostMapping()
+    @Operation(
+            summary = "Crear monopatin",
+            description = "Crea un registro de monopatin",
+            tags = {"Post","Scooter"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del monopatin a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Scooter.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear el monopatin",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> createScooter(@RequestBody Scooter newScooter) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(scooterService.createScooter(newScooter));
@@ -52,6 +112,29 @@ public class ScooterController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Obtener monopatin por id",
+            description = "Obtiene un registro de monopatin mediante un id ingresado",
+            tags = {"Get","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al buscar monopatin",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> getScooter(@PathVariable(value = "id") Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooter(id));
@@ -61,6 +144,37 @@ public class ScooterController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Borrar monopatin por id",
+            description = "Borra un registro de monopatin mediante un id ingresado",
+            tags = {"Delete","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "El scooter fue eliminado correctamente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Id no encontrado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar el scooter",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") Long id){
         try{
             scooterService.delete(id);
@@ -73,6 +187,39 @@ public class ScooterController {
     }
 
     // ENDPOINT PARA QUE EL MICROSERVICIO MAINTENANCE
+    /* NO DEBERIA ESTAR VISIBLE ¿BORRAR SWAGGER?
+    @Operation(
+            summary = "Buscar monopatin desde mentenimiento",
+            description = "Busca un monopatin desde mantenimiento ",
+            tags = {"Get","Scooter","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ScooterDTO.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Id inexistente",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Error al solicitar el id",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
     @GetMapping("/search-maintenance/{id}")
     public @ResponseBody Optional<ScooterDTO> getScooterMaintenance(@PathVariable(value = "id") Long id) {
         try{
@@ -88,8 +235,6 @@ public class ScooterController {
 
 
     //	Registrar monopatín en mantenimiento (debe marcarse como no disponible para su uso)
-
-    /*
     @Operation(
             summary = "Comenzar mantenimiento",
             description = "Se modifica el registro de un monopatin marcando el inicio de un mantenimiento",
@@ -112,7 +257,7 @@ public class ScooterController {
                             )
                     )
             }
-    ) */
+    )
     @PutMapping("/inicio-mantenimiento/{id}")
     public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
         try{
@@ -126,7 +271,6 @@ public class ScooterController {
     }
 
     //fin de mantenimiento de monopatin
-   /*
     @Operation(
             summary = "Finalizar mantenimiento",
             description = "Se modifica el registro de un monopatin marcando el fin de un mantenimiento",
@@ -149,7 +293,7 @@ public class ScooterController {
                             )
                     )
             }
-    ) */
+    )
     @PutMapping("/fin-mantenimiento/{id}")
     public @ResponseBody ResponseEntity<?>finishMaintenance(@PathVariable(value="id")Long id){
         try{
@@ -163,7 +307,6 @@ public class ScooterController {
     }
 
     //registrar monopatin a una parda
-    /*
     @Operation(
             summary = "Ubicar monopatin en estacionamiento",
             description = "Se ubica el monopatin en un estacionamiento mediante el id del mismo y el id del estacionamiento",
@@ -186,7 +329,7 @@ public class ScooterController {
                             )
                     )
             }
-    ) */
+    )
     @PutMapping("/{id}/ubicar/{id_parada}")
     public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,@PathVariable(value = "id_parada")Long id_parada){
         try{
