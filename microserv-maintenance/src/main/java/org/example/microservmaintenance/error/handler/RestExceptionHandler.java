@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
 import org.example.microservmaintenance.error.exception.NotExistsException;
 import org.example.microservmaintenance.error.dto.MessageDTO;
+import org.example.microservmaintenance.error.exception.RequestBadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,7 +23,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                                              .status(HttpStatus.CONFLICT).build());
     }
 
-    @ExceptionHandler({BadRiquestException.class})
+    @ExceptionHandler({RequestBadException.class})
     public ResponseEntity<?> handlerBadRequestException(BadRequestException ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(MessageDTO.builder()
