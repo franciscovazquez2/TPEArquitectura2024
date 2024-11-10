@@ -2,10 +2,11 @@ package org.example.microservbilling.error.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
-import org.example.microservscooter.error.dto.MessageDTO;
-import org.example.microservscooter.error.exception.NotExistsException;
-import org.example.microservscooter.error.exception.NotFoundIDException;
-import org.example.microservscooter.error.exception.RequestBadException;
+
+import org.example.microservbilling.error.dto.MessageDTO;
+import org.example.microservbilling.error.exception.NotExistsException;
+import org.example.microservbilling.error.exception.NotFoundIDException;
+import org.example.microservbilling.error.exception.RequestBadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

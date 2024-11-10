@@ -19,6 +19,10 @@ spring:
             uri: lb://microserv-billing
             predicates:
               - Path=/api/billing/**
+          - id: microserv-fee
+            uri: lb://microserv-billing
+            predicates:
+              - Path=/api/fee/**
           - id: microserv-parking
             uri: lb://microserv-parking
             predicates:
@@ -27,11 +31,11 @@ spring:
             uri: lb://microserv-travel
             predicates:
               - Path=/api/travel/**
-          - id: microserv-user-account
+          - id: microserv-user
             uri: lb://microserv-user-account
             predicates:
               - Path=/api/user/**
-          - id: microserv-user-account
+          - id: microserv-account
             uri: lb://microserv-user-account
             predicates:
               - Path=/api/account/**
