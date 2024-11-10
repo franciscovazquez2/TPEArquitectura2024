@@ -24,7 +24,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({RequestBadException.class})
-    public ResponseEntity<?> handlerBadRequestException(RequestBadException ex, HttpServletRequest request){
+    public ResponseEntity<?> handlerBadRequestException(BadRequestException ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(MessageDTO.builder()
                         .message(ex.getMessage())
