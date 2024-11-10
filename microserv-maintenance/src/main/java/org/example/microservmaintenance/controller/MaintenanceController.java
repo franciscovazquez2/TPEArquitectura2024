@@ -4,6 +4,7 @@ import org.example.microservmaintenance.error.dto.MessageDTO;
 import org.example.microservmaintenance.dto.MaintenanceDTO;
 import org.example.microservmaintenance.entity.Maintenance;
 import org.example.microservmaintenance.error.exception.NotExistsException;
+import org.example.microservmaintenance.error.exception.RequestBadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,13 +52,7 @@ public class MaintenanceController {
             return
                     ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getAllMaintenances());
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(MessageDTO.builder().message("Error al listar los mantenimientos")
-                                           .details("GET all")
-                                           .status(HttpStatus.BAD_REQUEST)
-                                           .build());
+        throw new RequestBadException("Error al listar los mantenimientos");
         }
     }
 
@@ -101,16 +96,10 @@ public class MaintenanceController {
             if(!maintenanceDTO.isEmtpy()){
                 return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceDTO);
             }else{
-                return ResponseEntity.status(HttpStatus.CREATED).body(MessageDTO.builder().message("No se encontro scooter. ").details("ID: " + newMaintenance.getIdScooter()).status(HttpStatus.CONFLICT).build());
+                throw new NotExistsException("El id_scooter no existe " + newMaintenance.getIdScooter());
             }
         }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(MessageDTO.builder().message("Error al crear el mantenimiento")
-                                           .details("POST : " + newMaintenance.toString())
-                                           .status(HttpStatus.BAD_REQUEST)
-                                           .build());
+            throw new RequestBadException("Error al crear el mantenimiento " + newMaintenance.toString());
         }
     }
 
@@ -119,13 +108,8 @@ public class MaintenanceController {
     public ResponseEntity<?> getMaintenanceAndScooter(@PathVariable(value = "id") Long id) throws NotExistsException {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getMaintenance(id));
-        } catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(MessageDTO.builder().message("No se encontro el ID Solicitado")
-                                           .status(HttpStatus.BAD_REQUEST)
-                                           .build());
+        } catch (RuntimeException e){
+            throw new RequestBadException("No se encontro el id solicitado. ID: " + id);
         }
     }
 
