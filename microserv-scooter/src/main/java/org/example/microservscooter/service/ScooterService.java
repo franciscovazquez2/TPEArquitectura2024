@@ -2,6 +2,8 @@ package org.example.microservscooter.service;
 
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
+import org.example.microservscooter.error.exception.NotExistsException;
+import org.example.microservscooter.error.exception.ScooterMaintenanceException;
 import org.example.microservscooter.repository.ScooterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,16 +63,20 @@ public class ScooterService {
             if(!scooter.isAvailable() && scooter.isMaintenance()){
                 scooter.setAvailable(true);
                 scooter.setMaintenance(false);
+            }else{
+                throw new ScooterMaintenanceException("El scooter ya se encuentra en mantenimiento");
             }
             return scooterRepository.save(scooter);
         }
-        throw new NoSuchElementException("monopatin no encontrado");
+        throw new NotExistsException("El scooter no existe");
     }
 
     //ubicar scooter en parada
     public Scooter ubicarScooterEnParada(Long id, Long id_parada){
         Optional<Scooter> scooterOptional = scooterRepository.findById(id);
+
         //buscar parada..preguntar si tiene lugar.persistir el id de monopatin o disminuir disponibilidad
+
         if(scooterOptional.isPresent()){
             Scooter scooter = scooterOptional.get();
             scooter.setIdParking(id_parada);

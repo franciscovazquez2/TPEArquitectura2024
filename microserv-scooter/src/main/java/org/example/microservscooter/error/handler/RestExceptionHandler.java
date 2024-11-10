@@ -3,6 +3,7 @@ package org.example.microservscooter.error.handler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.BadRequestException;
 import org.example.microservscooter.error.dto.MessageDTO;
+import org.example.microservscooter.error.exception.ScooterMaintenanceException;
 import org.example.microservscooter.error.exception.NotExistsException;
 import org.example.microservscooter.error.exception.NotFoundIDException;
 import org.example.microservscooter.error.exception.RequestBadException;
@@ -40,6 +41,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .message(ex.getMessage())
                         .details(request.getRequestURI())
                         .status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @ExceptionHandler({ScooterMaintenanceException.class})
+    public ResponseEntity<?> handlerNotFoundIDException(ScooterMaintenanceException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.CONFLICT).build());
     }
 
 }
