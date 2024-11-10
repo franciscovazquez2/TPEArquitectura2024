@@ -29,4 +29,15 @@ public class Account {
     @JsonIgnore
     private List<User> users;
 
+    //necesario para csv
+    public Account(long cuentaMP, Date fechaAlta, double saldo, boolean active) {
+        this.cuentaMP = cuentaMP;
+        this.fechaAlta = fechaAlta;
+        this.saldo = saldo;
+        this.active = active;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
+    }
 }

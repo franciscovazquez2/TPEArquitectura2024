@@ -1,5 +1,6 @@
 package org.example.microservuseraccount.services;
 
+import org.example.microservuseraccount.dto.AccountDto;
 import org.example.microservuseraccount.dto.UserDto;
 import org.example.microservuseraccount.entity.Account;
 import org.example.microservuseraccount.entity.User;
@@ -81,14 +82,13 @@ public class UserService {
     //asociar una cuenta al usuario
     public UserDto asociarCuenta(Long userId,Long accountId){
         //verifica que existan el usuario y la cuenta
-        Optional<Account> optAccount = accountService.getAccount(accountId);
+        AccountDto account = accountService.getAccount(accountId);
         Optional <User> optUser = userRepository.findById(userId);
 
-        if(optAccount.isPresent()&&optUser.isPresent()){
+        if(account!=null&&optUser.isPresent()){
             User user = optUser.get();
-            Account account = optAccount.get();
             //se agrega la cuenta en la lista del usuario
-            user.addAccount(account);
+            user.addAccount(new Account(account.getId(),account.getCuentaMP(),account.getFechaAlta(),account.getSaldo(),account.isActive(),account.getUsers()));
             User userResponse = userRepository.save(user);
             return new UserDto(userResponse.getId(),userResponse.getNombre(),userResponse.getApellido(),userResponse.getEmail(),userResponse.getTelefono(),userResponse.getAccounts(),userResponse.getRol());
         }
