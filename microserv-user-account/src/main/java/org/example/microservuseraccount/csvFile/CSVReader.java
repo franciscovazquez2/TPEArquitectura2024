@@ -39,7 +39,7 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    User user = new User(Long.parseLong(datos[0]), (datos[1]),(datos[2]),(datos[3]),(datos[4]),Integer.parseInt(datos[5]));
+                    User user = new User((datos[0]),(datos[1]),(datos[2]),(datos[3]),Integer.parseInt(datos[4]));
                     userRepository.save(user);
                 }
             }
@@ -56,7 +56,7 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    Account account = new Account(Long.parseLong(datos[0]),Long.parseLong(datos[1]), new Date(Integer.parseInt(datos[2]),Integer.parseInt(datos[3]),Integer.parseInt(datos[4])),Double.parseDouble(datos[5]));
+                    Account account = new Account(Long.parseLong(datos[0]), new Date(Integer.parseInt(datos[1]),Integer.parseInt(datos[2]),Integer.parseInt(datos[3])),Double.parseDouble(datos[4]),Boolean.parseBoolean(datos[5]));
                     accountRepository.save(account);
                 }
             }
@@ -76,7 +76,7 @@ public class CSVReader {
                     User user = userRepository.findById(Long.parseLong(datos[0])).orElse(null);
                     Account account = accountRepository.findById(Long.parseLong(datos[1])).orElse(null);
                     if(user!=null && account !=null){
-                    user.addAcount(account);
+                    user.addAccount(account);
                     account.addUser(user);
                     userRepository.save(user);
                     }else{
