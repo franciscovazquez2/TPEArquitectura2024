@@ -1,5 +1,10 @@
 package org.example.microservparking.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.BadRequestException;
 import org.example.microservparking.dto.ParkingDto;
 import org.example.microservparking.entity.Parking;
@@ -17,14 +22,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/parking")
-//@Tag(name = "Parking", description = "Controller de estacionamiento")
+@Tag(name = "Parking", description = "Controller de estacionamiento")
 public class ParkingController {
 
     @Autowired
     private ParkingService parkingService;
 
     //Obtener el listado de paradas
-    /*
     @Operation(
             summary = "Obtener estacionamientos",
             description = "Obtiene un listado de todos los estacionamientos",
@@ -48,7 +52,6 @@ public class ParkingController {
                     )
             }
     )
-     */
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllParkings(){
         try {
@@ -59,7 +62,6 @@ public class ParkingController {
     }
 
     // Agregar parada
-    /*
     @Operation(
             summary = "Crear un estacionamiento",
             description = "Crea un registro de estacionamiento",
@@ -91,7 +93,6 @@ public class ParkingController {
                     )
             }
     )
-     */
     @PostMapping
     public @ResponseBody ResponseEntity<?> createParking(@RequestBody Parking newParking) throws ExistException {
         try{
@@ -101,8 +102,8 @@ public class ParkingController {
         }
 
     }
+
     //eliminar parada
-    /*
     @Operation(
             summary = "Borrar estacionamiento por id",
             description = "Borra un registro de estacionamiento mediante un id ingresado",
@@ -126,7 +127,6 @@ public class ParkingController {
                     )
             }
     )
-     */
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?>deleteParking(@PathVariable(value = "id")Long id)throws NotExistsException{
         try{
@@ -137,7 +137,6 @@ public class ParkingController {
     }
 
     //ocupar un espacio de la parada (estacionar o dejar un monopatin)
-    /*
     @Operation(
             summary = "Ocupar espacio de estacionamiento",
             description = "Ocupa un espacio en el estacionamiento al dejar el monopatin",
@@ -161,7 +160,6 @@ public class ParkingController {
                     )
             }
     )
-     */
     @PutMapping("/{id}/estacionar")
     public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id)throws ParkingFullExection, NotExistsException {
         try{
@@ -174,7 +172,6 @@ public class ParkingController {
 
 
     //liberar un espacio de la parada (sacar un monopatin)
-    /*
     @Operation(
             summary = "Desocupar espacio del estacionamiento",
             description = "Se libera un espacio del estacionamiento al retirar un monopatin",
@@ -198,8 +195,6 @@ public class ParkingController {
                     )
             }
     )
-
-     */
     @PutMapping("/{id}/liberarEstacionamiento")
     public @ResponseBody ResponseEntity<?>liberarEstacionamiento(@PathVariable(value="id")Long id)throws NotExistsException{
         try{
@@ -209,6 +204,37 @@ public class ParkingController {
         }
     }
 
+    @Operation(
+            summary = "Obtener estacionamiento por id",
+            description = "Obtiene un estacionamiento de parking mediante un id ingresado",
+            tags = {"Get","Parking","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No existe el parking con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Fallo al buscar el parking con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<?> getParkingById(@PathVariable(name = "id") Long id){
         try{

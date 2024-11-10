@@ -1,5 +1,10 @@
 package org.example.microservmaintenance.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservmaintenance.error.dto.MessageDTO;
 import org.example.microservmaintenance.dto.MaintenanceDTO;
 import org.example.microservmaintenance.entity.Maintenance;
@@ -14,13 +19,13 @@ import org.example.microservmaintenance.services.MaintenanceService;
 
 @RestController
 @RequestMapping("api/maintenance")
-//@Tag(name="Maintenance", description = "Controller de mantenimiento")
+@Tag(name="Maintenance", description = "Controller de mantenimiento")
 public class MaintenanceController {
 
     @Autowired
     private MaintenanceService maintenanceService;
 
-    /*
+    // Obtener listado de mantenimientos
     @Operation(
             summary = "Obtener mantenimientos",
             description = "Obtiene un listado de todos los mantenimientos",
@@ -44,8 +49,6 @@ public class MaintenanceController {
                     )
             }
     )
-     */
-    // Obtener listado de mantenimientos
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllMaintenances() {
         try {
@@ -57,7 +60,8 @@ public class MaintenanceController {
     }
 
 
-    /*@Operation(
+    // Agregar mantenimiento
+    @Operation(
             summary = "Crear mantenimiento",
             description = "Crea un registro de mantenimiento",
             tags = {"Post","Maintenance"},
@@ -87,8 +91,7 @@ public class MaintenanceController {
                             )
                     )
             }
-    )*/
-    // Agregar mantenimiento
+    )
     @PostMapping()
     public ResponseEntity<?> createMaintenance(@RequestBody Maintenance newMaintenance) {
         try {

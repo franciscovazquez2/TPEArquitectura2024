@@ -1,4 +1,9 @@
 package org.example.microservbilling.controller;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservbilling.entity.Fee;
 import org.example.microservbilling.error.exception.NotExistsException;
 import org.example.microservbilling.error.exception.NotFoundException;
@@ -12,13 +17,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/fee")
-//@Tag(name="Fee", description = "Controller de tarifa")
+@Tag(name="Fee", description = "Controller de tarifa")
 public class FeeController {
     @Autowired
     private FeeService feeService;
 
     // Obtener listado de tarifas
-    /*
     @Operation(
             summary = "Obtener tarifas",
             description = "Obtiene un listado de todas las tarifas",
@@ -42,7 +46,6 @@ public class FeeController {
                     )
             }
     )
-     */
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllFees() {
         try {
@@ -54,7 +57,6 @@ public class FeeController {
     }
 
 
-    /*
     @Operation(
             summary = "Obtener tarifa por id",
             description = "Obtiene un registro de tarifa mediante un id ingresado",
@@ -77,7 +79,7 @@ public class FeeController {
                             )
                     )
             }
-    )*/
+    )
     @GetMapping("/{id}")
     public ResponseEntity<?> getFeeById(@PathVariable Long id) {
         Optional<Fee> fee = feeService.getFee(id);
@@ -89,10 +91,9 @@ public class FeeController {
     }
 
     //crea tarifa (se controla el tipo de tarifa)
-    /*
     @Operation(
-            summary = "Crear tarifa",
-            description = "Crea un registro de tarifa",
+            summary = "Crear tarifa normal",
+            description = "Crea un registro de tarifa de tipo normal",
             tags = {"Post","Fee"},
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Datos de la tarifa a crear",
@@ -120,7 +121,7 @@ public class FeeController {
                             )
                     )
             }
-    )*/
+    )
     @PostMapping("/normalFee")
     public ResponseEntity<?> createNormalFee(@RequestBody Fee newFee) {
         try {
@@ -131,6 +132,37 @@ public class FeeController {
         }
     }
 
+    @Operation(
+            summary = "Crear tarifa extra",
+            description = "Crea un registro de tarifa de tipo extra",
+            tags = {"Post","Fee"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos de la tarifa a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Fee.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear la tarifa",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @PostMapping("/extraFee")
     public ResponseEntity<?> createExtraFee(@RequestBody Fee newFee) {
         try {
