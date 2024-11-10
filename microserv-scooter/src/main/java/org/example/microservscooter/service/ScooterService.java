@@ -140,6 +140,7 @@ public class ScooterService {
     //ubicar scooter en parada
     public ScooterDTO ubicarScooterEnParada(Long id, Long id_parada){
         Optional<Scooter> scooterOptional = scooterRepository.findById(id);
+
         //buscar parada..preguntar si tiene lugar.persistir el id de monopatin o disminuir disponibilidad
         if(scooterOptional.isPresent()){
             Scooter scooter = scooterOptional.get();

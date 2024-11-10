@@ -162,7 +162,7 @@ public class ParkingController {
     )
      */
     @PutMapping("/{id}/estacionar")
-    public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id)throws ParkingFullExection, NotExistsException {
+    public @ResponseBody ResponseEntity<?> ocuparEstacionamiento (@PathVariable(value="id")Long id)throws ParkingFullExection, NotExistsException {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.ocuparEstacionamiento(id));
         }catch (BadRequestException e){

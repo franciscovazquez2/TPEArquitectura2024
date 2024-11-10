@@ -9,5 +9,5 @@ public interface ParkingClient {
 
     // ARREGLAR ESTOOO !!!
     @PutMapping("/{id}/estacionar")
-    void findScooterBuyId(@PathVariable Long id);
+     findParkingById(@PathVariable Long id);
 }
