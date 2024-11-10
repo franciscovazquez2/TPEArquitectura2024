@@ -42,5 +42,4 @@ public class Travel {
     @Field(name = "has_pauses")
     private boolean hasPauses;
 
-
 }
