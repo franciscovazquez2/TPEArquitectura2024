@@ -30,6 +30,15 @@ public class User {
     private List<Account> accounts;
     private int rol;
 
+    //necesario para el csv
+    public User(String nombre, String apellido, String email, String telefono, int rol) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.telefono = telefono;
+        this.rol = rol;
+    }
+
     public void addAccount(Account newAccount){
         this.accounts.add(newAccount);
     }
