@@ -1,10 +1,12 @@
 package org.example.microservuseraccount.controller;
 
+import jakarta.ws.rs.BadRequestException;
 import org.example.microservuseraccount.entity.User;
+import org.example.microservuseraccount.error.exception.NotExistsException;
+import org.example.microservuseraccount.error.exception.RequestBadException;
 import org.example.microservuseraccount.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,12 +50,8 @@ public class UserController {
         try {
             return
                     ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
-        } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al listar los usuarios\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        } catch (BadRequestException e) {
+        throw new RequestBadException("Error al querer listar todos los usuarios");
         }
     }
 
@@ -93,12 +91,8 @@ public class UserController {
     public @ResponseBody ResponseEntity<?> createUser(@RequestBody User newUser) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(newUser));
-        }catch (Exception e){
-            String errorJson = "{\"message\": \"Error al crear el mantenimiento\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        }catch (BadRequestException e){
+            throw new RequestBadException("Error al crear el usuario");
         }
     }
 
@@ -128,15 +122,12 @@ public class UserController {
             }
     )*/
     @PutMapping("/asociarCuenta/{userId}/{accountId}")
-    public @ResponseBody ResponseEntity<?>asociarCuenta(@PathVariable(value = "userId")Long userId,@PathVariable(value = "accountId")Long accountId) {
+    public @ResponseBody ResponseEntity<?> asociarCuenta (@PathVariable(value = "userId")Long userId,
+                                                        @PathVariable(value = "accountId")Long accountId) throws NotExistsException {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.asociarCuenta(userId,accountId));
-        }catch(Exception e){
-            String errorJson = "{\"message\": \"no se puede asociar cuenta\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        }catch(BadRequestException e){
+            throw new RequestBadException("Fallo al querer asociar una cuenta al usuario");
         }
     }
 
@@ -169,12 +160,8 @@ public class UserController {
     public @ResponseBody ResponseEntity<?> getUser(@PathVariable(value = "id") Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(id));
-        } catch (Exception e){
-            String errorJson = "{\"message\": \"Error al buscar el usuario\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        } catch (BadRequestException e){
+        throw new RequestBadException("Error al buscar el usuario con ID: " + id);
         }
     }
 }
