@@ -5,7 +5,7 @@ import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.error.dto.MessageDTO;
 import org.example.microservscooter.error.exception.NotExistsException;
-import org.example.microservscooter.error.exception.NotFoundIDException;
+import org.example.microservscooter.error.exception.NotFoundException;
 import org.example.microservscooter.error.exception.RequestBadException;
 import org.example.microservscooter.service.ScooterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,7 @@ public class ScooterController {
             return
                     ResponseEntity.status(HttpStatus.OK).body(scooterService.getAllScooter());
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(new MessageDTO("Error al listar todos los scooter","",HttpStatus.BAD_REQUEST));
+        throw new RequestBadException("Fallo al listar todos los scooter");
         }
     }
 
@@ -45,10 +42,7 @@ public class ScooterController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(scooterService.createScooter(newScooter));
         }catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(new MessageDTO("Error al crear el Scooter",newScooter.toString(),HttpStatus.BAD_REQUEST));
+        throw new RequestBadException("Error al crear un Scooter");
         }
     }
 
@@ -67,7 +61,7 @@ public class ScooterController {
             scooterService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDTO("El scooter fue eliminado correctamente","id eliminado: "+id,HttpStatus.OK));
         }catch(EmptyResultDataAccessException e1){
-            throw new NotFoundIDException ("ID no encontrado: " + id);
+            throw new NotFoundException("ID no encontrado: " + id);
         } catch (Exception e) {
             throw new RequestBadException("Error al eliminar el id " + id);
         }
@@ -118,11 +112,8 @@ public class ScooterController {
     public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
-        }catch(Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body("La consulta no es correcta");
+        }catch(BadRequestException e){
+            throw new RequestBadException("Fallo en el inicio de mantenimiento");
         }
     }
 

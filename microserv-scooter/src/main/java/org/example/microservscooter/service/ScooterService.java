@@ -18,10 +18,13 @@ public class ScooterService {
     @Autowired
     private ScooterRepository scooterRepository;
 
+
+    // VER DE RETORNAR DTO
     public List<Scooter> getAllScooter(){
         return scooterRepository.findAll();
     }
 
+    // VER DE RETORNAR DTO
     public Scooter createScooter(Scooter newScooter){
         return scooterRepository.save(newScooter);
     }
@@ -51,7 +54,7 @@ public class ScooterService {
             }
             return scooterRepository.save(scooter);
         }
-        throw new NoSuchElementException("monopatin no encontrado");
+        throw new NotExistsException("El scooter no existe. ID: " + id);
     }
 
     //cambia el estado de mantenimiento y disponibilidad

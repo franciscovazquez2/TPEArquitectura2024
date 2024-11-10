@@ -1,6 +1,8 @@
 package org.example.microservuseraccount.controller;
 
+import jakarta.ws.rs.BadRequestException;
 import org.example.microservuseraccount.entity.User;
+import org.example.microservuseraccount.error.exception.RequestBadException;
 import org.example.microservuseraccount.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -169,12 +171,8 @@ public class UserController {
     public @ResponseBody ResponseEntity<?> getUser(@PathVariable(value = "id") Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(id));
-        } catch (Exception e){
-            String errorJson = "{\"message\": \"Error al buscar el usuario\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        } catch (BadRequestException e){
+        throw new RequestBadException("Error al buscar el usuario con ID: " + id);
         }
     }
 }
