@@ -1,6 +1,9 @@
 package org.example.microservuseraccount.controller;
 
+import jakarta.ws.rs.BadRequestException;
 import org.example.microservuseraccount.entity.Account;
+import org.example.microservuseraccount.error.exception.NotExistsException;
+import org.example.microservuseraccount.error.exception.RequestBadException;
 import org.example.microservuseraccount.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,14 +47,9 @@ public class AccountController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllAccounts() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(accountService.getAllAccounts());
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.getAllAccounts());
         } catch (Exception e) {
-            String errorJson = "{\"message\": \"Error al listar las cuentas\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new RequestBadException("Error al listar las cuentas");
         }
     }
 
@@ -92,11 +90,7 @@ public class AccountController {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(newAccount));
         }catch (Exception e){
-            String errorJson = "{\"message\": \"Error al crear la cuenta\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+            throw new RequestBadException("Fallo al crear la cuenta");
         }
     }
 
@@ -125,15 +119,11 @@ public class AccountController {
             }
     )*/
    @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id){
+    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id) throws NotExistsException {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
-        } catch (Exception e){
-            String errorJson = "{\"message\": \"Error al buscar la cuenta\", \"details\"}";
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(errorJson);
+        } catch (BadRequestException e){
+            throw new RequestBadException("Fallo al buscar el la cuenta con el ID: " +id);
         }
     }
 
@@ -168,10 +158,7 @@ public class AccountController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(accountService.anularCuenta(id));
         }catch(Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body("No se puede anular la cuenta");
+            throw new RequestBadException("error al anular la cuenta id:" + id);
         }
     }
 }

@@ -1,7 +1,10 @@
 package org.example.microservuseraccount.services;
 
+import jakarta.ws.rs.BadRequestException;
 import org.example.microservuseraccount.dto.AccountDto;
 import org.example.microservuseraccount.entity.Account;
+import org.example.microservuseraccount.error.exception.NotExistsException;
+import org.example.microservuseraccount.error.exception.RequestBadException;
 import org.example.microservuseraccount.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,81 +21,64 @@ public class AccountService {
 
     //lista las cuentas
     public List<AccountDto> getAllAccounts(){
-        try {
-            List<Account>accountList= accountRepository.findAll();
-            List<AccountDto>result = new ArrayList<>();
+            List<Account> accountList= accountRepository.findAll();
+            List<AccountDto> result = new ArrayList<>();
             for(Account account : accountList){
-                AccountDto accountDto = AccountDto.builder()
+                result.add( AccountDto.builder()
                         .id(account.getId())
                         .cuentaMP(account.getCuentaMP())
                         .fechaAlta(account.getFechaAlta())
                         .saldo(account.getSaldo())
                         .active(account.isActive())
-                        .users(account.getUsers()).build();
+                        .users(account.getUsers()).build());
             }
             return result;
-        }catch (Exception e){
-            throw new NoSuchElementException("error al listar las cuentas");
-        }
     }
 
     //cuenta por id
-    public AccountDto getAccount(Long id){
-        try {
+    public AccountDto getAccount(Long id) throws NotExistsException{
             Optional<Account> accountOptional= accountRepository.findById(id);
+            if(!accountOptional.isPresent()){
+                throw new NotExistsException("No existe la cuenta con el ID: " + id);
+            }
             Account account = accountOptional.get();
-            AccountDto accountDto = AccountDto.builder()
-                    .id(account.getId())
-                    .cuentaMP(account.getCuentaMP())
-                    .fechaAlta(account.getFechaAlta())
-                    .saldo(account.getSaldo())
-                    .active(account.isActive())
-                    .users(account.getUsers()).build();
-            return accountDto;
-        } catch (Exception e) {
-            throw new NoSuchElementException("error al buscar cuenta id:"+id);
-        }
+                return AccountDto.builder().id(account.getId())
+                                           .cuentaMP(account.getCuentaMP())
+                                           .fechaAlta(account.getFechaAlta())
+                                           .saldo(account.getSaldo())
+                                           .active(account.isActive())
+                                           .users(account.getUsers()).build();
     }
 
     //crea cuenta
     public AccountDto createAccount(Account newMaintenance){
-        try {
             Account account = accountRepository.save(newMaintenance);
-            AccountDto accountDto = AccountDto.builder()
-                    .id(account.getId())
-                    .cuentaMP(account.getCuentaMP())
-                    .fechaAlta(account.getFechaAlta())
-                    .saldo(account.getSaldo())
-                    .active(account.isActive())
-                    .users(account.getUsers()).build();
-            return accountDto;
-        } catch (Exception e) {
-            throw new NoSuchElementException("error al crear la cuenta");
-        }
+            return AccountDto.builder()
+                             .id(account.getId())
+                             .cuentaMP(account.getCuentaMP())
+                             .fechaAlta(account.getFechaAlta())
+                             .saldo(account.getSaldo())
+                             .active(account.isActive())
+                             .users(account.getUsers()).build();
     }
 
     //anula una cuenta
-    public AccountDto anularCuenta(Long id) {
-        try {
-            Optional<Account> optionalAccount = accountRepository.findById(id);
-            if (optionalAccount.isPresent()) {
-                Account account = optionalAccount.get();
-                if (account.isActive()) {
-                    account.setActive(false);
-                }
-                Account resultAccount = accountRepository.save(account);
-                AccountDto accountDto = AccountDto.builder()
-                        .id(resultAccount.getId())
-                        .cuentaMP(resultAccount.getCuentaMP())
-                        .fechaAlta(resultAccount.getFechaAlta())
-                        .saldo(resultAccount.getSaldo())
-                        .active(resultAccount.isActive())
-                        .users(resultAccount.getUsers()).build();
-                return accountDto;
-            }
-            throw new NoSuchElementException("cuenta no encontrada");
-        } catch (Exception e) {
-            throw new NoSuchElementException("error al anular la cuenta id:" + id);
+    public AccountDto anularCuenta(Long id) throws RequestBadException {
+        Optional<Account> optionalAccount = accountRepository.findById(id);
+        if (!optionalAccount.isPresent()) {
+            throw new NotExistsException("La cuenta no existe ID: " + id);
         }
+        Account account = optionalAccount.get();
+        if (account.isActive()) {
+            account.setActive(false);
+        }
+        Account resultAccount = accountRepository.save(account);
+        return AccountDto.builder()
+                .id(resultAccount.getId())
+                .cuentaMP(resultAccount.getCuentaMP())
+                .fechaAlta(resultAccount.getFechaAlta())
+                .saldo(resultAccount.getSaldo())
+                .active(resultAccount.isActive())
+                .users(resultAccount.getUsers()).build();
     }
 }
