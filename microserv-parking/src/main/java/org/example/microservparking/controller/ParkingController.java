@@ -1,6 +1,7 @@
 package org.example.microservparking.controller;
 
 import jakarta.ws.rs.BadRequestException;
+import org.example.microservparking.dto.ParkingDto;
 import org.example.microservparking.entity.Parking;
 import org.example.microservparking.error.exception.ExistException;
 import org.example.microservparking.error.exception.NotExistsException;
@@ -211,8 +212,8 @@ public class ParkingController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getParkingById(@PathVariable(name = "id") Long id){
         try{
-            Optional<Parking> parking = parkingService.getParking(id);
-            if(!parking.isPresent()){
+            ParkingDto parking = parkingService.getParking(id);
+            if(parking==null){
                 throw new NotExistsException("No existe el parking con ID: " + id);
             }
             return ResponseEntity.status(HttpStatus.OK).body(parking);
