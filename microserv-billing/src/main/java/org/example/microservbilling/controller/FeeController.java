@@ -10,12 +10,37 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/fee")
-
+//@Tag(name="Fee", description = "Controller de tarifa")
 public class FeeController {
     @Autowired
     private FeeService feeService;
 
     // Obtener listado de tarifas
+    /*
+    @Operation(
+            summary = "Obtener tarifas",
+            description = "Obtiene un listado de todas las tarifas",
+            tags = {"Get","Fee"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar las tarifas",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
+     */
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllFees() {
         try {
@@ -31,6 +56,30 @@ public class FeeController {
     }
 
 
+    /*
+    @Operation(
+            summary = "Obtener tarifa por id",
+            description = "Obtiene un registro de tarifa mediante un id ingresado",
+            tags = {"Get","Fee","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al buscar tarifa",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
     @GetMapping("/{id}")
     public ResponseEntity<?> getFeeById(@PathVariable Long id) {
         Optional<Fee> fee = feeService.getFee(id);
@@ -45,11 +94,58 @@ public class FeeController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createFee(@RequestBody Fee newFee) {
+    //crea tarifa (se controla el tipo de tarifa)
+    /*
+    @Operation(
+            summary = "Crear tarifa",
+            description = "Crea un registro de tarifa",
+            tags = {"Post","Fee"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos de la tarifa a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Fee.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear la tarifa",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
+    @PostMapping("/normalFee")
+    public ResponseEntity<?> createNormalFee(@RequestBody Fee newFee) {
         try {
-            Fee savedFee = feeService.createFee(newFee);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedFee);
+            newFee.setTipo("normal");
+            return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
+        } catch (Exception e) {
+            String errorJson = "{\"message\": \"Error al crear la tarifa\", \"details\": \"" + e.getMessage() + "\"}";
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(errorJson);
+        }
+    }
+
+    @PostMapping("/extraFee")
+    public ResponseEntity<?> createExtraFee(@RequestBody Fee newFee) {
+        try {
+            newFee.setTipo("extra");
+            return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
         } catch (Exception e) {
             String errorJson = "{\"message\": \"Error al crear la tarifa\", \"details\": \"" + e.getMessage() + "\"}";
             return ResponseEntity

@@ -1,10 +1,16 @@
 package org.example.microservscooter.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Scooter {
 
     @Id
@@ -30,17 +36,22 @@ public class Scooter {
     private boolean available;
 
     @Column
-    private boolean maintenence;
+    private boolean maintenance;
 
-    public Scooter() {}
+    @Column
+    private Long idParking;
 
-    public Scooter(double latitude, double longitude, Long kilometers, int usageTime, boolean start, boolean available, boolean maintenence) {
+    public Scooter(Long id_scooter, double latitude, double longitude, Long kilometers, int usageTime, boolean start, boolean available, boolean maintenance) {
+        this.id_scooter = id_scooter;
         this.latitude = latitude;
         this.longitude = longitude;
         this.kilometers = kilometers;
         this.usageTime = usageTime;
         this.start = start;
         this.available = available;
-        this.maintenence = maintenence;
+        this.maintenance = maintenance;
+        this.idParking = 0L;
     }
+
+
 }

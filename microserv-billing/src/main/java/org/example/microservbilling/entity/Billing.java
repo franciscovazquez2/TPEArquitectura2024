@@ -1,11 +1,17 @@
 package org.example.microservbilling.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Billing {
 
     @Id
@@ -25,15 +31,6 @@ public class Billing {
     @Column(name = "monto_total", nullable = false)
     private Double montoTotal;
 
-    public Billing() {}
-
-    public Billing(Long id, LocalDate fechaEmision, Long idReserva, Long idUsuario, Double montoTotal) {
-        this.id = id;
-        this.fechaEmision = fechaEmision;
-        this.idReserva = idReserva;
-        this.idUsuario = idUsuario;
-        this.montoTotal = montoTotal;
-    }
 
     public Billing(LocalDate fechaEmision, Long idReserva, Long idUsuario, Double montoTotal) {
         this.fechaEmision = fechaEmision;

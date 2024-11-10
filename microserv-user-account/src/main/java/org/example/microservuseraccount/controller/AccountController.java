@@ -10,11 +10,36 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/account")
+//@Tag(name = "Account", description = "Controller de cuenta")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
 
+    /*
+    * @Operation(
+            summary = "Obtener cuentas",
+            description = "Obtiene un listado de todos las cuentas",
+            tags = {"Get","Account"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar las cuentas",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
     // Obtener listado de cuentas
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllAccounts() {
@@ -30,6 +55,37 @@ public class AccountController {
         }
     }
 
+    /*@Operation(
+            summary = "Crear cuenta",
+            description = "Crea un registro de cuenta",
+            tags = {"Post","Account"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos de la cuenta a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Account.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear la cuenta",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
     // Agregar cuenta
     @PostMapping()
     public @ResponseBody ResponseEntity<?> createAccount(@RequestBody Account newAccount) {
@@ -44,19 +100,78 @@ public class AccountController {
         }
     }
 
-    /*
     // Obtener cuenta por id
-    @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getCity(@PathVariable(value = "id") Long id){
+   /* @Operation(
+            summary = "Obtener cuenta por id",
+            description = "Obtiene un registro de cuenta mediante un id ingresado",
+            tags = {"Get","Account","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al buscar la cuenta",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )*/
+   @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id.intValue()));
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
         } catch (Exception e){
-            String errorJson = "{\"message\": \"Error al buscar una ciudad determinada\", \"details\"}";
+            String errorJson = "{\"message\": \"Error al buscar la cuenta\", \"details\"}";
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(errorJson);
         }
     }
+
+    //anular una cuenta
+
+   /* @Operation(
+            summary = "Anular cuenta",
+            description = "Se modifica una cuenta marcandola como inactiva",
+            tags = {"Put","Account","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede anular la cuenta",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     */
+   @PutMapping("/anular/{id}")
+    public @ResponseBody ResponseEntity<?>anularCuenta(@PathVariable(value="id")Long id){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(accountService.anularCuenta(id));
+        }catch(Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("No se puede anular la cuenta");
+        }
+    }
 }

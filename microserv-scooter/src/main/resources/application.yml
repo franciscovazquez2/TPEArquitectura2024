@@ -1,29 +1,5 @@
 spring:
     application:
         name: microserv-scooter
-
-    datasource:
-        url: jdbc:mysql://localhost:3306/Integrador4?useSSL=false&allowPublicKeyRetrieval=true
-        username: user
-        password: password
-        driver-class-name: com.mysql.cj.jdbc.Driver
-
-    jpa:
-        show-sql: true
-        hibernate:
-            ddl-auto: update
-
-logging:
-    level:
-        org:
-            hibernate:
-                SQL: debug
-                type:
-                    descriptor:
-                        sql:
-<<<<<<< HEAD
-                            BasicBinder: TRACE
-=======
-                            BasicBinder: TRACE
-
->>>>>>> main
+    config:
+        import: optional:configserver:http://localhost:8888

@@ -1,6 +1,8 @@
 package org.example.microservtravel.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,6 +11,8 @@ import java.util.Date;
 
 @Document()
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Travel {
 
     @Id
@@ -20,20 +24,23 @@ public class Travel {
     @Field(name = "Scooter")
     private Long id_scooter;
 
-    @Field()
+    @Field(name = "date")
     private Date date;
 
-    @Field()
+    @Field(name = "price")
     private Long price;
 
-    public Travel() {
-    }
+    @Field(name = "kilometers")
+    private Long kilometers;
 
-    public Travel(String id_viaje, Long id_user, Long id_scooter, Date date, Long price) {
-        this.id_viaje = id_viaje;
-        this.id_user = id_user;
-        this.id_scooter = id_scooter;
-        this.date = date;
-        this.price = price;
-    }
+    @Field(name = "usageTime")
+    private long usageTime;
+
+    @Field(name = "pauseTime")
+    private long pauseTime;
+
+    @Field(name = "has_pauses")
+    private boolean hasPauses;
+
+
 }
