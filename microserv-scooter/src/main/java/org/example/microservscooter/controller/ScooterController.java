@@ -61,7 +61,7 @@ public class ScooterController {
             return
                     ResponseEntity.status(HttpStatus.OK).body(scooterService.getAllScooter());
         } catch (Exception e) {
-        throw new RequestBadException("Fallo al listar todos los scooter");
+        throw new RequestBadException("Error al listar los monopatines");
         }
     }
 
@@ -134,7 +134,7 @@ public class ScooterController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooter(id));
         }catch (Exception e){
-            throw new RequestBadException("Error al buscar el scooter " + id);
+            throw new RequestBadException("Error al buscar el monopatin " + id);
             }
     }
 
@@ -154,7 +154,7 @@ public class ScooterController {
                     ),
                     @ApiResponse(
                             responseCode = "404",
-                            description = "Id no encontrado",
+                            description = "ID no encontrado",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -197,7 +197,7 @@ public class ScooterController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "204",
                             description = "Id inexistente",
                             content = @Content(
                                     mediaType = "application/json",
@@ -206,7 +206,7 @@ public class ScooterController {
 
                     ),
                     @ApiResponse(
-                            responseCode = "404",
+                            responseCode = "400",
                             description = "Error al solicitar el id",
                             content = @Content(
                                     mediaType = "application/json",
@@ -258,7 +258,7 @@ public class ScooterController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
         }catch(BadRequestException e){
-            throw new RequestBadException("Fallo en el inicio de mantenimiento");
+            throw new RequestBadException("Error al iniciar mantenimiento");
         }
     }
 
@@ -278,7 +278,7 @@ public class ScooterController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "No se puede finalizar el mantenimiento",
+                            description = "Error al finalizar el mantenimiento con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -291,7 +291,7 @@ public class ScooterController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.finishMaintenance(id));
         }catch(Exception e){
-            throw new RequestBadException("Fallo al finalizar mantenimiento del scooter id: " +id);
+            throw new RequestBadException("Error al finalizar mantenimiento del scooter id: " +id);
         }
     }
 
@@ -311,7 +311,7 @@ public class ScooterController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "No se puede ubicar el monopatin",
+                            description = "Error al ubicar el monopatin con los ID ingresados",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -324,7 +324,7 @@ public class ScooterController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
         }catch(BadRequestException e){
-            throw new RequestBadException("Fallo al ubicar el Scooter id :" +id + " en parada " + id_parada);
+            throw new RequestBadException("Error al ubicar el Scooter id :" +id + " en parada " + id_parada);
         }
     }
 

@@ -72,7 +72,7 @@ public class FeeController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error al buscar tarifa",
+                            description = "Tarifa no encontrada con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -114,7 +114,7 @@ public class FeeController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error al crear la tarifa",
+                            description = "No se pudo crear la tarifa",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -155,7 +155,7 @@ public class FeeController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error al crear la tarifa",
+                            description = "Error al crear la tarifa extra",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")

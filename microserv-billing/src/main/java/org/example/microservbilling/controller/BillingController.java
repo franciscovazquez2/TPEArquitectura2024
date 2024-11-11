@@ -71,7 +71,7 @@ public class BillingController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error al buscar factura",
+                            description = "Factura no encontrada con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")

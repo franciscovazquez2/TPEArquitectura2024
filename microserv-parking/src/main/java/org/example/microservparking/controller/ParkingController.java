@@ -98,7 +98,7 @@ public class ParkingController {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(parkingService.createParking(newParking));
         } catch (BadRequestException e) {
-            throw new RequestBadException("Error al crear la parada " + newParking.toString());
+            throw new RequestBadException("Error al crear el estacionamiento " + newParking.toString());
         }
 
     }
@@ -111,7 +111,7 @@ public class ParkingController {
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "El estacionamiento fue eliminado correctamente",
+                            description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = ResponseEntity.class)
@@ -119,7 +119,7 @@ public class ParkingController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Error al eliminar el estacionamiento",
+                            description = "Error al eliminar el estacionamiento con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -132,7 +132,7 @@ public class ParkingController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.deleteParking(id));
         }catch (BadRequestException e){
-            throw new RequestBadException("Fallo al eliminar el ID: " + id);
+            throw new RequestBadException("Error al eliminar el estacionamiento con ID: " + id);
         }
     }
 
@@ -200,7 +200,7 @@ public class ParkingController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(parkingService.liberarEstacionamiento(id));
         }catch (BadRequestException e){
-            throw new RequestBadException("error al liberar estacionamiento");
+            throw new RequestBadException("error al liberar el espacio del estacionamiento");
         }
     }
 

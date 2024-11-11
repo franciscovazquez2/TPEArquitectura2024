@@ -84,6 +84,14 @@ public class MaintenanceController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
+                            description = "El ID del monopatin no existe",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
                             description = "Error al crear el mantenimiento",
                             content = @Content(
                                     mediaType = "application/json",

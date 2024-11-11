@@ -1,4 +1,4 @@
-package src.main.java.org.example.arquitecturawebtpe2024;
+package src.main.java.org.example.arquitecturawebtpe2024.configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
