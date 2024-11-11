@@ -136,40 +136,29 @@ public class ParkingController {
         }
     }
 
-    //ocupar un espacio de la parada (estacionar o dejar un monopatin)
-    @Operation(
-            summary = "Ocupar espacio de estacionamiento",
-            description = "Ocupa un espacio en el estacionamiento al dejar el monopatin",
-            tags = {"Put","Parking","Id"},
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Successful request",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "No se puede ocupar el espacio del estacionamiento",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
-                    )
-            }
-    )
-    @PutMapping("/{id}/estacionar")
-    public @ResponseBody ResponseEntity<?>ocuparEstacionamiento(@PathVariable(value="id")Long id)throws ParkingFullExection, NotExistsException {
+
+    // ACA EMPIEZA LA CONSULTA DE SCOOTER
+
+    // Este endpoint es de comunicacion entre microservicio scooter y parking
+    @GetMapping("/{id}/estacionar")
+    public @ResponseBody ParkingDto getParkingByScooter (@PathVariable(value="id")Long id)throws NotExistsException {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(parkingService.ocuparEstacionamiento(id));
+            // SE CAMBIO EL METODO Y SE USA EL GETPAKING EVALUAR SI ES NECESARIO HACER UNO INDEPENDIENTE PARA ESTA CONSULTA
+            // QUE VINE DEL LADO DEL SCOOTER
+            return parkingService.getParking(id);
         }catch (BadRequestException e){
             throw new RequestBadException("No se pudo ocupar el estacionamiento");
         }
     }
 
 
+    @PutMapping("/{id}/ocupada")
+    public @ResponseBody ParkingDto ocuparParking (@PathVariable(value="id") Long id){
+        // HACER LA LOGICA DE CAMBIO DE ESTADO !!!!!
+        return new ParkingDto();
+    }
+
+    // ACA TERMINA LA CONSULTA DE SCOOTER
 
     //liberar un espacio de la parada (sacar un monopatin)
     @Operation(
