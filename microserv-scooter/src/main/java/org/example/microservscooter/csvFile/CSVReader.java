@@ -36,7 +36,7 @@ public class CSVReader {
                                                             .usageTime(Integer.parseInt(datos[3]))
                                                             .start(Boolean.parseBoolean(datos[4]))
                                                             .available(Boolean.parseBoolean(datos[5]))
-                                                            .maintenance(Boolean.parseBoolean(datos[5]))
+                                                            .maintenance(Boolean.parseBoolean(datos[6]))
                                                     .build());
                 }
             }

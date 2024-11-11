@@ -11,14 +11,14 @@ import java.util.Optional;
 
 public interface ScooterRepository extends JpaRepository<Scooter,Long> {
 
-    @Query("SELECT new org.example.microservscooter.dto.ScooterDTO(s.id_scooter, s.latitude, s.longitude, s.kilometers, s.usageTime, s.maintenance) "+
+    @Query("SELECT new org.example.microservscooter.dto.ScooterDTO(s.id_scooter, s.latitude, s.longitude, s.kilometers, s.usageTime, s.available, s.maintenance) "+
             " FROM Scooter s"+
             " WHERE s.id_scooter = :id")
     Optional<ScooterDTO> getScooterByMaintenance(@Param("id") Long id);
 
-    @Query("SELECT count(s.id_scooter)from Scooter s where s.maintenance=:true")
+    @Query("SELECT count(s.id_scooter)from Scooter s where s.maintenance=true")
     int getScootersInMaintenance();
 
-    @Query("SELECT count(s.id_scooter)from Scooter s where s.maintenance=:false")
+    @Query("SELECT count(s.id_scooter)from Scooter s where s.maintenance=false")
     int getScootersInOperation();
 }

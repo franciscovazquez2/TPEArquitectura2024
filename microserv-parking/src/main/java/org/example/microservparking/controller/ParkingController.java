@@ -155,6 +155,8 @@ public class ParkingController {
     @PutMapping("/{id}/ocupada")
     public @ResponseBody ParkingDto ocuparParking (@PathVariable(value="id") Long id){
         // HACER LA LOGICA DE CAMBIO DE ESTADO !!!!!
+
+        ParkingDto parking = parkingService.ocuparEstacionamiento(id);
         return new ParkingDto();
     }
 

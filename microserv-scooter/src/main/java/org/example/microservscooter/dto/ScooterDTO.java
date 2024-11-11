@@ -13,6 +13,7 @@ public class ScooterDTO {
     private double longitude;
     private Long kilometers;
     private int usageTime;
+    private boolean available;
     private boolean maintenance;
 
 }

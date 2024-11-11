@@ -37,6 +37,7 @@ public class ScooterService {
                         .longitude(scooter.getLongitude())
                         .kilometers(scooter.getKilometers())
                         .usageTime(scooter.getUsageTime())
+                        .available(scooter.isAvailable())
                         .maintenance(scooter.isMaintenance()).build();
                 result.add(scooterDTO);
             }
@@ -56,6 +57,7 @@ public class ScooterService {
                     .longitude(scooter.getLongitude())
                     .kilometers(scooter.getKilometers())
                     .usageTime(scooter.getUsageTime())
+                    .available(scooter.isAvailable())
                     .maintenance(scooter.isMaintenance()).build();
             return scooterDTO;
         }catch (Exception e){
@@ -74,6 +76,7 @@ public class ScooterService {
                     .longitude(scooter.getLongitude())
                     .kilometers(scooter.getKilometers())
                     .usageTime(scooter.getUsageTime())
+                    .available(scooter.isAvailable())
                     .maintenance(scooter.isMaintenance()).build();
             return scooterDTO;
         }catch (Exception e){
@@ -109,6 +112,7 @@ public class ScooterService {
                         .longitude(scooterResult.getLongitude())
                         .kilometers(scooterResult.getKilometers())
                         .usageTime(scooterResult.getUsageTime())
+                        .available(scooterResult.isAvailable())
                         .maintenance(scooterResult.isMaintenance()).build();
                 return scooterDTO;
             }
@@ -136,6 +140,7 @@ public class ScooterService {
                         .longitude(scooterResult.getLongitude())
                         .kilometers(scooterResult.getKilometers())
                         .usageTime(scooterResult.getUsageTime())
+                        .available(scooterResult.isAvailable())
                         .maintenance(scooterResult.isMaintenance()).build();
                 return scooterDTO;
             }
@@ -154,8 +159,12 @@ public class ScooterService {
         }
 
         ParkingDto parkingDto = parkingClient.findParkingBuyId(id_parada);
-        if (parkingDto != null) {
+        if (parkingDto == null) {
             throw new NotExistsException("No existe la parada ID: " + id_parada);
+        }
+
+        if(!parkingDto.isAvailable()){
+            throw new NotExistsException("No esta disponible la parada ID: " + id_parada);
         }
 
         // EVALUAR NUEVAMENTE LA LOGICA UNA VEZ QUE SE ENCUENTRA EL PARKING VER SI NO ESTA OCUPADO, SI SE PUEDE UBICAR
@@ -175,6 +184,7 @@ public class ScooterService {
                     .longitude(scooterResult.getLongitude())
                     .kilometers(scooterResult.getKilometers())
                     .usageTime(scooterResult.getUsageTime())
+                    .available(scooterResult.isAvailable())
                     .maintenance(scooterResult.isMaintenance()).build();
     }
 

@@ -33,18 +33,22 @@ public class Parking {
     private boolean available;
 
     public void decreaseCapacity() {
-        if (this.capacity > 0) {
-            this.capacity--;
+        if (this.actualCapacity > 0) {
+            this.actualCapacity--;
+        }else{
+            this.available = false;
         }
+
     }
 
     public void incrementCapacity(){
         if(this.actualCapacity<this.capacity){
             this.actualCapacity++;
+            this.available = true;
         }
     }
 
     public boolean isAvailable(){
-        return this.capacity>0;
+        return this.actualCapacity>0;
     }
 }
