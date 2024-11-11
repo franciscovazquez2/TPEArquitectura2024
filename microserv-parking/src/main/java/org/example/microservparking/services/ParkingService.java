@@ -38,16 +38,18 @@ public class ParkingService {
     }
 
     //parada por id
-    public ParkingDto getParking(Long id) {
+    public ParkingDto getParking(Long id) throws NotExistsException {
         Optional<Parking> parkingOptional = parkingRepository.findById(id);
-        Parking parking = parkingOptional.get();
+        if(!parkingOptional.isPresent()){
+            throw new NotExistsException("El parking no existe id: " + id);
+        }
         return ParkingDto.builder()
-                .id(parking.getId())
-                .latitude(parking.getLatitude())
-                .longitude(parking.getLongitude())
-                .capacity(parking.getCapacity())
-                .actualCapacity(parking.getActualCapacity())
-                .available(parking.isAvailable()).build();
+                .id(parkingOptional.get().getId())
+                .latitude(parkingOptional.get().getLatitude())
+                .longitude(parkingOptional.get().getLongitude())
+                .capacity(parkingOptional.get().getCapacity())
+                .actualCapacity(parkingOptional.get().getActualCapacity())
+                .available(parkingOptional.get().isAvailable()).build();
     }
 
     //Crea una parada
