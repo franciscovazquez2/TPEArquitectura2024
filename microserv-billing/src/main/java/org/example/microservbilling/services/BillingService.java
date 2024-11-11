@@ -1,4 +1,5 @@
 package org.example.microservbilling.services;
+import org.example.microservbilling.dto.TotalFacturadoDto;
 import org.example.microservbilling.entity.Billing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,9 @@ public class BillingService {
     //crea una factura
     public Billing createBilling(Billing newBilling){
         return billingRepository.save(newBilling);
+    }
+
+    public TotalFacturadoDto reporteTotalFacturadoEnFecha(int year, int startMonth,int endMonth){
+        return billingRepository.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
     }
 }

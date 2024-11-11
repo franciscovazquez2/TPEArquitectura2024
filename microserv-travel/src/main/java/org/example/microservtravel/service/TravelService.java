@@ -1,5 +1,6 @@
 package org.example.microservtravel.service;
 import org.example.microservtravel.dto.ScooterReportDto;
+import org.example.microservtravel.dto.ScooterReportXviajesDto;
 import org.example.microservtravel.dto.TravelDto;
 import org.example.microservtravel.dto.TravelScooterReportDto;
 import org.example.microservtravel.entity.Travel;
@@ -122,4 +123,8 @@ public class TravelService {
         }
     }
 
+    //reporte scooters en un año por cantidad de viajes
+    public List<ScooterReportXviajesDto> reporteScooterConMasDeXkilometros(int year, int cantViajes){
+        return travelRepository.reporteScooterConMasDeXkilometros(year,cantViajes);
+    }
 }

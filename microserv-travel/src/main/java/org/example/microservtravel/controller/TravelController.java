@@ -223,4 +223,16 @@ public class TravelController {
         }
     }
 
+
+    @GetMapping("/reporte/anio/{anio}/cantViaje/{cantViaje}")
+    public @ResponseBody ResponseEntity<?>reporteScooterConMasDeXkilometros(@RequestParam(value="anio")int anio,@RequestParam(value="cantViaje")int cantViaje){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(travelService.reporteScooterConMasDeXkilometros(anio,cantViaje));
+        }catch (Exception e){
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("No se puede acceder al reporte");
+        }
+    }
 }

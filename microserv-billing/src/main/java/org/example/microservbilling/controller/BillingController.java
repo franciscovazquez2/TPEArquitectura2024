@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.microservbilling.dto.TotalFacturadoDto;
 import org.example.microservbilling.entity.Billing;
 import org.example.microservbilling.error.exception.NotExistsException;
 import org.example.microservbilling.error.exception.RequestBadException;
@@ -128,6 +129,16 @@ public class BillingController {
             return ResponseEntity.status(HttpStatus.CREATED).body(savedBilling);
         } catch (Exception e) {
             throw new RequestBadException("Error al crear la factura " + newBilling.toString());
+        }
+    }
+
+    //devuelve reporte de total facturado
+    @GetMapping("/totalFacturado/{year}/{startMonth}/{endMonth}")
+    public TotalFacturadoDto reporteTotalFacturadoEnFecha(@RequestParam(value="year")int year,@RequestParam(value="startMonth")int startMonth,@RequestParam(value="endMonth")int endMonth){
+        try {
+            return billingService.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
+        } catch (Exception e) {
+            throw new NotExistsException("error al consultar el reporte");
         }
     }
 }
