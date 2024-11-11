@@ -328,4 +328,10 @@ public class ScooterController {
         }
     }
 
+    //devuelve cantidad scooter en mantenimiento vs operacion
+    @GetMapping("/inMaintenance-Operate")
+    public @ResponseBody ResponseEntity<?>getScooterByOperation(){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByOperation());
+    }
+
 }

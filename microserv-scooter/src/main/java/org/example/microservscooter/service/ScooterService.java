@@ -1,8 +1,10 @@
 package org.example.microservscooter.service;
 
+import org.apache.logging.log4j.spi.ObjectThreadContextMap;
 import org.example.microservscooter.client.ParkingClient;
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.dto.parking.ParkingDto;
+import org.example.microservscooter.dto.parking.ScootersActiveScootersInactiveDto;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.error.exception.NotExistsException;
 import org.example.microservscooter.repository.ScooterRepository;
@@ -174,5 +176,13 @@ public class ScooterService {
                     .kilometers(scooterResult.getKilometers())
                     .usageTime(scooterResult.getUsageTime())
                     .maintenance(scooterResult.isMaintenance()).build();
+    }
+
+    public ScootersActiveScootersInactiveDto getScooterByOperation(){
+        int scooterInMaintenance = scooterRepository.getScootersInMaintenance();
+        int scooterInOperation = scooterRepository.getScootersInOperation();
+        return ScootersActiveScootersInactiveDto.builder()
+                .cantScooterActive(scooterInOperation)
+                .cantScooterInactive(scooterInMaintenance).build();
     }
 }
