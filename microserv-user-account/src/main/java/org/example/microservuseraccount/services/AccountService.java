@@ -81,4 +81,8 @@ public class AccountService {
                 .active(resultAccount.isActive())
                 .users(resultAccount.getUsers()).build();
     }
+
+    public void deleteAccount(Long id){
+        accountRepository.deleteById(id);
+    }
 }

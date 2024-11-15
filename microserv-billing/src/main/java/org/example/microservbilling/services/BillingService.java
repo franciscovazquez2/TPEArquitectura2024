@@ -1,8 +1,8 @@
 package org.example.microservbilling.services;
-import org.example.microservbilling.dto.BillingDTO;
+import org.example.microservbilling.dto.BillingDto;
 import org.example.microservbilling.dto.TotalFacturadoDto;
 import org.example.microservbilling.entity.Billing;
-import org.example.microservbilling.error.exception.NotExistsException;
+import org.example.microservbilling.error.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.example.microservbilling.repository.BillingRepository;
@@ -17,42 +17,63 @@ public class BillingService {
     private BillingRepository billingRepository;
 
     //lista de todas las facturas
-    public List<BillingDTO> getAllBillings(){
-        List<Billing> listBilling = billingRepository.findAll();
-        List<BillingDTO> result = new ArrayList<>();
-        listBilling.forEach(billing -> result.add(BillingDTO.builder()
-                                                            .id(billing.getId())
-                                                            .fechaEmision(billing.getFechaEmision())
-                                                            .idReserva(billing.getIdReserva())
-                                                            .idUsuario(billing.getIdUsuario())
-                                                            .montoTotal(billing.getMontoTotal())
-                                                            .build()));
-
+    public List<BillingDto> getAllBillings() {
+        List<Billing> billingList = billingRepository.findAll();
+        List<BillingDto> result = new ArrayList<>();
+        for (Billing billing : billingList) {
+            BillingDto billingDto = BillingDto.builder()
+                    .id(billing.getId())
+                    .fechaEmision(billing.getFechaEmision())
+                    .idReserva(billing.getIdReserva())
+                    .idUsuario(billing.getIdUsuario())
+                    .montoTotal(billing.getMontoTotal()).build();
+            result.add(billingDto);
+        }
         return result;
-
     }
 
     //devuelve una factura
-    public BillingDTO getBilling(Long id){
-        Optional<Billing> billing = billingRepository.findById(id);
-        if(billing.isPresent()){
-            return BillingDTO.builder().id(billing.get().getId())
-                    .fechaEmision(billing.get().getFechaEmision())
-                    .idReserva(billing.get().getIdReserva())
-                    .idUsuario(billing.get().getIdUsuario())
-                    .montoTotal(billing.get().getMontoTotal())
+    public BillingDto getBilling(Long id) {
+        try {
+            Optional<Billing> billingOptional = billingRepository.findById(id);
+            Billing billing = billingOptional.get();
+            return BillingDto.builder()
+                    .id(billing.getId())
+                    .idReserva(billing.getIdReserva())
+                    .idUsuario(billing.getIdUsuario())
+                    .fechaEmision(billing.getFechaEmision())
+                    .montoTotal(billing.getMontoTotal())
                     .build();
-        }else{
-            throw new NotExistsException("El id: " + id + "No existe");
+        } catch (RuntimeException e) {
+            throw new NotFoundException("no se encontro factura id: " + id);
         }
     }
 
     //crea una factura
-    public Billing createBilling(Billing newBilling){
-        return billingRepository.save(newBilling);
+    public BillingDto createBilling(Billing newBilling){
+        Billing billing =billingRepository.save(newBilling);
+        return BillingDto.builder()
+                .id(billing.getId())
+                .idUsuario(billing.getIdUsuario())
+                .idReserva(billing.getIdReserva())
+                .fechaEmision(billing.getFechaEmision())
+                .montoTotal(billing.getMontoTotal()).build();
     }
 
     public TotalFacturadoDto reporteTotalFacturadoEnFecha(int year, int startMonth,int endMonth){
-        return billingRepository.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
+        List<Billing>listBilling= billingRepository.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
+        Double montoTotal=0.0;
+        for(Billing b:listBilling){
+            montoTotal+=b.getMontoTotal();
+        }
+        return TotalFacturadoDto.builder()
+                .totalFacturado(montoTotal)
+                .year(year)
+                .startMonth(startMonth)
+                .endMonth(endMonth).build();
+    }
+
+    public void deleteBilling (Long id){
+        billingRepository.deleteById(id);
     }
 }

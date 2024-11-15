@@ -168,4 +168,14 @@ public class AccountController {
             throw new RequestBadException("error al anular la cuenta id:" + id);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody ResponseEntity<?>deleteAccount(@PathVariable(value = "id")Long id)throws NotExistsException{
+        try{
+            accountService.deleteAccount(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Cuenta eliminada id: "+id);
+        }catch (BadRequestException e){
+            throw new RequestBadException("Error al eliminar la cuenta con ID: " + id);
+        }
+    }
 }

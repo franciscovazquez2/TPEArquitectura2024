@@ -170,4 +170,14 @@ public class UserController {
         throw new RequestBadException("Error al buscar el usuario con ID: " + id);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody ResponseEntity<?>deleteUser(@PathVariable(value = "id")Long id)throws NotExistsException{
+        try{
+            userService.deleteUser(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado id: "+id);
+        }catch (BadRequestException e){
+            throw new RequestBadException("Error al eliminar el usuario con ID: " + id);
+        }
+    }
 }

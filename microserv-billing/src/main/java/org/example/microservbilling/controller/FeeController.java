@@ -49,8 +49,7 @@ public class FeeController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllFees() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(feeService.getAllFees());
+            return ResponseEntity.status(HttpStatus.OK).body(feeService.getAllFees());
         } catch (Exception e) {
             throw new RequestBadException("Error al listar las tarifas");
         }
@@ -82,10 +81,9 @@ public class FeeController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getFeeById(@PathVariable Long id) {
-        Optional<Fee> fee = feeService.getFee(id);
-        if (fee.isPresent()) {
-            return ResponseEntity.ok(fee.get());
-        } else {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(feeService.getFee(id));
+        } catch (Exception e) {
             throw new NotExistsException("Tarifa no encontrada. ID: " + id);
         }
     }
@@ -180,5 +178,16 @@ public class FeeController {
         } catch (Exception e) {
             throw new NotFoundException("error al crear la tarifa diferencial");
         }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?>deleteFee(@RequestParam(value="id")Long id){
+        try{
+            feeService.delteFee(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Tarifa eliminada: "+id);
+        }catch(Exception e){
+            throw new RequestBadException("error al eliminar tarifa id: "+id);
+        }
+
     }
 }
