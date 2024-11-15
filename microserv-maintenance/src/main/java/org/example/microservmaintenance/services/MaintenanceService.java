@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.example.microservmaintenance.repository.MaintenanceRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,25 +41,6 @@ public class MaintenanceService {
                     .finalizado(m1.isFinalizado()).build();
         }
         return MaintenanceDTO.builder().build();
-    }
-
-    public MaintenanceDTO finishMaintenance(Long idMaintenance){
-        Optional<Maintenance> maintenanceOptional = maintenanceRepository.findById(idMaintenance);
-        if(!maintenanceOptional.isPresent()){
-            throw new NotExistsException("no existe mantenimiento con id: "+idMaintenance);
-        }
-        Maintenance maintenance = maintenanceOptional.get();
-        if(!maintenance.isFinalizado()){
-            maintenance.setFinalizado(true);
-            Maintenance maintenanceResult = maintenanceRepository.save(maintenance);
-            ScooterDTO scooterDto = scooterClient.finishMaintenance(maintenance.getIdScooter());
-            return MaintenanceDTO.builder().id(maintenanceResult.getId())
-                    .id_scooter(maintenanceResult.getIdScooter())
-                    .fecha_mantenimiento(maintenanceResult.getFecha_inicio())
-                    .finalizado(maintenanceResult.isFinalizado()).build();
-        }
-        throw  new NotExistsException("el matenimiento ya se encuentra finalizado");
-
     }
 
     public MaintenanceScooterResponse getMaintenance(Long id) {

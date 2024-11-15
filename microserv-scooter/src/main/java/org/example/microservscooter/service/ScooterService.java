@@ -1,6 +1,5 @@
 package org.example.microservscooter.service;
 
-import org.apache.logging.log4j.spi.ObjectThreadContextMap;
 import org.example.microservscooter.client.ParkingClient;
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.dto.parking.ParkingDto;

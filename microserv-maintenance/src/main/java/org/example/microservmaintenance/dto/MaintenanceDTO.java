@@ -18,4 +18,7 @@ public class MaintenanceDTO {
     private Date fecha_mantenimiento;
     private boolean finalizado;
 
+    public boolean isEmpty(){
+        return this.id == null;
+    }
 }
