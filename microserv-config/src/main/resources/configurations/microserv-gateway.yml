@@ -39,6 +39,7 @@ spring:
             uri: lb://microserv-user-account
             predicates:
               - Path=/api/account/**
+
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

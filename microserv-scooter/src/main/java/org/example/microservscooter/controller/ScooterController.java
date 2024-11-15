@@ -1,6 +1,4 @@
 package org.example.microservscooter.controller;
-
-import jakarta.ws.rs.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,7 +14,6 @@ import org.example.microservscooter.service.ScooterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -257,7 +254,7 @@ public class ScooterController {
     public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
-        }catch(BadRequestException e){
+        }catch(RuntimeException e){
             throw new RequestBadException("Error al iniciar mantenimiento");
         }
     }
@@ -323,7 +320,7 @@ public class ScooterController {
     public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,@PathVariable(value = "id_parada")Long id_parada){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
-        }catch(BadRequestException e){
+        }catch(RuntimeException e){
             throw new RequestBadException("Error al ubicar el Scooter id :" +id + " en parada " + id_parada);
         }
     }

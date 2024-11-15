@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@FeignClient(name = "microserv-parking", url = "localhost:8080/api/parking")
+@FeignClient(name = "microserv-parking")
 public interface ParkingClient {
 
-    @GetMapping("/{id}/estacionar")
+    @GetMapping("api/parking/{id}/estacionar")
     ParkingDto findParkingBuyId(@PathVariable Long id);
 
-    @PutMapping("/{id}/ocupada")
+    @PutMapping("api/parking/{id}/ocupada")
     ParkingDto parkingChangeStatus(@PathVariable Long id);
 }

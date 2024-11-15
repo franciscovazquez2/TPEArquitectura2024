@@ -30,12 +30,12 @@ public class MaintenanceService {
     //crea un registro de mantenimiento
     public MaintenanceDTO createMaintenance(Maintenance newMaintenance){
         ScooterDTO scooterDTO = scooterClient.findScooterBuyId(newMaintenance.getIdScooter());
-
         if(scooterDTO.isEmpty() &&!scooterDTO.isMaintenence()){
             Maintenance m1 = maintenanceRepository.save(newMaintenance);
             return MaintenanceDTO.builder().id(m1.getId()).id_scooter(m1.getIdScooter()).build();
+        }else{
+            throw new NotExistsException("El scooter no existe");
         }
-        return MaintenanceDTO.builder().build();
     }
 
     public MaintenanceScooterResponse getMaintenance(Long id) {
@@ -43,7 +43,7 @@ public class MaintenanceService {
         Optional<Maintenance> maintenance = maintenanceRepository.findById(id);
 
         if(!maintenance.isPresent()){
-           throw new NotExistsException("El id ingresado no existe");
+           throw new NotExistsException("El id" + id + "de mantenimiento no Existe");
         }
 
         ScooterDTO scooterDTO = scooterClient.findScooterBuyId(maintenance.get().getIdScooter());

@@ -15,7 +15,7 @@ public class MaintenanceDTO {
     private Long id_scooter;
     private MessageDTO message;
 
-    public boolean isEmtpy(){
+    public boolean isEmpty(){
         return this.id == null;
     }
 }
