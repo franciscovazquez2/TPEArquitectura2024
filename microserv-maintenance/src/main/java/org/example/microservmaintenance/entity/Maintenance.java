@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -20,5 +22,11 @@ public class Maintenance {
 
     @Column(name = "idScooter")
     private long idScooter;
+
+    @Column(name ="fecha_inicio")
+    private Date fecha_inicio;
+
+    @Column(name = "estadoMantenimiento")
+    private boolean finalizado;
 
 }

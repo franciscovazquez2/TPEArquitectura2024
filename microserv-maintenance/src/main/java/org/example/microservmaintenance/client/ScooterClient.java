@@ -5,10 +5,18 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
-@FeignClient(name = "microserv-scooter", url = "localhost:8080/api/scooter")
+@FeignClient(name = "microserv-scooter")
 public interface ScooterClient {
 
-    @GetMapping(value = "/search-maintenance/{id}")
+    @GetMapping(value = "api/scooter/search-maintenance/{id}")
     ScooterDTO findScooterBuyId(@PathVariable Long id);
+
+    @PutMapping(value="api/scooter/inicio-mantenimiento/{id}")
+    ScooterDTO startMaintenance(@PathVariable Long id);
+
+    @PutMapping(value="api/scooter/fin-mantenimiento/{id}")
+    ScooterDTO finishMaintenance(@PathVariable Long id);
 }

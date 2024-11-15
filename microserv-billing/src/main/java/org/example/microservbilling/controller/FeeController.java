@@ -172,4 +172,13 @@ public class FeeController {
             throw new NotFoundException("Error al crear la tarifa extra " + newFee.toString());
         }
     }
+
+    @PostMapping("/feePriceSince")
+    public ResponseEntity<?> createFeeSinceDate(@RequestBody Fee newFee){
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
+        } catch (Exception e) {
+            throw new NotFoundException("error al crear la tarifa diferencial");
+        }
+    }
 }

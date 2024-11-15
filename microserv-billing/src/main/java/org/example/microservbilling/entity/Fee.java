@@ -30,6 +30,10 @@ public class Fee {
     private String tipo;
 
 
+    public Fee(Double monto) {
+        this.monto = monto;
+        this.fechaInicio= LocalDate.now();
+    }
 
     public Fee(Double monto, LocalDate fechaInicio, String tipo) {
         this.monto = monto;

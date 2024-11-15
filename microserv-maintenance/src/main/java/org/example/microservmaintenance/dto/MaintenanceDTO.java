@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.microservmaintenance.error.dto.MessageDTO;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,9 +15,7 @@ import org.example.microservmaintenance.error.dto.MessageDTO;
 public class MaintenanceDTO {
     private Long id;
     private Long id_scooter;
-    private MessageDTO message;
+    private Date fecha_mantenimiento;
+    private boolean finalizado;
 
-    public boolean isEmtpy(){
-        return this.id == null;
-    }
 }

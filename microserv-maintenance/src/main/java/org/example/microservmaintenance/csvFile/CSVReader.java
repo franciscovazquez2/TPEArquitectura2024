@@ -7,6 +7,7 @@ import org.example.microservmaintenance.repository.MaintenanceRepository;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 
 @Component
 public class CSVReader {
@@ -29,8 +30,10 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    Maintenance maintenance = new Maintenance(Long.parseLong(datos[0]), Long.parseLong(datos[1]));
-                    maintenanceRepository.save(maintenance);
+                    maintenanceRepository.save(Maintenance.builder()
+                            .idScooter(Long.parseLong(datos[0]))
+                            .fecha_inicio(new Date(Integer.parseInt(datos[1]),Integer.parseInt(datos[2]),Integer.parseInt(datos[3])))
+                            .finalizado(Boolean.parseBoolean(datos[4])).build());
                 }
             }
         } catch (IOException e) {

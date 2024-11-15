@@ -52,8 +52,7 @@ public class MaintenanceController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllMaintenances() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getAllMaintenances());
+            return ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getAllMaintenances());
         } catch (Exception e) {
         throw new RequestBadException("Error al listar los mantenimientos");
         }
@@ -104,7 +103,7 @@ public class MaintenanceController {
     public ResponseEntity<?> createMaintenance(@RequestBody Maintenance newMaintenance) {
         try {
             MaintenanceDTO maintenanceDTO = maintenanceService.createMaintenance(newMaintenance);
-            if(!maintenanceDTO.isEmtpy()){
+            if(maintenanceDTO!=null){
                 return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceDTO);
             }else{
                 throw new NotExistsException("El id_scooter no existe " + newMaintenance.getIdScooter());
@@ -124,5 +123,13 @@ public class MaintenanceController {
         }
     }
 
+    @PutMapping("/finalizarMantenimiento/{id}")
+    public ResponseEntity<?> finishMaintenance (@PathVariable(value="id")Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(maintenanceService.finishMaintenance(id));
+        } catch (RuntimeException e) {
+            throw new RequestBadException("No se encontro el id solicitado. ID: " + id);
+        }
+    }
 }
 
