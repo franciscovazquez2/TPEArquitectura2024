@@ -38,7 +38,8 @@ public class ScooterService {
                         .kilometers(scooter.getKilometers())
                         .usageTime(scooter.getUsageTime())
                         .available(scooter.isAvailable())
-                        .maintenance(scooter.isMaintenance()).build();
+                        .maintenance(scooter.isMaintenance())
+                        .id_parking(scooter.getIdParking()).build();
                 result.add(scooterDTO);
             }
             return result;
@@ -58,7 +59,8 @@ public class ScooterService {
                     .kilometers(scooter.getKilometers())
                     .usageTime(scooter.getUsageTime())
                     .available(scooter.isAvailable())
-                    .maintenance(scooter.isMaintenance()).build();
+                    .maintenance(scooter.isMaintenance())
+                    .id_parking(scooter.getIdParking()).build();
             return scooterDTO;
         }catch (Exception e){
             throw new NoSuchElementException("error al crear el monopatin");
@@ -77,7 +79,8 @@ public class ScooterService {
                     .kilometers(scooter.getKilometers())
                     .usageTime(scooter.getUsageTime())
                     .available(scooter.isAvailable())
-                    .maintenance(scooter.isMaintenance()).build();
+                    .maintenance(scooter.isMaintenance())
+                    .id_parking(scooter.getIdParking()).build();
             return scooterDTO;
         }catch (Exception e){
             throw new NoSuchElementException("error al buscar monopatin id: "+id);
@@ -113,7 +116,8 @@ public class ScooterService {
                         .kilometers(scooterResult.getKilometers())
                         .usageTime(scooterResult.getUsageTime())
                         .available(scooterResult.isAvailable())
-                        .maintenance(scooterResult.isMaintenance()).build();
+                        .maintenance(scooterResult.isMaintenance())
+                        .id_parking(scooterResult.getIdParking()).build();
                 return scooterDTO;
             }
             throw new NoSuchElementException("monopatin no encontrado");
@@ -141,7 +145,8 @@ public class ScooterService {
                         .kilometers(scooterResult.getKilometers())
                         .usageTime(scooterResult.getUsageTime())
                         .available(scooterResult.isAvailable())
-                        .maintenance(scooterResult.isMaintenance()).build();
+                        .maintenance(scooterResult.isMaintenance())
+                        .id_parking(scooterResult.getIdParking()).build();
                 return scooterDTO;
             }
             throw new NoSuchElementException("monopatin no encontrado");
@@ -166,11 +171,6 @@ public class ScooterService {
         if(!parkingDto.isAvailable()){
             throw new NotExistsException("No esta disponible la parada ID: " + id_parada);
         }
-
-        // EVALUAR NUEVAMENTE LA LOGICA UNA VEZ QUE SE ENCUENTRA EL PARKING VER SI NO ESTA OCUPADO, SI SE PUEDE UBICAR
-        // SE AGREGA Y SE TIENE QUE CAMBIAR EL ESTADO DEL PARKING EN OCUPADO DEJO ENDPOINT DECLARADO EN PARKINGCLIENT (Interfaz)
-        // VER SI IMPLEMENTAMOS UN ENDPOINT SI ES QUE NO ESTA CREADO PARA CAMBIAR EL ESTADO DE LA APARADA A OCUPADO
-
         //buscar parada..preguntar si tiene lugar.persistir el id de monopatin o disminuir disponibilidad
             Scooter scooter = scooterOptional.get();
             scooter.setIdParking(id_parada);
@@ -185,7 +185,8 @@ public class ScooterService {
                     .kilometers(scooterResult.getKilometers())
                     .usageTime(scooterResult.getUsageTime())
                     .available(scooterResult.isAvailable())
-                    .maintenance(scooterResult.isMaintenance()).build();
+                    .maintenance(scooterResult.isMaintenance())
+                    .id_parking(scooterResult.getIdParking()).build();
     }
 
     public ScootersActiveScootersInactiveDto getScooterByOperation(){
@@ -194,5 +195,9 @@ public class ScooterService {
         return ScootersActiveScootersInactiveDto.builder()
                 .cantScooterActive(scooterInOperation)
                 .cantScooterInactive(scooterInMaintenance).build();
+    }
+
+    public List<ScooterDTO>getNearlyScooters(double latitude,double longitude,double distance){
+        return scooterRepository.getNearlyScooters(latitude,longitude,distance);
     }
 }

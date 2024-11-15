@@ -15,5 +15,6 @@ public class ScooterDTO {
     private int usageTime;
     private boolean available;
     private boolean maintenance;
+    private Long id_parking;
 
 }

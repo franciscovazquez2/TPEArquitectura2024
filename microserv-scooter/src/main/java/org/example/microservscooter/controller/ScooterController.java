@@ -334,4 +334,10 @@ public class ScooterController {
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByOperation());
     }
 
+
+    @GetMapping("/nearlyScooters/{latitude}/{longitude}/{distance}")
+    public @ResponseBody ResponseEntity<?>getNearlyScooters(@PathVariable(value="latitude") double latitude,@PathVariable(value="longitude") double longitude,@PathVariable (value="distance")double distance){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getNearlyScooters(latitude,longitude,distance));
+    }
+
 }

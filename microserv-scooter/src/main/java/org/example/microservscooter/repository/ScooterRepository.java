@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ScooterRepository extends JpaRepository<Scooter,Long> {
 
-    @Query("SELECT new org.example.microservscooter.dto.ScooterDTO(s.id_scooter, s.latitude, s.longitude, s.kilometers, s.usageTime, s.available, s.maintenance) "+
+    @Query("SELECT new org.example.microservscooter.dto.ScooterDTO(s.id_scooter, s.latitude, s.longitude, s.kilometers, s.usageTime, s.available, s.maintenance,s.idParking) "+
             " FROM Scooter s"+
             " WHERE s.id_scooter = :id")
     Optional<ScooterDTO> getScooterByMaintenance(@Param("id") Long id);
@@ -21,4 +21,14 @@ public interface ScooterRepository extends JpaRepository<Scooter,Long> {
 
     @Query("SELECT count(s.id_scooter)from Scooter s where s.maintenance=false")
     int getScootersInOperation();
+
+    @Query("SELECT new org.example.microservscooter.dto.ScooterDTO(s.id_scooter, s.latitude, s.longitude, s.kilometers, s.usageTime, s.available, s.maintenance,s.idParking) FROM Scooter s " +
+            "WHERE s.available = true AND s.maintenance = false " +
+            "AND (6371 * acos(cos(radians(:latitude)) * cos(radians(s.latitude)) * " +
+            "cos(radians(s.longitude) - radians(:longitude)) + sin(radians(:latitude)) * " +
+            "sin(radians(s.latitude)))) < :distance")
+    List<ScooterDTO> getNearlyScooters(@Param("latitude") double latitude,
+                                     @Param("longitude") double longitude,
+                                     @Param("distance") double distance);
+
 }
