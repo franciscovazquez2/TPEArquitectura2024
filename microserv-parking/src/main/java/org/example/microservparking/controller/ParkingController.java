@@ -10,7 +10,6 @@ import org.example.microservparking.dto.ParkingDto;
 import org.example.microservparking.entity.Parking;
 import org.example.microservparking.error.exception.ExistException;
 import org.example.microservparking.error.exception.NotExistsException;
-import org.example.microservparking.error.exception.ParkingFullExection;
 import org.example.microservparking.error.exception.RequestBadException;
 import org.example.microservparking.services.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/parking")
@@ -137,7 +135,6 @@ public class ParkingController {
     }
 
 
-    // ACA EMPIEZA LA CONSULTA DE SCOOTER
 
     // Este endpoint es de comunicacion entre microservicio scooter y parking
     @GetMapping("/{id}/estacionar")
@@ -160,7 +157,6 @@ public class ParkingController {
         return new ParkingDto();
     }
 
-    // ACA TERMINA LA CONSULTA DE SCOOTER
 
     //liberar un espacio de la parada (sacar un monopatin)
     @Operation(

@@ -63,7 +63,6 @@ public class ScooterController {
     }
 
 
-    @PostMapping()
     @Operation(
             summary = "Crear monopatin",
             description = "Crea un registro de monopatin",
@@ -95,6 +94,7 @@ public class ScooterController {
                     )
             }
     )
+    @PostMapping()
     public @ResponseBody ResponseEntity<?> createScooter(@RequestBody Scooter newScooter) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(scooterService.createScooter(newScooter));
@@ -103,7 +103,7 @@ public class ScooterController {
         }
     }
 
-    @GetMapping("/{id}")
+
     @Operation(
             summary = "Obtener monopatin por id",
             description = "Obtiene un registro de monopatin mediante un id ingresado",
@@ -127,6 +127,7 @@ public class ScooterController {
                     )
             }
     )
+    @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<?> getScooter(@PathVariable(value = "id") Long id){
         try{
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooter(id));
@@ -135,7 +136,7 @@ public class ScooterController {
             }
     }
 
-    @DeleteMapping("/{id}")
+
     @Operation(
             summary = "Borrar monopatin por id",
             description = "Borra un registro de monopatin mediante un id ingresado",
@@ -167,6 +168,7 @@ public class ScooterController {
                     )
             }
     )
+    @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") Long id){
         try{
             scooterService.delete(id);

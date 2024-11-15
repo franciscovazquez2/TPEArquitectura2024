@@ -5,6 +5,7 @@ import org.example.microservmaintenance.dto.MaintenanceDTO;
 import org.example.microservmaintenance.dto.scooter.ScooterDTO;
 import org.example.microservmaintenance.entity.Maintenance;
 import org.example.microservmaintenance.error.exception.NotExistsException;
+import org.example.microservmaintenance.error.exception.ScooterMaintenanceException;
 import org.example.microservmaintenance.http.response.MaintenanceScooterResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,9 +40,11 @@ public class MaintenanceService {
             return MaintenanceDTO.builder().id(m1.getId()).id_scooter(m1.getIdScooter())
                     .fecha_mantenimiento(m1.getFecha_inicio())
                     .finalizado(m1.isFinalizado()).build();
+        }else{
+            throw new ScooterMaintenanceException("El scooter se encuentra en mantenimiento");
         }
-        return MaintenanceDTO.builder().build();
     }
+
 
     public MaintenanceScooterResponse getMaintenance(Long id) {
 

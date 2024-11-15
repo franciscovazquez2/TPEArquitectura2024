@@ -38,7 +38,7 @@ public class ParkingService {
     }
 
     //parada por id
-    public ParkingDto getParking(Long id) throws NotExistsException {
+    public ParkingDto getParking(Long id) {
         Optional<Parking> parkingOptional = parkingRepository.findById(id);
         if(!parkingOptional.isPresent()){
             throw new NotExistsException("El parking no existe id: " + id);
@@ -53,7 +53,7 @@ public class ParkingService {
     }
 
     //Crea una parada
-    public ParkingDto createParking(Parking newParking) throws ExistException{
+    public ParkingDto createParking(Parking newParking){
         List<Parking> parkings = parkingRepository.findAll();
         parkings.forEach(parking -> { if((parking.getLatitude() == newParking.getLatitude())
                                             && (parking.getLongitude() == newParking.getLongitude())) {
@@ -69,7 +69,7 @@ public class ParkingService {
     }
 
     //elimina una parada
-    public ParkingDto deleteParking(Long id) throws NotExistsException{
+    public ParkingDto deleteParking(Long id){
         Optional<Parking> parkingOptional = parkingRepository.findById(id);
         if(!parkingOptional.isPresent()) {
             throw new NotExistsException("La parada no existe. ID: " + id);
@@ -86,7 +86,7 @@ public class ParkingService {
     }
 
     //ocupa un lugar en la parada
-    public ParkingDto ocuparEstacionamiento(Long id) throws ParkingFullExection,NotExistsException{
+    public ParkingDto ocuparEstacionamiento(Long id){
         Optional<Parking>parkingOptional=parkingRepository.findById(id);
         if(parkingOptional.isPresent()){
             Parking parking = parkingOptional.get();
@@ -107,7 +107,7 @@ public class ParkingService {
     }
 
     //libera un lugar en la parada
-    public ParkingDto liberarEstacionamiento(Long id) throws NotExistsException{
+    public ParkingDto liberarEstacionamiento(Long id){
         Optional<Parking>parkingOptional=parkingRepository.findById(id);
         if(parkingOptional.isPresent()){
             Parking parking = parkingOptional.get();
