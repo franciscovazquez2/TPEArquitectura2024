@@ -110,6 +110,29 @@ public class MaintenanceController {
     }
 
     // OBTENER UN MANTENIMIENDO CON LOS DATOS DEL MONOPATIN
+    @Operation(
+            summary = "Obtener mantenimiento por id de monopatin",
+            description = "Obtiene un registro de mantenimiento mediante un id de un monopatin ingresado",
+            tags = {"Get","Maintenance","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "No se encontro mantenimiento con ese scooter",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<?> getMaintenanceAndScooter(@PathVariable(value = "id") Long id) throws NotExistsException {
         try{

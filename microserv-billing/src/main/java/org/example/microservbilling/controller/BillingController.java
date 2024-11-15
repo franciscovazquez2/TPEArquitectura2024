@@ -133,6 +133,29 @@ public class BillingController {
     }
 
     //devuelve reporte de total facturado
+    @Operation(
+            summary = "Obtener total facturado entre meses",
+            description = "Obtiene un registro de facturacion entre dos meses ingresados e cierto año",
+            tags = {"Get","Billing"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = TotalFacturadoDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Factura no encontrada con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/totalFacturado/{year}/{startMonth}/{endMonth}")
     public TotalFacturadoDto reporteTotalFacturadoEnFecha(@RequestParam(value="year")int year,@RequestParam(value="startMonth")int startMonth,@RequestParam(value="endMonth")int endMonth){
         try {

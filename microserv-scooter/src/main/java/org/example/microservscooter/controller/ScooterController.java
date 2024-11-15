@@ -326,12 +326,58 @@ public class ScooterController {
     }
 
     //devuelve cantidad scooter en mantenimiento vs operacion
+    @Operation(
+            summary = "Obtener monopatines en mantenimiento y en operacion",
+            description = "Obtiene la cantidad de monopatines que estan en mantenimiento y la cantidad de monopatines que estan en operacion",
+            tags = {"Get","Scooter"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar los monopatines",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/inMaintenance-Operate")
     public @ResponseBody ResponseEntity<?>getScooterByOperation(){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByOperation());
     }
 
 
+    @Operation(
+            summary = "Obtener monopatines cercanos",
+            description = "Obtiene un listado de todos los monopatines cercanos a una ubicacion",
+            tags = {"Get","Scooter"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al listar los monopatines",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/nearlyScooters/{latitude}/{longitude}/{distance}")
     public @ResponseBody ResponseEntity<?>getNearlyScooters(@PathVariable(value="latitude") double latitude,@PathVariable(value="longitude") double longitude,@PathVariable (value="distance")double distance){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getNearlyScooters(latitude,longitude,distance));

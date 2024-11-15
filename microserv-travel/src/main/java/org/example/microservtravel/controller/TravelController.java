@@ -223,7 +223,30 @@ public class TravelController {
         }
     }
 
-
+    @Operation(
+            summary = "Obtener monopatines por cantidad de viajes en un año",
+            description = "Obtiene un listado de los monopatines por cantidad de viajes en un año especifico" +
+                    "por defecto devuelve sin pausas",
+            tags = {"Get","Travel"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "No se puede acceder al reporte",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @GetMapping("/reporte/anio/{anio}/cantViaje/{cantViaje}")
     public @ResponseBody ResponseEntity<?>reporteScooterConMasDeXkilometros(@RequestParam(value="anio")int anio,@RequestParam(value="cantViaje")int cantViaje){
         try{

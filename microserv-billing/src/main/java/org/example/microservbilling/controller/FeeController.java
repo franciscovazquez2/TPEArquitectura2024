@@ -2,6 +2,7 @@ package org.example.microservbilling.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservbilling.entity.Fee;
@@ -173,6 +174,48 @@ public class FeeController {
         }
     }
 
+
+    @Operation(
+            summary = "Crear tarifa activa desde una fecha",
+            description = "Crea una tarifa que sera habilitada a partir de cierta fecha",
+            tags = {"Post","Fee"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos de la tarifa a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                    "monto": 50.0,
+                                                    "fechaInicio": "2024-01-01",
+                                                    "tipo": "normal"
+                                                }
+                                            """
+                            )
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear la tarifa extra",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @PostMapping("/feePriceSince")
     public ResponseEntity<?> createFeeSinceDate(@RequestBody Fee newFee){
         try{
