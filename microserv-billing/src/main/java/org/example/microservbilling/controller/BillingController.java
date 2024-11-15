@@ -82,11 +82,10 @@ public class BillingController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getBillingById(@PathVariable Long id) {
-        Optional<Billing> billing = billingService.getBilling(id);
-        if (billing.isPresent()) {
-            return ResponseEntity.ok(billing.get());
-        } else {
-            throw new NotExistsException("Factura no encontrada con Id: " + id);
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(billingService.getBilling(id));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -125,8 +124,7 @@ public class BillingController {
     @PostMapping
     public ResponseEntity<?> createBilling(@RequestBody Billing newBilling) {
         try {
-            Billing savedBilling = billingService.createBilling(newBilling);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedBilling);
+            return ResponseEntity.status(HttpStatus.CREATED).body(billingService.createBilling(newBilling));
         } catch (Exception e) {
             throw new RequestBadException("Error al crear la factura " + newBilling.toString());
         }
@@ -141,4 +139,16 @@ public class BillingController {
             throw new NotExistsException("error al consultar el reporte");
         }
     }
+
+    @DeleteMapping("{id]")
+    public ResponseEntity<?>deleteBilling(@RequestParam(value="id")Long id){
+        try{
+            billingService.deleteBilling(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Factura eliminada: "+id);
+        }catch(Exception e){
+            throw new RequestBadException("error al eliminar id: "+id);
+        }
+
+    }
+
 }

@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.microservmaintenance.services.MaintenanceService;
 
+import java.util.NoSuchElementException;
+
 @RestController
 @RequestMapping("api/maintenance")
 @Tag(name="Maintenance", description = "Controller de mantenimiento")
@@ -119,5 +121,14 @@ public class MaintenanceController {
         }
     }
 
+    @DeleteMapping("/{id")
+    public ResponseEntity<?>deleteMaintenance(@PathVariable(value="id")Long id){
+        try{
+            maintenanceService.deleteMaintenance(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Mantenimiento eliminado id: "+id);
+        } catch (Exception e) {
+            throw new NoSuchElementException("error al eliminar el registro");
+        }
+    }
 }
 

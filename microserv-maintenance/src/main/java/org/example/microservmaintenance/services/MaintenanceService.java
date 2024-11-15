@@ -57,5 +57,9 @@ public class MaintenanceService {
                 .scooter(scooterDTO)
                 .build();
     }
+
+    public void deleteMaintenance(Long id){
+        maintenanceRepository.deleteById(id);
+    }
 }
 
