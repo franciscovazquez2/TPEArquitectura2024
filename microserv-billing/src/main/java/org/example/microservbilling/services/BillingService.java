@@ -61,7 +61,16 @@ public class BillingService {
     }
 
     public TotalFacturadoDto reporteTotalFacturadoEnFecha(int year, int startMonth,int endMonth){
-        return billingRepository.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
+        List<Billing>listBilling= billingRepository.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
+        Double montoTotal=0.0;
+        for(Billing b:listBilling){
+            montoTotal+=b.getMontoTotal();
+        }
+        return TotalFacturadoDto.builder()
+                .totalFacturado(montoTotal)
+                .year(year)
+                .startMonth(startMonth)
+                .endMonth(endMonth).build();
     }
 
     public void deleteBilling (Long id){

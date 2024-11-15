@@ -121,7 +121,7 @@ public class MaintenanceController {
         }
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?>deleteMaintenance(@PathVariable(value="id")Long id){
         try{
             maintenanceService.deleteMaintenance(id);

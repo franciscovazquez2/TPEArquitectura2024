@@ -180,7 +180,7 @@ public class FeeController {
         }
     }
 
-    @DeleteMapping("{id]")
+    @DeleteMapping("{id}")
     public ResponseEntity<?>deleteFee(@RequestParam(value="id")Long id){
         try{
             feeService.delteFee(id);

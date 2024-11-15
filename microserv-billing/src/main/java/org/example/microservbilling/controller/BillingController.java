@@ -140,7 +140,7 @@ public class BillingController {
         }
     }
 
-    @DeleteMapping("{id]")
+    @DeleteMapping("{id}")
     public ResponseEntity<?>deleteBilling(@RequestParam(value="id")Long id){
         try{
             billingService.deleteBilling(id);
