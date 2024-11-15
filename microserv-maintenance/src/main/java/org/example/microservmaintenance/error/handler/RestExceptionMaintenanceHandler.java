@@ -5,6 +5,7 @@ import jakarta.ws.rs.BadRequestException;
 import org.example.microservmaintenance.error.exception.NotExistsException;
 import org.example.microservmaintenance.error.dto.MessageDTO;
 import org.example.microservmaintenance.error.exception.RequestBadException;
+import org.example.microservmaintenance.error.exception.ScooterMaintenanceException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,15 @@ public class RestExceptionMaintenanceHandler extends ResponseEntityExceptionHand
                         .message(ex.getMessage())
                         .details(request.getRequestURI())
                         .status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
+
+    @ExceptionHandler({ScooterMaintenanceException.class})
+    public ResponseEntity<?> handlerScooterMaintenanceException(ScooterMaintenanceException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.BAD_REQUEST).build());
     }
 
 }
