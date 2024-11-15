@@ -5,9 +5,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.microservmaintenance.dto.MaintenanceDTO;
+import jakarta.validation.Valid;
 import org.example.microservmaintenance.entity.Maintenance;
-import org.example.microservmaintenance.error.exception.NotExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,13 +94,8 @@ public class MaintenanceController {
             }
     )
     @PostMapping()
-    public ResponseEntity<?> createMaintenance(@RequestBody Maintenance newMaintenance) {
-            MaintenanceDTO maintenanceDTO = maintenanceService.createMaintenance(newMaintenance);
-            if(maintenanceDTO==null){
-                return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceDTO);
-            }else{
-                throw new NotExistsException("El id_scooter no existe " + newMaintenance.getIdScooter());
-            }
+    public ResponseEntity<?> createMaintenance(@RequestBody @Valid Maintenance newMaintenance) {
+        return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceService.createMaintenance(newMaintenance));
     }
 
     // OBTENER UN MANTENIMIENDO CON LOS DATOS DEL MONOPATIN

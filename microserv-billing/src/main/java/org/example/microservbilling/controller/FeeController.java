@@ -48,11 +48,7 @@ public class FeeController {
     )
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllFees() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(feeService.getAllFees());
-        } catch (Exception e) {
-            throw new RequestBadException("Error al listar las tarifas");
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(feeService.getAllFees());
     }
 
 
@@ -81,11 +77,7 @@ public class FeeController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getFeeById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(feeService.getFee(id));
-        } catch (Exception e) {
-            throw new NotExistsException("Tarifa no encontrada. ID: " + id);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(feeService.getFee(id));
     }
 
     //crea tarifa (se controla el tipo de tarifa)
@@ -122,12 +114,8 @@ public class FeeController {
     )
     @PostMapping("/normalFee")
     public ResponseEntity<?> createNormalFee(@RequestBody Fee newFee) {
-        try {
-            newFee.setTipo("normal");
-            return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
-        } catch (Exception e) {
-            throw new RequestBadException("No se pudo crear la Tarifa" + newFee.toString());
-        }
+        newFee.setTipo("normal");
+        return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 
     @Operation(
@@ -163,31 +151,18 @@ public class FeeController {
     )
     @PostMapping("/extraFee")
     public ResponseEntity<?> createExtraFee(@RequestBody Fee newFee) {
-        try {
-            newFee.setTipo("extra");
-            return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
-        } catch (Exception e) {
-            throw new NotFoundException("Error al crear la tarifa extra " + newFee.toString());
-        }
+        newFee.setTipo("extra");
+        return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 
     @PostMapping("/feePriceSince")
     public ResponseEntity<?> createFeeSinceDate(@RequestBody Fee newFee){
-        try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
-        } catch (Exception e) {
-            throw new NotFoundException("error al crear la tarifa diferencial");
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?>deleteFee(@RequestParam(value="id")Long id){
-        try{
-            feeService.delteFee(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Tarifa eliminada: "+id);
-        }catch(Exception e){
-            throw new RequestBadException("error al eliminar tarifa id: "+id);
-        }
-
+        feeService.delteFee(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Tarifa eliminada: "+id);
     }
 }

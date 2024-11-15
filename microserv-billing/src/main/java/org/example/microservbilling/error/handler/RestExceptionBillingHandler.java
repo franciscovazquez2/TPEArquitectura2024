@@ -53,4 +53,13 @@ public class RestExceptionBillingHandler extends ResponseEntityExceptionHandler 
                         .status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<?> handlerException(Exception ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.BAD_REQUEST).build());
+    }
+
 }

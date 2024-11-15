@@ -4,7 +4,7 @@ import org.example.microservparking.dto.ParkingDto;
 import org.example.microservparking.entity.Parking;
 import org.example.microservparking.error.exception.ExistException;
 import org.example.microservparking.error.exception.NotExistsException;
-import org.example.microservparking.error.exception.ParkingFullExection;
+import org.example.microservparking.error.exception.FullParkingException;
 import org.example.microservparking.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,15 +74,14 @@ public class ParkingService {
         if(!parkingOptional.isPresent()) {
             throw new NotExistsException("La parada no existe. ID: " + id);
         }
-        Parking parking=parkingOptional.get();
         parkingRepository.deleteById(id);
         return ParkingDto.builder()
-                .id(parking.getId())
-                .latitude(parking.getLatitude())
-                .longitude(parking.getLongitude())
-                .capacity(parking.getCapacity())
-                .actualCapacity(parking.getActualCapacity())
-                .available(parking.isAvailable()).build();
+                .id(parkingOptional.get().getId())
+                .latitude(parkingOptional.get().getLatitude())
+                .longitude(parkingOptional.get().getLongitude())
+                .capacity(parkingOptional.get().getCapacity())
+                .actualCapacity(parkingOptional.get().getActualCapacity())
+                .available(parkingOptional.get().isAvailable()).build();
     }
 
     //ocupa un lugar en la parada
@@ -101,7 +100,7 @@ public class ParkingService {
                         .actualCapacity(parkingResult.getActualCapacity())
                         .available(parkingResult.isAvailable()).build();
             }
-            throw  new ParkingFullExection("estacionamiento lleno");
+            throw  new FullParkingException("estacionamiento lleno");
         }
         throw new NotExistsException("no existe parking con id: " + id);
     }

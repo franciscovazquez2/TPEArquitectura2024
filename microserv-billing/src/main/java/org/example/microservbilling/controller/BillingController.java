@@ -49,11 +49,7 @@ public class BillingController {
     )
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllBillings() {
-        try {
-            return  ResponseEntity.status(HttpStatus.OK).body(billingService.getAllBillings());
-        } catch (Exception e) {
-            throw new RequestBadException("Error al listar las facturas");
-        }
+        return  ResponseEntity.status(HttpStatus.OK).body(billingService.getAllBillings());
     }
 
 
@@ -82,11 +78,7 @@ public class BillingController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getBillingById(@PathVariable Long id) {
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(billingService.getBilling(id));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(billingService.getBilling(id));
     }
 
     // Crear una nueva factura
@@ -123,32 +115,20 @@ public class BillingController {
     )
     @PostMapping
     public ResponseEntity<?> createBilling(@RequestBody Billing newBilling) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(billingService.createBilling(newBilling));
-        } catch (Exception e) {
-            throw new RequestBadException("Error al crear la factura " + newBilling.toString());
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(billingService.createBilling(newBilling));
     }
 
     //devuelve reporte de total facturado
     @GetMapping("/totalFacturado/{year}/{startMonth}/{endMonth}")
-    public TotalFacturadoDto reporteTotalFacturadoEnFecha(@RequestParam(value="year")int year,@RequestParam(value="startMonth")int startMonth,@RequestParam(value="endMonth")int endMonth){
-        try {
+    public TotalFacturadoDto reporteTotalFacturadoEnFecha(@RequestParam(value="year")int year,
+                                                          @RequestParam(value="startMonth")int startMonth,
+                                                          @RequestParam(value="endMonth")int endMonth){
             return billingService.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
-        } catch (Exception e) {
-            throw new NotExistsException("error al consultar el reporte");
-        }
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<?>deleteBilling(@RequestParam(value="id")Long id){
-        try{
-            billingService.deleteBilling(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Factura eliminada: "+id);
-        }catch(Exception e){
-            throw new RequestBadException("error al eliminar id: "+id);
-        }
-
+            return ResponseEntity.status(HttpStatus.OK).body(billingService.deleteBilling(id));
     }
 
 }

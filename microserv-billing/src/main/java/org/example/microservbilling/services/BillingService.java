@@ -2,6 +2,7 @@ package org.example.microservbilling.services;
 import org.example.microservbilling.dto.BillingDto;
 import org.example.microservbilling.dto.TotalFacturadoDto;
 import org.example.microservbilling.entity.Billing;
+import org.example.microservbilling.error.exception.NotExistsException;
 import org.example.microservbilling.error.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +35,16 @@ public class BillingService {
 
     //devuelve una factura
     public BillingDto getBilling(Long id) {
-        try {
-            Optional<Billing> billingOptional = billingRepository.findById(id);
-            Billing billing = billingOptional.get();
+        Optional<Billing> billingOptional = billingRepository.findById(id);
+        if(billingOptional.isPresent()) {
             return BillingDto.builder()
-                    .id(billing.getId())
-                    .idReserva(billing.getIdReserva())
-                    .idUsuario(billing.getIdUsuario())
-                    .fechaEmision(billing.getFechaEmision())
-                    .montoTotal(billing.getMontoTotal())
+                    .id(billingOptional.get().getId())
+                    .idReserva(billingOptional.get().getIdReserva())
+                    .idUsuario(billingOptional.get().getIdUsuario())
+                    .fechaEmision(billingOptional.get().getFechaEmision())
+                    .montoTotal(billingOptional.get().getMontoTotal())
                     .build();
-        } catch (RuntimeException e) {
+        }else {
             throw new NotFoundException("no se encontro factura id: " + id);
         }
     }
@@ -73,7 +73,18 @@ public class BillingService {
                 .endMonth(endMonth).build();
     }
 
-    public void deleteBilling (Long id){
+    public BillingDto deleteBilling (Long id){
+        Optional<Billing> billingDelete = billingRepository.findById(id);
+        if(billingDelete.isPresent()){
         billingRepository.deleteById(id);
+            return BillingDto.builder()
+                    .id(billingDelete.get().getId())
+                    .idUsuario(billingDelete.get().getIdUsuario())
+                    .idReserva(billingDelete.get().getIdReserva())
+                    .fechaEmision(billingDelete.get().getFechaEmision())
+                    .montoTotal(billingDelete.get().getMontoTotal()).build();
+        }else {
+            throw new NotExistsException("El id: " +id+ " no Existe");
+        }
     }
 }
