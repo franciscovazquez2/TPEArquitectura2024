@@ -1,3 +1,5 @@
 spring:
   application:
-  name: microserv-auth
+    name: microserv-auth
+  config:
+    import: optional:configserver:http://localhost:8888

@@ -7,6 +7,10 @@ spring:
     gateway:
       mvc:
         routes:
+          - id: microserv-auth
+            uri: lb://microserv-auth
+            predicates:
+              - Path=/api/authentication/**
           - id: microserv-maintenance
             uri: lb://microserv-maintenance
             predicates:
