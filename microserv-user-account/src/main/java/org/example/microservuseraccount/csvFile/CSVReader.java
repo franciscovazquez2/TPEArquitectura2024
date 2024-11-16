@@ -2,8 +2,10 @@ package org.example.microservuseraccount.csvFile;
 
 import jakarta.transaction.Transactional;
 import org.example.microservuseraccount.entity.Account;
+import org.example.microservuseraccount.entity.Authority;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.repository.AccountRepository;
+import org.example.microservuseraccount.repository.AuthorityRepository;
 import org.example.microservuseraccount.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,8 @@ public class CSVReader {
     private UserRepository userRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    AuthorityRepository authorityRepository;
 
     private static final String PATH = "microserv-user-account/src/main/resources/";
     private static final String CSVSPLIT = ",";
@@ -28,6 +32,7 @@ public class CSVReader {
         readFileUser();
         readFileAccount();
         readFileAccountUserRelation();
+        readFileAuthority();
     }
 
     //lee archivos y los agrega a la base
@@ -39,7 +44,7 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    User user = new User((datos[0]),(datos[1]),(datos[2]),(datos[3]),Integer.parseInt(datos[4]));
+                    User user = new User((datos[0]),(datos[1]),(datos[2]),(datos[3]),(datos[4]),(datos[5]));
                     userRepository.save(user);
                 }
             }
@@ -65,6 +70,23 @@ public class CSVReader {
         }
     }
 
+    private void readFileAuthority() {
+        String csvFile = PATH+"authority.csv";
+        String line = "";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith("/") && !line.trim().isEmpty()) {
+                    String[] datos = line.split(CSVSPLIT);
+                    Authority authority = new Authority((datos[0]));
+                    authorityRepository.save(authority);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void readFileAccountUserRelation(){
         String csvFile = PATH+"account-user.csv";
         String line = "";
@@ -81,6 +103,29 @@ public class CSVReader {
                     userRepository.save(user);
                     }else{
                         System.out.print(user+""+account +" nulos");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readFileUserAuthorityRelation(){
+        String csvFile = PATH+"account-authority.csv";
+        String line = "";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            while ((line = br.readLine()) != null) {
+                if (!line.startsWith("/") && !line.trim().isEmpty()) {
+                    String[] datos = line.split(CSVSPLIT);
+                    User user = userRepository.findById(Long.parseLong(datos[0])).orElse(null);
+                    Authority authority = authorityRepository.findById((datos[1])).orElse(null);
+                    if(user!=null && authority !=null){
+                        user.addRol(authority);
+                        userRepository.save(user);
+                    }else{
+                        System.out.print(user+""+authority +" nulos");
                     }
                 }
             }

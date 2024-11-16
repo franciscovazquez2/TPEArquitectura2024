@@ -25,21 +25,30 @@ public class User {
     private String apellido;
     private String email;
     private String telefono;
+    private String user;
+    private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Account> accounts;
-    private int rol;
-
+    @ManyToMany(fetch=FetchType.LAZY)
+    @JoinTable(
+            name = "usuario_roles", // Nombre de la tabla intermedia
+            joinColumns = @JoinColumn(name = "usuario_id"), // Clave foránea de Usuario
+            inverseJoinColumns = @JoinColumn(name = "rol_name") // Clave foránea de Authority
+    )
+    private List<Authority> roles;
     //necesario para el csv
-    public User(String nombre, String apellido, String email, String telefono, int rol) {
+    public User(String nombre, String apellido, String email, String telefono,String user, String password) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
-        this.rol = rol;
+        this.user=user;
+        this.password=password;
     }
 
     public void addAccount(Account newAccount){
         this.accounts.add(newAccount);
     }
+    public void addRol(Authority authority){this.roles.add(authority);}
 }

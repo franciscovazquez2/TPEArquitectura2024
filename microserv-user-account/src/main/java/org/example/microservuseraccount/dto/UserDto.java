@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.microservuseraccount.entity.Account;
+import org.example.microservuseraccount.entity.Authority;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public class UserDto {
     private String email;
     private String telefono;
     private List<Account> accounts;
-    private int rol;
+    private List<Authority> rol;
 }
