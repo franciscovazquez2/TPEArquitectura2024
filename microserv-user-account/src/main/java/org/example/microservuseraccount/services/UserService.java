@@ -33,7 +33,7 @@ public class UserService {
                                 .apellido(user.getApellido())
                                 .telefono(user.getTelefono())
                                 .accounts(user.getAccounts())
-                                .rol(user.getRol())
+                                .rol(user.getRoles())
                                 .build());
         }
         return result;
@@ -52,7 +52,7 @@ public class UserService {
                         .apellido(user.getApellido())
                         .telefono(user.getTelefono())
                         .accounts(user.getAccounts())
-                        .rol(user.getRol())
+                        .rol(user.getRoles())
                         .build();
     }
 
@@ -65,7 +65,7 @@ public class UserService {
                       .apellido(user.getApellido())
                       .telefono(user.getTelefono())
                       .accounts(user.getAccounts())
-                      .rol(user.getRol())
+                      .rol(user.getRoles())
                       .build();
     }
 
@@ -79,7 +79,7 @@ public class UserService {
             //se agrega la cuenta en la lista del usuario
             user.addAccount(new Account(account.getId(),account.getCuentaMP(),account.getFechaAlta(),account.getSaldo(),account.isActive(),account.getUsers()));
             User userResponse = userRepository.save(user);
-            return new UserDto(userResponse.getId(),userResponse.getNombre(),userResponse.getApellido(),userResponse.getEmail(),userResponse.getTelefono(),userResponse.getAccounts(),userResponse.getRol());
+            return new UserDto(userResponse.getId(),userResponse.getNombre(),userResponse.getApellido(),userResponse.getEmail(),userResponse.getTelefono(),userResponse.getAccounts(),userResponse.getRoles());
         }
         else if(!optUser.isPresent()){
             throw new NotExistsException("Usuario no encontrado. ID: " + userId);
@@ -90,6 +90,11 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
+    }
+
+
+    public Optional<User> findOneWithAuthoritiesByUsernameIgnoreCase(String username ){
+        return userRepository.findOneWithAuthoritiesByUsernameIgnoreCase(username);
     }
 
 }

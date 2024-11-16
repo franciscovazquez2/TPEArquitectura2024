@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/user")
 @Tag(name = "User", description = "Controller de usuario")
@@ -178,5 +180,10 @@ public class UserController {
         }catch (BadRequestException e){
             throw new RequestBadException("Error al eliminar el usuario con ID: " + id);
         }
+    }
+
+    @GetMapping("/{username}")
+    public Optional<User> getUserByUsername(@PathVariable String username) {
+        return userService.findOneWithAuthoritiesByUsernameIgnoreCase(username);
     }
 }
