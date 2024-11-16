@@ -128,11 +128,11 @@ public class AccountController {
             }
     )
    @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id) throws NotExistsException {
+    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
-        } catch (BadRequestException e){
-            throw new RequestBadException("Fallo al buscar el la cuenta con el ID: " +id);
+        } catch (Exception e){
+            throw new RequestBadException("Fallo al buscar la cuenta con ID: " +id);
         }
     }
 

@@ -37,17 +37,16 @@ public class AccountService {
 
     //cuenta por id
     public AccountDto getAccount(Long id) throws NotExistsException{
-            Optional<Account> accountOptional= accountRepository.findById(id);
-            if(!accountOptional.isPresent()){
-                throw new NotExistsException("No existe la cuenta con el ID: " + id);
-            }
-            Account account = accountOptional.get();
-                return AccountDto.builder().id(account.getId())
-                                           .cuentaMP(account.getCuentaMP())
-                                           .fechaAlta(account.getFechaAlta())
-                                           .saldo(account.getSaldo())
-                                           .active(account.isActive())
-                                           .users(account.getUsers()).build();
+        Optional<Account> accountOptional= accountRepository.findById(id);
+        if(!accountOptional.isPresent()){
+            throw new NotExistsException("No existe la cuenta con el ID: " + id);
+        }
+            return AccountDto.builder().id(accountOptional.get().getId())
+                                       .cuentaMP(accountOptional.get().getCuentaMP())
+                                       .fechaAlta(accountOptional.get().getFechaAlta())
+                                       .saldo(accountOptional.get().getSaldo())
+                                       .active(accountOptional.get().isActive())
+                                       .users(accountOptional.get().getUsers()).build();
     }
 
     //crea cuenta

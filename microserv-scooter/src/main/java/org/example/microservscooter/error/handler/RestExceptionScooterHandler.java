@@ -5,7 +5,7 @@ import jakarta.ws.rs.BadRequestException;
 import org.example.microservscooter.error.dto.MessageDTO;
 import org.example.microservscooter.error.exception.ScooterMaintenanceException;
 import org.example.microservscooter.error.exception.NotExistsException;
-import org.example.microservscooter.error.exception.NotFoundException;
+import org.example.microservscooter.error.exception.NotFoundScooterException;
 import org.example.microservscooter.error.exception.RequestBadException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -35,8 +35,8 @@ public class RestExceptionScooterHandler extends ResponseEntityExceptionHandler 
                         .status(HttpStatus.BAD_REQUEST).build());
     }
 
-    @ExceptionHandler({NotFoundException.class})
-    public ResponseEntity<?> handlerNotFoundIDException(NotFoundException ex, HttpServletRequest request){
+    @ExceptionHandler({NotFoundScooterException.class})
+    public ResponseEntity<?> handlerNotFoundIDException(NotFoundScooterException ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(MessageDTO.builder()
                         .message(ex.getMessage())

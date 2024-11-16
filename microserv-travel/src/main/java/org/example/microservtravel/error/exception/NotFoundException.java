@@ -1,4 +1,4 @@
-package org.example.microservscooter.error.exception;
+package org.example.microservtravel.error.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException(String message) {

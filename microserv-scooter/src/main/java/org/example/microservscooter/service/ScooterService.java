@@ -6,14 +6,13 @@ import org.example.microservscooter.dto.parking.ParkingDto;
 import org.example.microservscooter.dto.parking.ScootersActiveScootersInactiveDto;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.error.exception.NotExistsException;
-import org.example.microservscooter.error.exception.NotFoundException;
+import org.example.microservscooter.error.exception.NotFoundScooterException;
 import org.example.microservscooter.repository.ScooterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -165,7 +164,7 @@ public class ScooterService {
         }
 
         if(!parkingDto.isAvailable()){
-            throw new NotFoundException("No esta disponible la parada ID: " + id_parada);
+            throw new NotFoundScooterException("No esta disponible la parada ID: " + id_parada);
         }
         //buscar parada..preguntar si tiene lugar.persistir el id de monopatin o disminuir disponibilidad
             Scooter scooter = scooterOptional.get();

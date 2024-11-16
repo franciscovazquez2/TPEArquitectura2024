@@ -56,8 +56,7 @@ public class UserController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllUsers() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
         } catch (BadRequestException e) {
         throw new RequestBadException("Error al querer listar todos los usuarios");
         }
