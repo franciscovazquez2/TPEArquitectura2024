@@ -4,12 +4,13 @@ server:
 spring:
   application:
     name: microserv-travel
-  datasource:
-    driver-class-name:
-    url:
+data:
+  mongodb:
+    host: localhost
+    port: 27017
+    database: Travel_MongoDB
     username: user
     password: password
-
 
 eureka:
   instance:

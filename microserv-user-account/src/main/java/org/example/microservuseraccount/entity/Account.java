@@ -35,6 +35,7 @@ public class Account {
         this.fechaAlta = fechaAlta;
         this.saldo = saldo;
         this.active = active;
+        this.users = new ArrayList<>();
     }
 
     public void addUser(User user){

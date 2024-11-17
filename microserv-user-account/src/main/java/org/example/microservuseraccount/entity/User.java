@@ -20,14 +20,14 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String nombre;
     private String apellido;
     private String email;
     private String telefono;
     private String user;
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Account> accounts;
     @ManyToMany(fetch=FetchType.LAZY)
@@ -45,6 +45,8 @@ public class User {
         this.telefono = telefono;
         this.user=user;
         this.password=password;
+        this.accounts = new ArrayList<>();
+        this.roles = new ArrayList<>();
     }
 
     public void addAccount(Account newAccount){
