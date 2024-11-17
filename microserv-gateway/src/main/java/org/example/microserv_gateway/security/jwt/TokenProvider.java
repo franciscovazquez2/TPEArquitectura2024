@@ -1,4 +1,4 @@
-package org.example.microservauth.security.jwt;
+package org.example.microserv_gateway.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

@@ -76,7 +76,9 @@ public class UserService {
 
         Optional<Authority> authorityOptional = authorityRepository.findById(newUser.getRol().getName());
         if (authorityOptional.isPresent()) {
-            User userCod = new User(newUser.getNombre(), newUser.getApellido(), newUser.getEmail(), newUser.getTelefono(), newUser.getUser(), passwordEncoder.encode(newUser.getPassword()));
+            User userCod = new User(newUser.getNombre(), newUser.getApellido(),
+                                    newUser.getEmail(), newUser.getTelefono(), newUser.getUser(),
+                                    passwordEncoder.encode(newUser.getPassword()));
             userCod.addRol(authorityOptional.get());
             User user = userRepository.save(userCod);
             return UserDto.builder()

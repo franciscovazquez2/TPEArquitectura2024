@@ -1,4 +1,4 @@
-package org.example.microservauth.security;
+package org.example.microserv_gateway.security;
 
 public final class AuthorityConstant {
 

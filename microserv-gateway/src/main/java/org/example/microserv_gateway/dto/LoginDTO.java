@@ -1,4 +1,4 @@
-package org.example.microservauth.dto;
+package org.example.microserv_gateway.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
