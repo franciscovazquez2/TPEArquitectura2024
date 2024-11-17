@@ -1,11 +1,11 @@
-package org.example.microservauth.controller;
+package org.example.microserv_gateway.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.microservauth.dto.LoginDTO;
-import org.example.microservauth.security.jwt.JwtFilter;
-import org.example.microservauth.security.jwt.TokenProvider;
+import org.example.microserv_gateway.dto.LoginDTO;
+import org.example.microserv_gateway.security.jwt.JwtFilter;
+import org.example.microserv_gateway.security.jwt.TokenProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

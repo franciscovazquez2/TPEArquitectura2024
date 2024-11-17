@@ -1,4 +1,4 @@
-package org.example.microservauth.dto.user;
+package org.example.microserv_gateway.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

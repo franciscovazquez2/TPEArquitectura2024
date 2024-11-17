@@ -1,6 +1,6 @@
-package org.example.microservauth.client;
+package org.example.microserv_gateway.client;
 
-import org.example.microservauth.dto.user.UserTokenDto;
+import org.example.microserv_gateway.dto.user.UserTokenDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

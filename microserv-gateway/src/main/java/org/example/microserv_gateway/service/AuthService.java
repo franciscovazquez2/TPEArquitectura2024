@@ -1,4 +1,4 @@
-package org.example.microservauth.service;
+package org.example.microserv_gateway.service;
 
 import org.springframework.stereotype.Service;
 

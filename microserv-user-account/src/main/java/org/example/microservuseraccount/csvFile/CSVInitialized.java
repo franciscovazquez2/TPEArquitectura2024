@@ -13,6 +13,6 @@ public class CSVInitialized {
 
     @PostConstruct
     public void init() throws IOException {
-        //csvReader.loadData();
+        csvReader.loadData();
     }
 }
