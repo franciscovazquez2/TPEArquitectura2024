@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.microservuseraccount.dto.UserCreateDTO;
+import org.example.microservuseraccount.dto.UserTokenDto;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.error.exception.NotExistsException;
 import org.example.microservuseraccount.error.exception.RequestBadException;
@@ -97,7 +99,7 @@ public class UserController {
         }
     )
     @PostMapping()
-    public @ResponseBody ResponseEntity<?> createUser(@RequestBody User newUser) {
+    public @ResponseBody ResponseEntity<?> createUser(@RequestBody UserCreateDTO newUser) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(newUser));
         }catch (BadRequestException e){
@@ -182,8 +184,13 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{username}")
-    public Optional<User> getUserByUsername(@PathVariable String username) {
+    @GetMapping("/auth/{username}")
+    public UserTokenDto getUserByUsername(@PathVariable(name= "username") String username) {
+        try {
         return userService.findOneWithAuthoritiesByUsernameIgnoreCase(username);
+
+        } catch (Exception e) {
+            throw new NotExistsException("lo detecta como id pero es: " + username);
+        }
     }
 }

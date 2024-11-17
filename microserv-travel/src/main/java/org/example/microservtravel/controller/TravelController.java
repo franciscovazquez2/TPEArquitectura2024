@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/travel/")
+@RequestMapping("api/travel")
 @Tag(name = "Travel", description = "Controller de viaje")
 public class TravelController {
 

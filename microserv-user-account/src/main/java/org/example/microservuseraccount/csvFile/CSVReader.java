@@ -1,12 +1,15 @@
 package org.example.microservuseraccount.csvFile;
 
 import jakarta.transaction.Transactional;
+import org.example.microservuseraccount.dto.UserCreateDTO;
+import org.example.microservuseraccount.dto.UserDto;
 import org.example.microservuseraccount.entity.Account;
 import org.example.microservuseraccount.entity.Authority;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.repository.AccountRepository;
 import org.example.microservuseraccount.repository.AuthorityRepository;
 import org.example.microservuseraccount.repository.UserRepository;
+import org.example.microservuseraccount.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class CSVReader {
@@ -23,6 +27,8 @@ public class CSVReader {
     private AccountRepository accountRepository;
     @Autowired
     AuthorityRepository authorityRepository;
+    @Autowired
+    private UserService userService;
 
     private static final String PATH = "microserv-user-account/src/main/resources/";
     private static final String CSVSPLIT = ",";
@@ -31,8 +37,9 @@ public class CSVReader {
     public void loadData(){
         readFileUser();
         readFileAccount();
-        readFileAccountUserRelation();
         readFileAuthority();
+        readFileAccountUserRelation();
+        //readFileUserAuthorityRelation();
     }
 
     //lee archivos y los agrega a la base
@@ -44,8 +51,11 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 if (!line.startsWith("/") && !line.trim().isEmpty()) {
                     String[] datos = line.split(CSVSPLIT);
-                    User user = new User((datos[0]),(datos[1]),(datos[2]),(datos[3]),(datos[4]),(datos[5]));
-                    userRepository.save(user);
+                    Optional<Authority> authorityOptional = authorityRepository.findById((datos[6]));
+                    if (authorityOptional.isPresent()) {
+                        UserCreateDTO user = new UserCreateDTO((datos[0]), (datos[1]), (datos[2]), (datos[3]), (datos[4]), (datos[5]), authorityOptional.get());
+                        userService.createUser(user);
+                    }
                 }
             }
         } catch (IOException e) {

@@ -1,5 +1,7 @@
 package org.example.microservtravel.entity;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,7 @@ import java.util.Date;
 public class Travel {
 
     @Id
-    private String id_viaje;
+    private Long id_viaje;
 
     @Field(name = "User")
     private Long id_user;

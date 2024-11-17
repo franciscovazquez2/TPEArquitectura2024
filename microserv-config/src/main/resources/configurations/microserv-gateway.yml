@@ -10,7 +10,7 @@ spring:
           - id: microserv-auth
             uri: lb://microserv-auth
             predicates:
-              - Path=/api/authentication/**
+              - Path=/api/authenticate/**
           - id: microserv-maintenance
             uri: lb://microserv-maintenance
             predicates:

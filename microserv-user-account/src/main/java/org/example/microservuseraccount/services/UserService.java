@@ -1,17 +1,20 @@
 package org.example.microservuseraccount.services;
 
-import org.example.microservuseraccount.dto.AccountDto;
-import org.example.microservuseraccount.dto.UserDto;
+import org.example.microservuseraccount.dto.*;
 import org.example.microservuseraccount.entity.Account;
+import org.example.microservuseraccount.entity.Authority;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.error.exception.NotExistsException;
+import org.example.microservuseraccount.repository.AuthorityRepository;
 import org.example.microservuseraccount.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service("userService")
@@ -20,7 +23,18 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private AuthorityRepository authorityRepository;
+
+    @Autowired
     private AccountService accountService;
+
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     //lista usuarios
     public List<UserDto> getAllUsers(){
@@ -56,18 +70,28 @@ public class UserService {
                         .build();
     }
 
+
     //crear usuario
-    public UserDto createUser(User newUser){
-        User user =userRepository.save(newUser);
-        return UserDto.builder()
-                      .id(user.getId())
-                      .nombre(user.getNombre())
-                      .apellido(user.getApellido())
-                      .telefono(user.getTelefono())
-                      .accounts(user.getAccounts())
-                      .rol(user.getRoles())
-                      .build();
+    public UserDto createUser(UserCreateDTO newUser) {
+
+        Optional<Authority> authorityOptional = authorityRepository.findById(newUser.getRol().getName());
+        if (authorityOptional.isPresent()) {
+            User userCod = new User(newUser.getNombre(), newUser.getApellido(), newUser.getEmail(), newUser.getTelefono(), newUser.getUser(), passwordEncoder.encode(newUser.getPassword()));
+            userCod.addRol(authorityOptional.get());
+            User user = userRepository.save(userCod);
+            return UserDto.builder()
+                    .id(user.getId())
+                    .nombre(user.getNombre())
+                    .apellido(user.getApellido())
+                    .telefono(user.getTelefono())
+                    .accounts(user.getAccounts())
+                    .rol(user.getRoles())
+                    .build();
+        }else {
+            throw new NotExistsException("El rol no existe. ROL: " + newUser.getRol().getName());
+        }
     }
+
 
     //asociar una cuenta al usuario
     public UserDto asociarCuenta(Long userId,Long accountId) throws NotExistsException{
@@ -93,8 +117,24 @@ public class UserService {
     }
 
 
-    public Optional<User> findOneWithAuthoritiesByUsernameIgnoreCase(String username ){
-        return userRepository.findOneWithAuthoritiesByUsernameIgnoreCase(username);
+    public UserTokenDto findOneWithAuthoritiesByUsernameIgnoreCase(String username ){
+
+        Optional<User> userOptional = userRepository.findOneWithAuthoritiesByUsernameIgnoreCase(username);
+        if(!userOptional.isPresent()){
+            throw new NotExistsException("No existe el usuario: " + username);
+        }
+        List<AuthorityDto> authorityDtos = new ArrayList<>();
+
+        if(userOptional.isPresent()){
+            userOptional.get().getRoles().forEach(rol ->authorityDtos.add(AuthorityDto.builder().name(rol.getName()).build()));
+            return UserTokenDto.builder()
+                    .id(userOptional.get().getId())
+                    .user(userOptional.get().getUser())
+                    .password(userOptional.get().getPassword())
+                    .roles(authorityDtos).build();
+        }else {
+            throw new NotExistsException("El usuario no existe");
+        }
     }
 
 }
