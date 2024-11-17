@@ -42,12 +42,24 @@ public class SecurityConfig {
         http
                 .securityMatcher("/api/**" )
                 .authorizeHttpRequests( authz -> authz
+                        .requestMatchers("/swagger-ui.html").permitAll() // VER SI CORRESPONDE -- CONFIGURAR SWAGGER
                         .requestMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user").permitAll()
-                        .requestMatchers( HttpMethod.GET,"/api/user").hasAuthority( AuthorityConstant._USER )//el orden va de más específica a menos específica
-                        .requestMatchers( "/api/carreras/**").hasAuthority( AuthorityConstant._ADMIN) // ésta es menos específica que la de arriba
-                        //.requestMatchers("/api/estudiantes/**").hasAuthority( AuthorityConstant._ALUMNO )
-                        //.requestMatchers( "/api/inscripciones/**").hasAuthority( AuthorityConstant._ADMIN )
+                        .requestMatchers( "/api/maintenance/**").hasAuthority( AuthorityConstant._ADMIN) // ésta es menos específica que la de arriba
+                        .requestMatchers(HttpMethod.GET,"/api/billing/{id}").hasAuthority( AuthorityConstant._USER )
+                        .requestMatchers("/api/billing/**").hasAuthority( AuthorityConstant._ADMIN ) // Servicio E
+                        .requestMatchers("/api/fee/**").hasAuthority( AuthorityConstant._ADMIN)
+                        .requestMatchers("/api/parking/**").hasAuthority( AuthorityConstant._ADMIN )
+                        .requestMatchers(HttpMethod.GET,"/api/scooter/nearlyScooters/**").hasAuthority( AuthorityConstant._USER )
+                        .requestMatchers(HttpMethod.PUT,"/api/scooter/{id}/ubicar/{id_parada}**").hasAuthority( AuthorityConstant._USER )
+                        .requestMatchers("/api/scooter/**").hasAuthority( AuthorityConstant._ADMIN )
+                        .requestMatchers(HttpMethod.GET,"/api/travel/reporte/**").hasAuthority( AuthorityConstant._ADMIN )
+                        .requestMatchers("/api/travel/**").hasAuthority( AuthorityConstant._USER )
+                        .requestMatchers(HttpMethod.PUT,"/api/account/anular/**").hasAuthority( AuthorityConstant._ADMIN )
+                        .requestMatchers(HttpMethod.GET,"/api/account/**").hasAuthority( AuthorityConstant._ADMIN )
+                        .requestMatchers("/api/account/**").hasAuthority( AuthorityConstant._USER )
+                        .requestMatchers( HttpMethod.GET,"/api/user/{id}**").hasAuthority( AuthorityConstant._USER )
+                        .requestMatchers( HttpMethod.PUT,"/api/user/asociarCuenta/**").hasAuthority( AuthorityConstant._USER )
                         .anyRequest().authenticated()
                 )
                 .httpBasic( Customizer.withDefaults() )

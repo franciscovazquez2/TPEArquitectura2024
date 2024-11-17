@@ -39,7 +39,7 @@ public class CSVReader {
         readFileAccount();
         readFileAuthority();
         readFileAccountUserRelation();
-        //readFileUserAuthorityRelation();
+        readFileUserAuthorityRelation();
     }
 
     //lee archivos y los agrega a la base
