@@ -45,7 +45,7 @@ public class AccountControllerTest {
 
         mockMvc.perform(get("/api/account")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()) // Validar estado HTTP 200
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].cuentaMP").value(12345L))
                 .andExpect(jsonPath("$[0].saldo").value(1000.0))
