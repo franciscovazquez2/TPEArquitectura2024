@@ -44,6 +44,10 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     reactor.netty.http.client: DEBUG
+    org.springframework: DEBUG
+    org.springframework.web: DEBUG
+    reactor.netty: DEBUG
+
 eureka:
   client:
     register-with-eureka: true
@@ -52,3 +56,30 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     instance:
       hostname: localhost
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: microserv-gateway
+        url: /v3/api-docs
+      - name: microserv-maintenance
+        url: /api/maintenance/v3/api-docs
+      - name: microserv-parking
+        url: /api/parking/v3/api-docs
+      - name: microserv-scooter
+        url: /api/scooter/v3/api-docs
+      - name: microserv-travel
+        url: /api/travel/v3/api-docs
+      - name: microserv-user
+        url: /api/user/v3/api-docs
+      - name: microserv-acount
+        url: /api/user/v3/api-docs
+      - name: microserv-billing
+        url: /api/billing/v3/api-docs
+      - name: microserv-fee
+        url: /api/fee/v3/api-docs

@@ -11,7 +11,7 @@ spring:
     password: password
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
   logging:
@@ -26,3 +26,16 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: api/billing/v3/api-docs
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: microserv-billing
+        url: /api/billing/v3/api-docs
+      - name: microserv-fee
+        url: /api/fee/v3/api-docs

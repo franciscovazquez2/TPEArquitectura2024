@@ -11,7 +11,7 @@ spring:
     password: password
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
   logging:
@@ -26,3 +26,11 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api/parking/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /api/parking/swagger-ui.html
