@@ -1,8 +1,8 @@
 package org.example.microservuseraccount.controller;
+import org.example.microservuseraccount.dto.UserCreateDTO;
 import org.example.microservuseraccount.entity.Authority;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.example.microservuseraccount.dto.UserDto;
-import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,8 @@ public class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        Authority authority = new Authority(); // Crear un objeto Authority según tu implementación
-        authority.setName("admin"); // O el valor que corresponda
+        Authority authority = new Authority();
+        authority.setName("admin");
 
         userDto = UserDto.builder()
                 .id(1L)
@@ -38,7 +38,7 @@ public class UserControllerTest {
                 .apellido("papaleo")
                 .telefono("123456789")
                 .accounts(Collections.emptyList())
-                .rol(Collections.singletonList(authority)) // Pasar una lista con un Authority
+                .rol(Collections.singletonList(authority))
                 .build();
     }
 
@@ -56,21 +56,25 @@ public class UserControllerTest {
     }
 
     /*
+    // Test para crear un usuario
     @Test
     void testCreateUser() throws Exception {
-        when(userService.createUser(any(org.example.microservuseraccount.dto.UserCreateDTO.class))).thenReturn(userDto);
+        when(userService.createUser(any(UserCreateDTO.class))).thenReturn(userDto);
         String json = """
-            {
-                "nombre": "nicolas",
-                "apellido": "papaleo",
-                "telefono": "123456789",
-                "rol": [
-                        {
-                            "name": "admin"
-                        }
-                    ]
-            }
-            """;
+        {
+            "nombre": "nicolas",
+            "apellido": "papaleo",
+            "email": "nicolas@mail.com",
+            "telefono": "123456789",
+            "user": "nicouser",
+            "password": "password123",
+            "rol": [
+                {
+                    "name": "admin"
+                }
+            ]
+        }
+        """;
 
         mockMvc.perform(post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,6 +87,7 @@ public class UserControllerTest {
     }
     */
 
+    //Test para obtener un usuario
     @Test
     void testGetUser() throws Exception {
         when(userService.getUser(1L)).thenReturn(userDto);
@@ -96,6 +101,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.rol[0].name").value("admin"));
     }
 
+    //test para asociar una cuenta
     @Test
     void testAsociarCuenta() throws Exception {
         when(userService.asociarCuenta(1L, 1L)).thenReturn(userDto);
