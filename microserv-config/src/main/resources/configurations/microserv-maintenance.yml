@@ -6,12 +6,12 @@ spring:
     name: microserv-maintenance
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/Integrador4?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3307/MaintenanceDB?useSSL=false&allowPublicKeyRetrieval=true
     username: user
     password: password
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
   logging:
@@ -27,3 +27,11 @@ eureka:
     register-with-eureka: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api/maintenance/v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /api/maintenance/swagger-ui.html

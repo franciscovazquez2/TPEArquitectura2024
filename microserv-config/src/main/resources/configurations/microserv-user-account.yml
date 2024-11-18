@@ -6,18 +6,21 @@ spring:
     name: microserv-user-account
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/Integrador4?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3310/UserAccountDB?useSSL=false&allowPublicKeyRetrieval=true
     username: user
     password: password
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
-  logging:
-    level:
-      org.hibernate.SQL: DEBUG
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.springframework: DEBUG
+    org.springdoc: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -26,3 +29,16 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api/user/v3/api-docs
+  swagger-ui:
+    enabled: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: microserv-user
+        url: /api/user/v3/api-docs
+      - name: microserv-acount
+        url: /api/account/v3/api-docs
