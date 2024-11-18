@@ -2,7 +2,6 @@ package org.example.microservbilling.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.microservbilling.dto.BillingDto;
-import org.example.microservbilling.dto.TotalFacturadoDto;
 import org.example.microservbilling.services.BillingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
