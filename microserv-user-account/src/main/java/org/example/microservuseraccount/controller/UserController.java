@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.microservuseraccount.dto.UserCreateDTO;
+import org.example.microservuseraccount.dto.UserTokenDto;
 import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.error.exception.NotExistsException;
 import org.example.microservuseraccount.error.exception.RequestBadException;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("api/user")
 @Tag(name = "User", description = "Controller de usuario")
@@ -22,6 +26,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+
+
+    // FALTA EL DELETE !!!!
+
+
 
     // Obtener listado de usuarios
     @Operation(
@@ -50,8 +60,7 @@ public class UserController {
     @GetMapping
     public @ResponseBody ResponseEntity<?> getAllUsers() {
         try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
         } catch (BadRequestException e) {
         throw new RequestBadException("Error al querer listar todos los usuarios");
         }
@@ -90,7 +99,7 @@ public class UserController {
         }
     )
     @PostMapping()
-    public @ResponseBody ResponseEntity<?> createUser(@RequestBody User newUser) {
+    public @ResponseBody ResponseEntity<?> createUser(@RequestBody UserCreateDTO newUser) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(newUser));
         }catch (BadRequestException e){
@@ -162,6 +171,26 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(userService.getUser(id));
         } catch (BadRequestException e){
         throw new RequestBadException("Error al buscar el usuario con ID: " + id);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody ResponseEntity<?>deleteUser(@PathVariable(value = "id")Long id)throws NotExistsException{
+        try{
+            userService.deleteUser(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado id: "+id);
+        }catch (BadRequestException e){
+            throw new RequestBadException("Error al eliminar el usuario con ID: " + id);
+        }
+    }
+
+    @GetMapping("/auth/{username}")
+    public UserTokenDto getUserByUsername(@PathVariable(name= "username") String username) {
+        try {
+        return userService.findOneWithAuthoritiesByUsernameIgnoreCase(username);
+
+        } catch (Exception e) {
+            throw new NotExistsException("lo detecta como id pero es: " + username);
         }
     }
 }

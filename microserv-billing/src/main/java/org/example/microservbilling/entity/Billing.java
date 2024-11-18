@@ -17,7 +17,7 @@ public class Billing {
     @Id
     @Column(name = "id_factura")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "fecha_emision", nullable = false)
     private LocalDate fechaEmision;

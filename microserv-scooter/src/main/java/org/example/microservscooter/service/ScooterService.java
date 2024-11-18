@@ -6,13 +6,13 @@ import org.example.microservscooter.dto.parking.ParkingDto;
 import org.example.microservscooter.dto.parking.ScootersActiveScootersInactiveDto;
 import org.example.microservscooter.entity.Scooter;
 import org.example.microservscooter.error.exception.NotExistsException;
+import org.example.microservscooter.error.exception.NotFoundScooterException;
 import org.example.microservscooter.repository.ScooterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -26,7 +26,6 @@ public class ScooterService {
 
     //lista scooters
     public List<ScooterDTO> getAllScooter(){
-        try{
             List<Scooter>scooterList= scooterRepository.findAll();
             List<ScooterDTO>result=new ArrayList<>();
             for(Scooter scooter: scooterList){
@@ -42,16 +41,13 @@ public class ScooterService {
                 result.add(scooterDTO);
             }
             return result;
-        }catch (Exception e){
-            throw new NoSuchElementException("error al listar los monopatines");
-        }
     }
 
     //crea monopatin
     public ScooterDTO createScooter(Scooter newScooter){
-        try {
             Scooter scooter = scooterRepository.save(newScooter);
-            ScooterDTO scooterDTO = ScooterDTO.builder()
+
+            return ScooterDTO.builder()
                     .id_scooter(scooter.getId_scooter())
                     .latitude(scooter.getLatitude())
                     .longitude(scooter.getLongitude())
@@ -60,35 +56,43 @@ public class ScooterService {
                     .available(scooter.isAvailable())
                     .maintenance(scooter.isMaintenance())
                     .id_parking(scooter.getIdParking()).build();
-            return scooterDTO;
-        }catch (Exception e){
-            throw new NoSuchElementException("error al crear el monopatin");
-        }
     }
 
     //monopatin por id
     public ScooterDTO getScooter(Long id){
-        try{
+
             Optional<Scooter>scooterOptional= scooterRepository.findById(id);
-            Scooter scooter = scooterOptional.get();
-            ScooterDTO scooterDTO = ScooterDTO.builder()
-                    .id_scooter(scooter.getId_scooter())
-                    .latitude(scooter.getLatitude())
-                    .longitude(scooter.getLongitude())
-                    .kilometers(scooter.getKilometers())
-                    .usageTime(scooter.getUsageTime())
-                    .available(scooter.isAvailable())
-                    .maintenance(scooter.isMaintenance())
-                    .id_parking(scooter.getIdParking()).build();
-            return scooterDTO;
-        }catch (Exception e){
-            throw new NoSuchElementException("error al buscar monopatin id: "+id);
-        }
+            if(scooterOptional.isPresent()) {
+                return ScooterDTO.builder()
+                        .id_scooter(scooterOptional.get().getId_scooter())
+                        .latitude(scooterOptional.get().getLatitude())
+                        .longitude(scooterOptional.get().getLongitude())
+                        .kilometers(scooterOptional.get().getKilometers())
+                        .usageTime(scooterOptional.get().getUsageTime())
+                        .available(scooterOptional.get().isAvailable())
+                        .maintenance(scooterOptional.get().isMaintenance())
+                        .id_parking(scooterOptional.get().getIdParking()).build();
+            }else {
+                throw new NotExistsException("El id: " + id+ " No existe");
+            }
     }
 
     //elimina monopatin
-    public void delete(Long id) {
-        scooterRepository.deleteById(id);
+    public ScooterDTO delete(Long id) {
+        Optional<Scooter> scooterOptional = scooterRepository.findById(id);
+        if(scooterOptional.isPresent()) {
+            scooterRepository.deleteById(id);
+            return ScooterDTO.builder() .id_scooter(scooterOptional.get().getId_scooter())
+                                        .id_parking(scooterOptional.get().getIdParking())
+                                        .available(scooterOptional.get().isAvailable())
+                                        .kilometers(scooterOptional.get().getKilometers())
+                                        .latitude(scooterOptional.get().getLatitude())
+                                        .longitude(scooterOptional.get().getLongitude())
+                                        .maintenance(scooterOptional.get().isMaintenance())
+                                        .usageTime(scooterOptional.get().getUsageTime()).build();
+        }else {
+            throw new NotExistsException("El id que intentas eliminar no existe" + " ID: " +id);
+        }
     }
 
     //monopatin por mantenimiento
@@ -98,7 +102,6 @@ public class ScooterService {
 
     //cambia el estado de mantenimiento y disponibilidad
     public ScooterDTO startMaintenance(Long id){
-        try{
             Optional<Scooter> scooterOptional = scooterRepository.findById(id);
             if(scooterOptional.isPresent()){
                 Scooter scooter = scooterOptional.get();
@@ -108,7 +111,7 @@ public class ScooterService {
                     scooter.setMaintenance(true);
                 }
                 Scooter scooterResult= scooterRepository.save(scooter);
-                ScooterDTO scooterDTO = ScooterDTO.builder()
+                return ScooterDTO.builder()
                         .id_scooter(scooterResult.getId_scooter())
                         .latitude(scooterResult.getLatitude())
                         .longitude(scooterResult.getLongitude())
@@ -117,17 +120,13 @@ public class ScooterService {
                         .available(scooterResult.isAvailable())
                         .maintenance(scooterResult.isMaintenance())
                         .id_parking(scooterResult.getIdParking()).build();
-                return scooterDTO;
+            }else {
+                throw new NotExistsException("El Scooter con ID: " + id + " No existe");
             }
-            throw new NoSuchElementException("monopatin no encontrado");
-        } catch (Exception e) {
-            throw new NoSuchElementException("no se puede iniciar mantenimiento");
-        }
     }
 
     //cambia el estado de mantenimiento y disponibilidad
     public ScooterDTO finishMaintenance(Long id){
-        try{
             Optional<Scooter> scooterOptional = scooterRepository.findById(id);
             if(scooterOptional.isPresent()){
                 Scooter scooter = scooterOptional.get();
@@ -137,7 +136,7 @@ public class ScooterService {
                     scooter.setMaintenance(false);
                 }
                 Scooter scooterResult= scooterRepository.save(scooter);
-                ScooterDTO scooterDTO = ScooterDTO.builder()
+                return ScooterDTO.builder()
                         .id_scooter(scooterResult.getId_scooter())
                         .latitude(scooterResult.getLatitude())
                         .longitude(scooterResult.getLongitude())
@@ -146,20 +145,17 @@ public class ScooterService {
                         .available(scooterResult.isAvailable())
                         .maintenance(scooterResult.isMaintenance())
                         .id_parking(scooterResult.getIdParking()).build();
-                return scooterDTO;
+            }else {
+                throw new NotExistsException("El Scooter con ID: " + id + " No existe");
             }
-            throw new NoSuchElementException("monopatin no encontrado");
-        } catch (Exception e) {
-            throw new NoSuchElementException("no se puede finalizar mantenimiento");
-        }
     }
 
     //ubicar scooter en parada
-    public ScooterDTO ubicarScooterEnParada(Long id, Long id_parada) throws NotExistsException {
+    public ScooterDTO ubicarScooterEnParada(Long id, Long id_parada){
 
         Optional<Scooter> scooterOptional = scooterRepository.findById(id);
         if (!scooterOptional.isPresent()) {
-            throw new NotExistsException("No existe el scooter ID: " + id);
+            throw new NotExistsException("El Scooter con ID: " + id + " No existe");
         }
 
         ParkingDto parkingDto = parkingClient.findParkingBuyId(id_parada);
@@ -168,7 +164,7 @@ public class ScooterService {
         }
 
         if(!parkingDto.isAvailable()){
-            throw new NotExistsException("No esta disponible la parada ID: " + id_parada);
+            throw new NotFoundScooterException("No esta disponible la parada ID: " + id_parada);
         }
         //buscar parada..preguntar si tiene lugar.persistir el id de monopatin o disminuir disponibilidad
             Scooter scooter = scooterOptional.get();

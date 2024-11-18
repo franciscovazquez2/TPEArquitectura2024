@@ -24,6 +24,11 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+
+
+    // Falta hacer el DELETE !!!
+
+
     // Obtener listado de cuentas
     @Operation(
             summary = "Obtener cuentas",
@@ -123,11 +128,11 @@ public class AccountController {
             }
     )
    @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id) throws NotExistsException {
+    public @ResponseBody ResponseEntity<?> getAccount(@PathVariable(value = "id") Long id) {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(accountService.getAccount(id));
-        } catch (BadRequestException e){
-            throw new RequestBadException("Fallo al buscar el la cuenta con el ID: " +id);
+        } catch (Exception e){
+            throw new RequestBadException("Fallo al buscar la cuenta con ID: " +id);
         }
     }
 
@@ -161,6 +166,16 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.OK).body(accountService.anularCuenta(id));
         }catch(Exception e){
             throw new RequestBadException("error al anular la cuenta id:" + id);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody ResponseEntity<?>deleteAccount(@PathVariable(value = "id")Long id)throws NotExistsException{
+        try{
+            accountService.deleteAccount(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Cuenta eliminada id: "+id);
+        }catch (BadRequestException e){
+            throw new RequestBadException("Error al eliminar la cuenta con ID: " + id);
         }
     }
 }

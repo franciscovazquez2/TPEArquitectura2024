@@ -21,7 +21,6 @@
 		<module>microserv-parking</module>
 		<module>microserv-maintenance</module>
 		<module>microserv-billing</module>
-		<module>microserv-auth</module>
 		<module>microserv-gateway</module>
 		<module>microserv-eureka</module>
 		<module>microserv-config</module>

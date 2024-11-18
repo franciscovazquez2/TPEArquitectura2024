@@ -5,17 +5,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.example.microservmaintenance.error.dto.MessageDTO;
-import org.example.microservmaintenance.dto.MaintenanceDTO;
+import jakarta.validation.Valid;
 import org.example.microservmaintenance.entity.Maintenance;
-import org.example.microservmaintenance.error.exception.NotExistsException;
-import org.example.microservmaintenance.error.exception.RequestBadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.microservmaintenance.services.MaintenanceService;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("api/maintenance")
@@ -96,17 +94,8 @@ public class MaintenanceController {
             }
     )
     @PostMapping()
-    public ResponseEntity<?> createMaintenance(@RequestBody Maintenance newMaintenance) {
-        try {
-            MaintenanceDTO maintenanceDTO = maintenanceService.createMaintenance(newMaintenance);
-            if(maintenanceDTO==null){
-                return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceDTO);
-            }else{
-                throw new NotExistsException("El id_scooter no existe " + newMaintenance.getIdScooter());
-            }
-        }catch (Exception e){
-            throw new RequestBadException("Error al crear el mantenimiento " + newMaintenance.toString());
-        }
+    public ResponseEntity<?> createMaintenance(@RequestBody @Valid Maintenance newMaintenance) {
+        return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceService.createMaintenance(newMaintenance));
     }
 
     // OBTENER UN MANTENIMIENDO CON LOS DATOS DEL MONOPATIN
@@ -134,13 +123,18 @@ public class MaintenanceController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<?> getMaintenanceAndScooter(@PathVariable(value = "id") Long id) throws NotExistsException {
-        try{
+    public ResponseEntity<?> getMaintenanceAndScooter(@PathVariable(value = "id") Long id) {
             return ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getMaintenance(id));
-        } catch (RuntimeException e){
-            throw new RequestBadException("No se encontro el id solicitado. ID: " + id);
-        }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?>deleteMaintenance(@PathVariable(value="id")Long id){
+        try{
+            maintenanceService.deleteMaintenance(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Mantenimiento eliminado id: "+id);
+        } catch (Exception e) {
+            throw new NoSuchElementException("error al eliminar el registro");
+        }
+    }
 }
 

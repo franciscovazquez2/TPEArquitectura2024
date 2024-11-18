@@ -1,0 +1,63 @@
+package org.example.microservtravel.error.handler;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.example.microservtravel.error.dto.MessageDTO;
+import org.example.microservtravel.error.exception.NotExistsException;
+import org.example.microservtravel.error.exception.NotFoundException;
+import org.example.microservtravel.error.exception.RequestBadException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@ControllerAdvice
+public class RestExceptionTravelHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler({NotExistsException.class})
+    public ResponseEntity<?> handlerNotExistsException(NotExistsException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body(MessageDTO.builder()
+                                             .message(ex.getMessage())
+                                             .details(request.getRequestURI())
+                                             .status(HttpStatus.CONFLICT).build());
+    }
+
+    @ExceptionHandler({RequestBadException.class})
+    public ResponseEntity<?> handlerBadRequestException(RequestBadException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.BAD_REQUEST).build());
+    }
+
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<?> handlerNotFoundIDException(NotFoundException ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<?> handleDataAccessException(DataAccessException ex,HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<?> handlerException(Exception ex, HttpServletRequest request){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(MessageDTO.builder()
+                        .message(ex.getMessage())
+                        .details(request.getRequestURI())
+                        .status(HttpStatus.NOT_FOUND).build());
+    }
+
+}

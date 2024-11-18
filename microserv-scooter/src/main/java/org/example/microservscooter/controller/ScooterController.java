@@ -6,13 +6,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservscooter.dto.ScooterDTO;
 import org.example.microservscooter.entity.Scooter;
-import org.example.microservscooter.error.dto.MessageDTO;
 import org.example.microservscooter.error.exception.NotExistsException;
-import org.example.microservscooter.error.exception.NotFoundException;
-import org.example.microservscooter.error.exception.RequestBadException;
 import org.example.microservscooter.service.ScooterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -54,16 +50,10 @@ public class ScooterController {
             }
     )
     public @ResponseBody ResponseEntity<?> getAllScooter() {
-        try {
-            return
-                    ResponseEntity.status(HttpStatus.OK).body(scooterService.getAllScooter());
-        } catch (Exception e) {
-        throw new RequestBadException("Error al listar los monopatines");
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getAllScooter());
     }
 
 
-    @PostMapping()
     @Operation(
             summary = "Crear monopatin",
             description = "Crea un registro de monopatin",
@@ -95,15 +85,12 @@ public class ScooterController {
                     )
             }
     )
+    @PostMapping()
     public @ResponseBody ResponseEntity<?> createScooter(@RequestBody Scooter newScooter) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(scooterService.createScooter(newScooter));
-        }catch (Exception e){
-        throw new RequestBadException("Error al crear un Scooter");
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(scooterService.createScooter(newScooter));
     }
 
-    @GetMapping("/{id}")
+
     @Operation(
             summary = "Obtener monopatin por id",
             description = "Obtiene un registro de monopatin mediante un id ingresado",
@@ -127,15 +114,12 @@ public class ScooterController {
                     )
             }
     )
+    @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<?> getScooter(@PathVariable(value = "id") Long id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooter(id));
-        }catch (Exception e){
-            throw new RequestBadException("Error al buscar el monopatin " + id);
-            }
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooter(id));
     }
 
-    @DeleteMapping("/{id}")
+
     @Operation(
             summary = "Borrar monopatin por id",
             description = "Borra un registro de monopatin mediante un id ingresado",
@@ -167,15 +151,9 @@ public class ScooterController {
                     )
             }
     )
+    @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") Long id){
-        try{
-            scooterService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).body(new MessageDTO("El scooter fue eliminado correctamente","id eliminado: "+id,HttpStatus.OK));
-        }catch(EmptyResultDataAccessException e1){
-            throw new NotFoundException("ID no encontrado: " + id);
-        } catch (Exception e) {
-            throw new RequestBadException("Error al eliminar el id " + id);
-        }
+            return ResponseEntity.status(HttpStatus.OK).body(scooterService.delete(id));
     }
 
     // ENDPOINT PARA QUE EL MICROSERVICIO MAINTENANCE
@@ -214,15 +192,11 @@ public class ScooterController {
     )*/
     @GetMapping("/search-maintenance/{id}")
     public @ResponseBody Optional<ScooterDTO> getScooterMaintenance(@PathVariable(value = "id") Long id) {
-        try{
-            Optional<ScooterDTO> scooterDTO = scooterService.getScooterByMaintenance(id);
-            if(!scooterDTO.isPresent()){
-                throw  new NotExistsException("Id inexistente" + id);
-            }
-            return scooterDTO;
-        } catch (Exception e) {
-            throw new RequestBadException("error al querer solicitar el id " + id);
+        Optional<ScooterDTO> scooterDTO = scooterService.getScooterByMaintenance(id);
+        if(!scooterDTO.isPresent()){
+            throw  new NotExistsException("Id inexistente" + id);
         }
+        return scooterDTO;
     }
 
 
@@ -252,11 +226,7 @@ public class ScooterController {
     )
     @PutMapping("/inicio-mantenimiento/{id}")
     public @ResponseBody ResponseEntity<?>startMaintenance(@PathVariable(value="id")Long id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
-        }catch(RuntimeException e){
-            throw new RequestBadException("Error al iniciar mantenimiento");
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.startMaintenance(id));
     }
 
     //fin de mantenimiento de monopatin
@@ -285,11 +255,7 @@ public class ScooterController {
     )
     @PutMapping("/fin-mantenimiento/{id}")
     public @ResponseBody ResponseEntity<?>finishMaintenance(@PathVariable(value="id")Long id){
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(scooterService.finishMaintenance(id));
-        }catch(Exception e){
-            throw new RequestBadException("Error al finalizar mantenimiento del scooter id: " +id);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.finishMaintenance(id));
     }
 
     //registrar monopatin a una parda
@@ -317,12 +283,9 @@ public class ScooterController {
             }
     )
     @PutMapping("/{id}/ubicar/{id_parada}")
-    public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,@PathVariable(value = "id_parada")Long id_parada){
-        try{
+    public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,
+                                                                 @PathVariable(value = "id_parada")Long id_parada){
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
-        }catch(RuntimeException e){
-            throw new RequestBadException("Error al ubicar el Scooter id :" +id + " en parada " + id_parada);
-        }
     }
 
     //devuelve cantidad scooter en mantenimiento vs operacion
