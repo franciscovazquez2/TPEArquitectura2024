@@ -20,8 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(FeeController.class)
 public class FeeControllerTest {
@@ -84,7 +83,6 @@ public class FeeControllerTest {
 
     @Test
     void testCreateExtraFee() throws Exception {
-        Fee newFee = new Fee(2, 150.0, LocalDate.now(), "extra");
         FeeDto feeDto = new FeeDto(2, 150.0, LocalDate.now(), "extra");
         when(feeService.createFee(any(Fee.class))).thenReturn(feeDto);
 
@@ -96,8 +94,6 @@ public class FeeControllerTest {
                 .andExpect(jsonPath("$.monto").value(150.0))
                 .andExpect(jsonPath("$.tipo").value("extra"));
     }
-
-    /*
     @Test
     void testDeleteFee() throws Exception {
         feeDto = FeeDto.builder()
@@ -106,17 +102,12 @@ public class FeeControllerTest {
                 .fechaInicio(LocalDate.of(2024, 1, 10))
                 .tipo("normal")
                 .build();
-
         when(feeService.delteFee(1L)).thenReturn(feeDto);
-
         mockMvc.perform(delete("/api/fee/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.monto").value(100.00))
-                .andExpect(jsonPath("$.tipo").value("normal"));
-
+                .andExpect(content().string("Tarifa eliminada: 1"));
         verify(feeService, times(1)).delteFee(1L);
     }
-     */
+
 }

@@ -95,7 +95,7 @@ public class BillingControllerTest {
 
     @Test
     void testDeleteBilling() throws Exception {
-        BillingDto billingDto1 = BillingDto.builder()
+        billingDto = BillingDto.builder()
                 .id(1L)
                 .fechaEmision(java.time.LocalDate.of(2024, 1, 10))
                 .idReserva(1L)
@@ -103,7 +103,7 @@ public class BillingControllerTest {
                 .montoTotal(100.00)
                 .build();
 
-        when(billingService.deleteBilling(1L)).thenReturn(billingDto1);
+        when(billingService.deleteBilling(1L)).thenReturn(billingDto);
         mockMvc.perform(delete("/api/billing/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
