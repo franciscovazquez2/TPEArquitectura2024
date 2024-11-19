@@ -27,12 +27,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-
-    // FALTA EL DELETE !!!!
-
-
-
     // Obtener listado de usuarios
     @Operation(
             summary = "Obtener usuarios",

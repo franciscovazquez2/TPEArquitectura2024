@@ -1,4 +1,5 @@
 package org.example.microservuseraccount.controller;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.microservuseraccount.dto.UserCreateDTO;
 import org.example.microservuseraccount.entity.Authority;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -45,7 +46,6 @@ public class UserControllerTest {
     @Test
     void testGetAllUsers() throws Exception {
         when(userService.getAllUsers()).thenReturn(Arrays.asList(userDto));
-
         mockMvc.perform(get("/api/user")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -55,43 +55,43 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$[0].rol[0].name").value("admin"));
     }
 
-    /*
     // Test para crear un usuario
     @Test
     void testCreateUser() throws Exception {
-        when(userService.createUser(any(UserCreateDTO.class))).thenReturn(userDto);
-        String json = """
-        {
-            "nombre": "nicolas",
-            "apellido": "papaleo",
-            "email": "nicolas@mail.com",
-            "telefono": "123456789",
-            "user": "nicouser",
-            "password": "password123",
-            "rol": [
-                {
-                    "name": "admin"
-                }
-            ]
-        }
-        """;
+        Authority authority = Authority.builder().name("admin").build();
+        UserCreateDTO newUser = UserCreateDTO.builder()
+                .nombre("nicolas")
+                .apellido("papaleo")
+                .email("nicolas@example.com")
+                .telefono("123456789")
+                .user("nicolas_user")
+                .password("securePassword123")
+                .rol(authority)
+                .build();
+        UserDto createdUser = UserDto.builder()
+                .id(1L)
+                .nombre(newUser.getNombre())
+                .apellido(newUser.getApellido())
+                .telefono(newUser.getTelefono())
+                .accounts(Collections.emptyList())
+                .rol(Collections.singletonList(authority))
+                .build();
 
+        when(userService.createUser(any())).thenReturn(createdUser);
         mockMvc.perform(post("/api/user")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(new ObjectMapper().writeValueAsString(newUser)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.nombre").value("nicolas"))
                 .andExpect(jsonPath("$.apellido").value("papaleo"))
                 .andExpect(jsonPath("$.rol[0].name").value("admin"));
     }
-    */
 
     //Test para obtener un usuario
     @Test
     void testGetUser() throws Exception {
         when(userService.getUser(1L)).thenReturn(userDto);
-
         mockMvc.perform(get("/api/user/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -105,7 +105,6 @@ public class UserControllerTest {
     @Test
     void testAsociarCuenta() throws Exception {
         when(userService.asociarCuenta(1L, 1L)).thenReturn(userDto);
-
         mockMvc.perform(put("/api/user/asociarCuenta/1/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
