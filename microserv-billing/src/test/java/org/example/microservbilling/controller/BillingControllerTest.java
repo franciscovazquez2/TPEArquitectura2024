@@ -2,6 +2,7 @@ package org.example.microservbilling.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.microservbilling.dto.BillingDto;
+import org.example.microservbilling.dto.TotalFacturadoDto;
 import org.example.microservbilling.services.BillingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,33 +93,34 @@ public class BillingControllerTest {
                 .andExpect(jsonPath("$.montoTotal").value(100.00));
     }
 
-    /*
     @Test
     void testDeleteBilling() throws Exception {
-        when(billingService.deleteBilling(1L)).thenReturn(billingDto);
+        BillingDto billingDto1 = BillingDto.builder()
+                .id(1L)
+                .fechaEmision(java.time.LocalDate.of(2024, 1, 10))
+                .idReserva(1L)
+                .idUsuario(1L)
+                .montoTotal(100.00)
+                .build();
 
-        mockMvc.perform(delete("/api/billing/{id}", 1L)
+        when(billingService.deleteBilling(1L)).thenReturn(billingDto1);
+        mockMvc.perform(delete("/api/billing/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))  // Esperamos el valor de id en la respuesta
-                .andExpect(jsonPath("$.idReserva").value(1L))
+                .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.idUsuario").value(1L))
+                .andExpect(jsonPath("$.idReserva").value(1L))
                 .andExpect(jsonPath("$.montoTotal").value(100.00));
 
         verify(billingService, times(1)).deleteBilling(1L);
     }
-    */
 
-
-    /*
     @Test
     void testReporteTotalFacturadoEnFecha() throws Exception {
         TotalFacturadoDto totalFacturadoDto = new TotalFacturadoDto(500.00, 2024, 1, 12);
         when(billingService.reporteTotalFacturadoEnFecha(2024, 1, 12)).thenReturn(totalFacturadoDto);
-        mockMvc.perform(get("/api/billing/totalFacturado")
-                        .param("year", "2024")
-                        .param("startMonth", "1")
-                        .param("endMonth", "12")
+
+        mockMvc.perform(get("/api/billing/totalFacturado/2024/1/12")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalFacturado").value(500.00))
@@ -128,5 +130,4 @@ public class BillingControllerTest {
 
         verify(billingService, times(1)).reporteTotalFacturadoEnFecha(2024, 1, 12);
     }
-     */
 }
