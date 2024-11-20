@@ -2,7 +2,9 @@ package org.example.microservuseraccount.services;
 
 import jakarta.ws.rs.BadRequestException;
 import org.example.microservuseraccount.dto.AccountDto;
+import org.example.microservuseraccount.dto.UserDto;
 import org.example.microservuseraccount.entity.Account;
+import org.example.microservuseraccount.entity.User;
 import org.example.microservuseraccount.error.exception.NotExistsException;
 import org.example.microservuseraccount.error.exception.RequestBadException;
 import org.example.microservuseraccount.repository.AccountRepository;
@@ -81,7 +83,20 @@ public class AccountService {
                 .users(resultAccount.getUsers()).build();
     }
 
-    public void deleteAccount(Long id){
-        accountRepository.deleteById(id);
+    public AccountDto deleteAccount(Long id){
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        if(accountOptional.isPresent()) {
+            accountRepository.deleteById(id);
+            return AccountDto.builder()
+                    .id(accountOptional.get().getId())
+                    .cuentaMP(accountOptional.get().getCuentaMP())
+                    .fechaAlta(accountOptional.get().getFechaAlta())
+                    .saldo(accountOptional.get().getSaldo())
+                    .active(accountOptional.get().isActive())
+                    .users(accountOptional.get().getUsers()).build();
+        }else {
+            throw new NotExistsException("El id que intentas eliminar no existe" + " ID: " +id);
+        }
     }
+
 }

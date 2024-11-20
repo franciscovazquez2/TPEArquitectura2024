@@ -1,0 +1,20 @@
+package org.example.microservuseraccount.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@AllArgsConstructor
+public class ScooterDTO {
+    private Long id_scooter;
+    private double latitude;
+    private double longitude;
+    private Long kilometers;
+    private int usageTime;
+    private boolean available;
+    private boolean maintenance;
+    private Long id_parking;
+
+}

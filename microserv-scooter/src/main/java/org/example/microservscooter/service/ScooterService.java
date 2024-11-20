@@ -195,4 +195,44 @@ public class ScooterService {
     public List<ScooterDTO>getNearlyScooters(double latitude,double longitude,double distance){
         return scooterRepository.getNearlyScooters(latitude,longitude,distance);
     }
+
+    public ScooterDTO startTrip(Long id) {
+        Optional<Scooter> scooterOptional = scooterRepository.findById(id);
+        if (!scooterOptional.isPresent()) {
+            throw new NotExistsException("El Scooter con ID: " + id + " No existe");
+        }
+        Scooter scooter = scooterOptional.get();
+        scooter.setAvailable(false);
+        scooter.setStart(true);
+        Scooter scooterResult = scooterRepository.save(scooter);
+        return ScooterDTO.builder()
+                .id_scooter(scooterResult.getId_scooter())
+                .latitude(scooterResult.getLatitude())
+                .longitude(scooterResult.getLongitude())
+                .kilometers(scooterResult.getKilometers())
+                .usageTime(scooterResult.getUsageTime())
+                .available(scooterResult.isAvailable())
+                .maintenance(scooterResult.isMaintenance())
+                .id_parking(scooterResult.getIdParking()).build();
+    }
+
+    public ScooterDTO finishTrip(Long id) {
+        Optional<Scooter> scooterOptional = scooterRepository.findById(id);
+        if (!scooterOptional.isPresent()) {
+            throw new NotExistsException("El Scooter con ID: " + id + " No existe");
+        }
+        Scooter scooter = scooterOptional.get();
+        scooter.setAvailable(true);
+        scooter.setStart(false);
+        Scooter scooterResult = scooterRepository.save(scooter);
+        return ScooterDTO.builder()
+                .id_scooter(scooterResult.getId_scooter())
+                .latitude(scooterResult.getLatitude())
+                .longitude(scooterResult.getLongitude())
+                .kilometers(scooterResult.getKilometers())
+                .usageTime(scooterResult.getUsageTime())
+                .available(scooterResult.isAvailable())
+                .maintenance(scooterResult.isMaintenance())
+                .id_parking(scooterResult.getIdParking()).build();
+    }
 }

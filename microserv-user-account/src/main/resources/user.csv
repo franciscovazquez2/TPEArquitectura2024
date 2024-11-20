@@ -1,5 +1,4 @@
 /*nombre,apellido,email,telefono,user,password,*/
-Juan,Perez,juan.perez@example.com,1234567890,user1,password,USER
-Ana,Gomez,ana.gomez@example.com,9876543210,2024,user2,password,USER
-Carlos,Diaz,carlos.diaz@example.com,5556667777,user3,password,USER
-María,López,maria.lopez@example.com,8889990000,user4,password,ADMIN
+Juan,Perez,juan.perez@example.com,1234567890,juan,perez,USER
+Ana,Gomez,ana.gomez@example.com,9876543210,2024,ana,gomez,USER
+María,López,maria.lopez@example.com,8889990000,maria,lopez,ADMIN

@@ -17,10 +17,11 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Travel {
 
     @Id
-    private Long id_viaje;
+    private String id_viaje;
 
     @Field(name = "User")
     private Long id_user;
@@ -32,7 +33,7 @@ public class Travel {
     private Date date;
 
     @Field(name = "price")
-    private Long price;
+    private Double price;
 
     @Field(name = "kilometers")
     private Long kilometers;
@@ -46,4 +47,15 @@ public class Travel {
     @Field(name = "has_pauses")
     private boolean hasPauses;
 
+
+    public Travel(Long id_user, Long id_scooter, Date date, Double price, Long kilometers, long usageTime, long pauseTime, boolean hasPauses) {
+        this.id_user = id_user;
+        this.id_scooter = id_scooter;
+        this.date = date;
+        this.price = price;
+        this.kilometers = kilometers;
+        this.usageTime = usageTime;
+        this.pauseTime = pauseTime;
+        this.hasPauses = hasPauses;
+    }
 }

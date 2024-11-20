@@ -6,6 +6,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.microservuseraccount.client.ScooterClient;
+import org.example.microservuseraccount.client.TravelClient;
+import org.example.microservuseraccount.dto.ScooterDTO;
+import org.example.microservuseraccount.dto.TravelDto;
 import org.example.microservuseraccount.dto.UserCreateDTO;
 import org.example.microservuseraccount.dto.UserTokenDto;
 import org.example.microservuseraccount.entity.User;
@@ -26,6 +30,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     // Obtener listado de usuarios
     @Operation(
@@ -169,13 +174,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public @ResponseBody ResponseEntity<?>deleteUser(@PathVariable(value = "id")Long id)throws NotExistsException{
-        try{
-            userService.deleteUser(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario eliminado id: "+id);
-        }catch (BadRequestException e){
-            throw new RequestBadException("Error al eliminar el usuario con ID: " + id);
-        }
+    public @ResponseBody ResponseEntity<?>deleteUser(@PathVariable(value = "id")Long id)throws NotExistsException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
     }
 
     @GetMapping("/auth/{username}")
@@ -186,5 +186,12 @@ public class UserController {
         } catch (Exception e) {
             throw new NotExistsException("lo detecta como id pero es: " + username);
         }
+    }
+
+    //iniciar viaje
+    @PostMapping("/iniciarViaje/{id_user}/{id_scooter}")
+    public TravelDto inciarViaje(@RequestParam(value="id_scooter")Long id_user, @RequestParam(value="id_scooter")Long id_scooter){
+
+            return userService.iniciarViaje(id_user,id_scooter);
     }
 }

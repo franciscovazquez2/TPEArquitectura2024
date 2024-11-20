@@ -93,7 +93,7 @@ public class MaintenanceController {
                     )
             }
     )
-    @PostMapping()
+    @PostMapping()//crea registro de mantenimiento
     public ResponseEntity<?> createMaintenance(@RequestBody @Valid Maintenance newMaintenance) {
         return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceService.createMaintenance(newMaintenance));
     }
@@ -112,6 +112,11 @@ public class MaintenanceController {
         } catch (Exception e) {
             throw new NoSuchElementException("error al eliminar el registro");
         }
+    }
+
+    @PutMapping("/finishMaintenance/{id}")//crea registro de mantenimiento
+    public ResponseEntity<?> finishMaintenance(@PathVariable (value="id")Long id) {
+        return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceService.finishMaintenance(id));
     }
 }
 

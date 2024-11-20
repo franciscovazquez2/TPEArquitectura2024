@@ -64,5 +64,25 @@ public class MaintenanceService {
     public void deleteMaintenance(Long id){
         maintenanceRepository.deleteById(id);
     }
+
+    //finaliza el mantenimiento
+    public MaintenanceDTO finishMaintenance(Long id) {
+        Optional<Maintenance> maintenanceOptional = maintenanceRepository.findById(id);
+        if(maintenanceOptional.isPresent()){
+            Maintenance maintenance = maintenanceOptional.get();
+            if(!maintenance.isFinalizado()){
+                scooterClient.finishMaintenance(maintenance.getIdScooter());
+                maintenance.setFinalizado(true);
+                Maintenance result = maintenanceRepository.save(maintenance);
+                return MaintenanceDTO.builder()
+                        .id(result.getId())
+                        .id_scooter(result.getIdScooter())
+                        .fecha_mantenimiento(result.getFecha_inicio())
+                        .finalizado(result.isFinalizado()).build();
+            }
+
+        }
+        throw new NotExistsException("el id no existe");
+    }
 }
 

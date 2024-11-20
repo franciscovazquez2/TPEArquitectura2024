@@ -7,6 +7,7 @@ import org.example.microservmaintenance.repository.MaintenanceRepository;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Component
@@ -32,7 +33,7 @@ public class CSVReader {
                     String[] datos = line.split(CSVSPLIT);
                     maintenanceRepository.save(Maintenance.builder()
                             .idScooter(Long.parseLong(datos[0]))
-                            .fecha_inicio(new Date(Integer.parseInt(datos[1]),Integer.parseInt(datos[2]),Integer.parseInt(datos[3])))
+                            .fecha_inicio(LocalDate.of(Integer.parseInt(datos[1]), Integer.parseInt(datos[2]), Integer.parseInt(datos[3])))
                             .finalizado(Boolean.parseBoolean(datos[4])).build());
                 }
             }

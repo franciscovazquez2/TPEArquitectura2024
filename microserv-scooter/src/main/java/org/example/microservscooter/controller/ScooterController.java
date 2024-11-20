@@ -282,22 +282,32 @@ public class ScooterController {
                     )
             }
     )
-    @PutMapping("/{id}/ubicar/{id_parada}")
+    @PutMapping("/{id}/ubicar/{id_parada}") //opcional (ubicar monopatin en parada)
     public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,
                                                                  @PathVariable(value = "id_parada")Long id_parada){
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
     }
 
-    //devuelve cantidad scooter en mantenimiento vs operacion
+    //devuelve cantidad scooter en mantenimiento vs operacion (servicio E)
     @GetMapping("/inMaintenance-Operate")
     public @ResponseBody ResponseEntity<?>getScooterByOperation(){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByOperation());
     }
 
-
+    //devuelve los scooters cercanos a una coordenada    (servicio G)
     @GetMapping("/nearlyScooters/{latitude}/{longitude}/{distance}")
     public @ResponseBody ResponseEntity<?>getNearlyScooters(@PathVariable(value="latitude") double latitude,@PathVariable(value="longitude") double longitude,@PathVariable (value="distance")double distance){
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getNearlyScooters(latitude,longitude,distance));
+    }
+
+    @PutMapping(value="api/scooter/inicio-viaje/{id}")
+    public @ResponseBody ResponseEntity<?> startTrip(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.startTrip(id));
+    }
+
+    @PutMapping(value="api/scooter/fin-viaje/{id}")
+    public @ResponseBody ResponseEntity<?> finishTrip(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.startTrip(id));
     }
 
 }

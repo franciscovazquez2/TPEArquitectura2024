@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.example.microservtravel.dto.TravelDto;
 import org.example.microservtravel.error.dto.MessageDTO;
 import org.example.microservtravel.entity.Travel;
 import org.example.microservtravel.error.exception.RequestBadException;
+import org.example.microservtravel.repository.TravelRepository;
 import org.example.microservtravel.service.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -16,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("api/travel")
 @Tag(name = "Travel", description = "Controller de viaje")
@@ -23,9 +27,11 @@ public class TravelController {
 
     @Autowired
     private TravelService travelService;
+    @Autowired
+    private TravelRepository travelRepository;
 
 
-@Operation(
+    @Operation(
             summary = "Obtener viajes",
             description = "Obtiene un listado de todos los viajes",
             tags = {"Get","Travel"},
@@ -194,4 +200,20 @@ public class TravelController {
         return ResponseEntity.status(HttpStatus.OK).body(travelService.reporteScooterConMasDeXkilometros(anio,cantViaje));
 
     }
+
+    @GetMapping(value="api/travel/startTravel/{id_user}/{id_scooter}")
+    TravelDto startTravel(@PathVariable(value = "id_user")Long id_user, @PathVariable(value="id_scooter")Long id_scooter){
+        Travel travel=travelRepository.save(new Travel(id_user,id_scooter,new Date(), 0.0, 0L,0L,0L,false));
+        return TravelDto.builder()
+                .id_viaje(Long.valueOf(travel.getId_viaje()))
+                .id_user(travel.getId_user())
+                .id_scooter(travel.getId_scooter())
+                .date(travel.getDate())
+                .price(travel.getPrice())
+                .kilometers(travel.getKilometers())
+                .usageTime(travel.getUsageTime())
+                .pauseTime(travel.getPauseTime())
+                .hasPauses(travel.isHasPauses()).build();
+    }
+
 }

@@ -35,11 +35,11 @@ public class CSVReader {
 
     @Transactional
     public void loadData(){
-        readFileUser();
-        readFileAccount();
         readFileAuthority();
+        readFileAccount();
+        readFileUser();
         readFileAccountUserRelation();
-        readFileUserAuthorityRelation();
+        //readFileUserAuthorityRelation();
     }
 
     //lee archivos y los agrega a la base
@@ -108,9 +108,12 @@ public class CSVReader {
                     User user = userRepository.findById(Long.parseLong(datos[0])).orElse(null);
                     Account account = accountRepository.findById(Long.parseLong(datos[1])).orElse(null);
                     if(user!=null && account !=null){
-                    user.addAccount(account);
-                    account.addUser(user);
-                    userRepository.save(user);
+                        if (!user.getAccounts().contains(account)) {
+                            user.addAccount(account);
+                            account.addUser(user);
+                            userRepository.save(user);
+                        }
+
                     }else{
                         System.out.print(user+""+account +" nulos");
                     }
