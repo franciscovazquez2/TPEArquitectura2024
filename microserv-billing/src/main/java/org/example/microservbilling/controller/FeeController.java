@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -115,6 +117,7 @@ public class FeeController {
     )
     @PostMapping("/normalFee")
     public ResponseEntity<?> createNormalFee(@RequestBody Fee newFee) {
+        newFee.setFechaInicio(LocalDate.now());
         newFee.setTipo("normal");
         return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
@@ -153,6 +156,7 @@ public class FeeController {
     @PostMapping("/extraFee")
     public ResponseEntity<?> createExtraFee(@RequestBody Fee newFee) {
         newFee.setTipo("extra");
+        newFee.setFechaInicio(LocalDate.now());
         return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 

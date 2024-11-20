@@ -118,7 +118,7 @@ public class BillingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(billingService.createBilling(newBilling));
     }
 
-    //devuelve reporte de total facturado
+
     @Operation(
             summary = "Obtener total facturado entre meses",
             description = "Obtiene un registro de facturacion entre dos meses ingresados e cierto año",
@@ -142,10 +142,11 @@ public class BillingController {
                     )
             }
     )
+    //devuelve reporte de total facturado (servicio D)
     @GetMapping("/totalFacturado/{year}/{startMonth}/{endMonth}")
-    public TotalFacturadoDto reporteTotalFacturadoEnFecha(@RequestParam(value="year")int year,
-                                                          @RequestParam(value="startMonth")int startMonth,
-                                                          @RequestParam(value="endMonth")int endMonth){
+    public TotalFacturadoDto reporteTotalFacturadoEnFecha(@PathVariable(value="year")int year,
+                                                          @PathVariable(value="startMonth")int startMonth,
+                                                          @PathVariable(value="endMonth")int endMonth){
             return billingService.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
     }
 

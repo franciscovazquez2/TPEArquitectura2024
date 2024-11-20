@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.microservmaintenance.error.dto.MessageDTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Date;
 public class MaintenanceDTO {
     private Long id;
     private Long id_scooter;
-    private Date fecha_mantenimiento;
+    private LocalDate fecha_mantenimiento;
     private boolean finalizado;
 
     public boolean isEmpty(){

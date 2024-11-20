@@ -340,13 +340,13 @@ public class ScooterController {
                     )
             }
     )
-    @PutMapping("/{id}/ubicar/{id_parada}")
+    @PutMapping("/{id}/ubicar/{id_parada}") //opcional (ubicar monopatin en parada)
     public @ResponseBody ResponseEntity<?> ubicarScooterEnParada(@PathVariable(value="id")Long id,
                                                                  @PathVariable(value = "id_parada")Long id_parada){
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.ubicarScooterEnParada(id,id_parada));
     }
 
-    //devuelve cantidad scooter en mantenimiento vs operacion
+    //devuelve cantidad scooter en mantenimiento vs operacion (servicio E)
     @Operation(
             summary = "Obtener monopatines en mantenimiento y en operacion",
             description = "Obtiene la cantidad de monopatines que estan en mantenimiento y la cantidad de monopatines que estan en operacion",
@@ -375,6 +375,7 @@ public class ScooterController {
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getScooterByOperation());
     }
 
+    //devuelve los scooters cercanos a una coordenada    (servicio G)
 
     @Operation(
             summary = "Obtener monopatines cercanos",

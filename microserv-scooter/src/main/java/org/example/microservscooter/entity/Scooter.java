@@ -17,25 +17,25 @@ public class Scooter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_scooter;
 
-    @Column(name = "parkingLat")
+    @Column(name = "parkingLat",nullable = false)
     private double latitude;
 
-    @Column(name = "parkingLong")
+    @Column(name = "parkingLong",nullable = false)
     private double longitude;
 
-    @Column
+    @Column(nullable = false)
     private Long kilometers;
 
-    @Column
+    @Column(nullable = false)
     private int usageTime;
 
-    @Column
+    @Column(nullable = false)
     private boolean start;
 
-    @Column
+    @Column(nullable = false)
     private boolean available;
 
-    @Column
+    @Column(nullable = false)
     private boolean maintenance;
 
     @Column
