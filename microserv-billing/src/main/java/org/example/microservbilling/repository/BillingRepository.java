@@ -8,13 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BillingRepository extends JpaRepository<Billing,Long> {
-    /*
-    @Query("SELECT new org.example.microservbilling.dto.TotalFacturadoDto(SUM(b.montoTotal), :year, :startMonth, :endMonth) " +
-            "FROM Billing b " +
-            "WHERE YEAR(b.fechaEmision) = :year " +
-            "AND MONTH(b.fechaEmision) BETWEEN :startMonth AND :endMonth")
-    TotalFacturadoDto reporteTotalFacturadoEnFecha(@Param("year") int year, @Param("startMonth") int startMonth, @Param("endMonth") int endMonth);
-     */
 
     @Query("SELECT b " +
             "FROM Billing b " +

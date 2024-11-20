@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -24,7 +25,7 @@ public class Maintenance {
     private long idScooter;
 
     @Column(name ="fecha_inicio")
-    private Date fecha_inicio;
+    private LocalDate fecha_inicio;
 
     @Column(name = "estadoMantenimiento")
     private boolean finalizado;
