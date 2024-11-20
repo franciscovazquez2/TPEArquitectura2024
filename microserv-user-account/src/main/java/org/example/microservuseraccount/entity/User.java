@@ -28,6 +28,11 @@ public class User {
     private String user;
     private String password;
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_accounts", // Nombre de la tabla intermedia
+            joinColumns = @JoinColumn(name = "user_id"), // Clave foránea de User
+            inverseJoinColumns = @JoinColumn(name = "account_id") // Clave foránea de Account
+    )
     @JsonIgnore
     private List<Account> accounts;
     @ManyToMany(fetch=FetchType.LAZY)

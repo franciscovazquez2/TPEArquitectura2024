@@ -1,5 +1,7 @@
 package org.example.microservuseraccount.services;
 
+import org.example.microservuseraccount.client.ScooterClient;
+import org.example.microservuseraccount.client.TravelClient;
 import org.example.microservuseraccount.dto.*;
 import org.example.microservuseraccount.entity.Account;
 import org.example.microservuseraccount.entity.Authority;
@@ -8,7 +10,7 @@ import org.example.microservuseraccount.error.exception.NotExistsException;
 import org.example.microservuseraccount.repository.AuthorityRepository;
 import org.example.microservuseraccount.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,11 @@ public class UserService {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private ScooterClient scooterClient;
+
+    @Autowired
+    private TravelClient travelClient;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
@@ -114,11 +121,24 @@ public class UserService {
         }
     }
 
-    public void deleteUser(Long id){
-        userRepository.deleteById(id);
+    public UserDto deleteUser(Long id){
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()) {
+            userRepository.deleteById(id);
+            return UserDto.builder()
+                    .id(userOptional.get().getId())
+                    .nombre(userOptional.get().getNombre())
+                    .apellido(userOptional.get().getApellido())
+                    .email(userOptional.get().getEmail())
+                    .telefono(userOptional.get().getTelefono())
+                    .accounts(userOptional.get().getAccounts())
+                    .rol(userOptional.get().getRoles()).build();
+        }else {
+            throw new NotExistsException("El id que intentas eliminar no existe" + " ID: " +id);
+        }
     }
 
-
+    //metodo necesario para validar el token(busca las autoridades que le corresponden al usuario)
     public UserTokenDto findOneWithAuthoritiesByUsernameIgnoreCase(String username ){
 
         Optional<User> userOptional = userRepository.findOneWithAuthoritiesByUsernameIgnoreCase(username);
@@ -139,4 +159,29 @@ public class UserService {
         }
     }
 
+
+    public Double getsaldo(Long idUser) {
+        Optional<User> optionalUser = userRepository.findById(idUser);
+        if (!optionalUser.isPresent()) {
+            throw new NotExistsException("el usuario no existe");
+        }
+        List<Account> account = optionalUser.get().getAccounts();
+        Double result=0.0;
+        for (Account ac: account){
+            result+=ac.getSaldo();
+        }
+        return result;
+    }
+
+    public TravelDto iniciarViaje(Long id_user, Long id_scooter) {
+    ScooterDTO scooterDTO = scooterClient.findScooterBuyId(id_scooter);
+        if(!scooterDTO.isAvailable()){
+        throw new NotExistsException("id scooter no disponible"+id_scooter);
+    }
+        if(this.getsaldo(id_user)<=0.0){
+        throw new NotExistsException("saldo insuficiente"+id_user);
+    }
+    ScooterDTO scooterDTO1=scooterClient.startTrip(id_scooter);
+        return travelClient.startTravel(id_user,id_scooter);
+    }
 }

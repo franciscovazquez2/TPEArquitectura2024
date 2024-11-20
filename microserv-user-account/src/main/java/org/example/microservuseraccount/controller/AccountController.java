@@ -24,11 +24,6 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-
-
-    // Falta hacer el DELETE !!!
-
-
     // Obtener listado de cuentas
     @Operation(
             summary = "Obtener cuentas",
@@ -171,11 +166,8 @@ public class AccountController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?>deleteAccount(@PathVariable(value = "id")Long id)throws NotExistsException{
-        try{
-            accountService.deleteAccount(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Cuenta eliminada id: "+id);
-        }catch (BadRequestException e){
-            throw new RequestBadException("Error al eliminar la cuenta con ID: " + id);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(accountService.deleteAccount(id));
     }
+
+
 }
