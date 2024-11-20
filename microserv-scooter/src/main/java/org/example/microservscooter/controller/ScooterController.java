@@ -492,4 +492,14 @@ public class ScooterController {
         return ResponseEntity.status(HttpStatus.OK).body(scooterService.getNearlyScooters(latitude,longitude,distance));
     }
 
+    @PutMapping(value="api/scooter/inicio-viaje/{id}")
+    public @ResponseBody ResponseEntity<?> startTrip(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.startTrip(id));
+    }
+
+    @PutMapping(value="api/scooter/fin-viaje/{id}")
+    public @ResponseBody ResponseEntity<?> finishTrip(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(scooterService.startTrip(id));
+    }
+
 }

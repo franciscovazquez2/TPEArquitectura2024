@@ -359,7 +359,7 @@ public class FeeController {
             }
     )
     @DeleteMapping("{id}")
-    public ResponseEntity<?>deleteFee(@RequestParam(value="id")Long id){
+    public ResponseEntity<?>deleteFee(@PathVariable(value="id")Long id){
         feeService.delteFee(id);
         return ResponseEntity.status(HttpStatus.OK).body("Tarifa eliminada: "+id);
     }

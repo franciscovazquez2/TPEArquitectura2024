@@ -20,7 +20,7 @@ public class TravelDto {
 
         private Date date;
 
-        private Long price;
+        private Double price;
 
         private Long kilometers;
 

@@ -28,7 +28,7 @@ public class TravelService {
         List<TravelDto>result=new ArrayList<>();
         for(Travel travel:travels){
             TravelDto travelDto = TravelDto.builder()
-                    .id_viaje(travel.getId_viaje())
+                    .id_viaje(Long.valueOf(travel.getId_viaje()))
                     .id_user(travel.getId_user())
                     .id_scooter(travel.getId_scooter())
                     .date(travel.getDate())
@@ -47,7 +47,7 @@ public class TravelService {
             Travel travel = travelRepository.insert(newTravel);
             if(travel != null) {
                 return TravelDto.builder()
-                        .id_viaje(travel.getId_viaje())
+                        .id_viaje(Long.valueOf(travel.getId_viaje()))
                         .id_user(travel.getId_user())
                         .id_scooter(travel.getId_scooter())
                         .date(travel.getDate())
@@ -66,7 +66,7 @@ public class TravelService {
             Optional<Travel> travelOptional = travelRepository.findById(id);
             if(travelOptional.isPresent()) {
                 return TravelDto.builder()
-                        .id_viaje(travelOptional.get().getId_viaje())
+                        .id_viaje(Long.valueOf(travelOptional.get().getId_viaje()))
                         .id_user(travelOptional.get().getId_user())
                         .id_scooter(travelOptional.get().getId_scooter())
                         .date(travelOptional.get().getDate())
