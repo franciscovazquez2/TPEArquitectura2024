@@ -127,7 +127,7 @@ public class BillingController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?>deleteBilling(@RequestParam(value="id")Long id){
+    public ResponseEntity<?>deleteBilling(@PathVariable(value="id")Long id){
             return ResponseEntity.status(HttpStatus.OK).body(billingService.deleteBilling(id));
     }
 

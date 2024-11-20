@@ -32,7 +32,6 @@ public class UserController {
     private UserService userService;
 
 
-
     // Obtener listado de usuarios
     @Operation(
             summary = "Obtener usuarios",

@@ -14,6 +14,7 @@ import java.util.Date;
 
 @Document()
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
