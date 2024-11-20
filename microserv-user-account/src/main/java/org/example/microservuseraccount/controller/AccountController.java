@@ -169,6 +169,29 @@ public class AccountController {
         }
     }
 
+    @Operation(
+            summary = "Borrar una cuenta por id",
+            description = "Borra un registro de cuenta mediante un id ingresado",
+            tags = {"Delete","Account","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar la cuenta con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?>deleteAccount(@PathVariable(value = "id")Long id)throws NotExistsException{
         try{

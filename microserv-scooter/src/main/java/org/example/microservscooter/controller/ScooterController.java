@@ -36,7 +36,34 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                    {
+                                                      "id_scooter": 1,
+                                                      "latitude": 37.7749,
+                                                      "longitude": -122.4194,
+                                                      "kilometers": 1500,
+                                                      "usageTime": 120,
+                                                      "available": true,
+                                                      "maintenance": false,
+                                                      "id_parking": null
+                                                    },
+                                                    {
+                                                      "id_scooter": 2,
+                                                      "latitude": 34.0522,
+                                                      "longitude": -118.2437,
+                                                      "kilometers": 2000,
+                                                      "usageTime": 180,
+                                                      "available": true,
+                                                      "maintenance": false,
+                                                      "id_parking": null
+                                                    }
+                                                ]
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -63,7 +90,22 @@ public class ScooterController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Scooter.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                  "latitude": 0,
+                                                  "longitude": 0,
+                                                  "kilometers": 0,
+                                                  "usageTime": 0,
+                                                  "start": true,
+                                                  "available": true,
+                                                  "maintenance": false,
+                                                  "idParking": 0
+                                                }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -101,7 +143,23 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                            
+                                                    {
+                                                      "id_scooter": 1,
+                                                      "latitude": 37.7749,
+                                                      "longitude": -122.4194,
+                                                      "kilometers": 1500,
+                                                      "usageTime": 120,
+                                                      "available": true,
+                                                      "maintenance": false,
+                                                      "id_parking": null
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(

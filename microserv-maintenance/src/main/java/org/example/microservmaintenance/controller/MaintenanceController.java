@@ -34,7 +34,26 @@ public class MaintenanceController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                  {
+                                                    "id": 1,
+                                                    "idScooter": 1,
+                                                    "fecha_inicio": "3924-02-10T03:00:00.000+00:00",
+                                                    "finalizado": true
+                                                  },
+                                                  {
+                                                    "id": 2,
+                                                    "idScooter": 2,
+                                                    "fecha_inicio": "3924-02-15T03:00:00.000+00:00",
+                                                    "finalizado": true
+                                                  }
+                                                ]
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -63,7 +82,17 @@ public class MaintenanceController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Maintenance.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                    "idScooter": 50.0,
+                                                    "fecha_inicio": "2024-01-01",
+                                                    "finalizado": false
+                                                }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -127,13 +156,36 @@ public class MaintenanceController {
             return ResponseEntity.status(HttpStatus.OK).body(maintenanceService.getMaintenance(id));
     }
 
+    @Operation(
+            summary = "Borrar mantenimiento por id",
+            description = "Borra un registro de mantenimiento mediante un id ingresado",
+            tags = {"Delete","Maintenance","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "text/plain",
+                                    schema = @Schema(type = "string", example = "Mantenimiento eliminado id: 123")
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar el mantenimiento con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<?>deleteMaintenance(@PathVariable(value="id")Long id){
         try{
             maintenanceService.deleteMaintenance(id);
             return ResponseEntity.status(HttpStatus.OK).body("Mantenimiento eliminado id: "+id);
         } catch (Exception e) {
-            throw new NoSuchElementException("error al eliminar el registro");
+            throw new NoSuchElementException("Error al eliminar el mantenimiento con el ID ingresado");
         }
     }
 }

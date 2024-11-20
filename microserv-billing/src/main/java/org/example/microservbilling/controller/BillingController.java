@@ -149,6 +149,30 @@ public class BillingController {
             return billingService.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
     }
 
+
+    @Operation(
+            summary = "Borrar factura por id",
+            description = "Borra un registro de factura mediante un id ingresado",
+            tags = {"Delete","Billing","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar la factura con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @DeleteMapping("{id}")
     public ResponseEntity<?>deleteBilling(@RequestParam(value="id")Long id){
             return ResponseEntity.status(HttpStatus.OK).body(billingService.deleteBilling(id));

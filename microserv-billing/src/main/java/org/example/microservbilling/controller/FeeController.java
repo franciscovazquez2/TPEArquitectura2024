@@ -203,6 +203,30 @@ public class FeeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 
+
+    @Operation(
+            summary = "Borrar tarifa por id",
+            description = "Borra un registro de tarifa mediante un id ingresado",
+            tags = {"Delete","Fee","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar la tarifa con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @DeleteMapping("{id}")
     public ResponseEntity<?>deleteFee(@RequestParam(value="id")Long id){
         feeService.delteFee(id);

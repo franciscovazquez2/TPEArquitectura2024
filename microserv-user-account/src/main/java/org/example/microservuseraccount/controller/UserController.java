@@ -174,6 +174,29 @@ public class UserController {
         }
     }
 
+    @Operation(
+            summary = "Borrar usuario por id",
+            description = "Borra un registro de usuario mediante un id ingresado",
+            tags = {"Delete","User","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseEntity.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al eliminar el usuario con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(type = "object")
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?>deleteUser(@PathVariable(value = "id")Long id)throws NotExistsException{
         try{
@@ -184,6 +207,7 @@ public class UserController {
         }
     }
 
+    //PREGUNTAR SI ES DE COMUNICACION, ¿¿HAY QUE HACER EL SWAGGER??
     @GetMapping("/auth/{username}")
     public UserTokenDto getUserByUsername(@PathVariable(name= "username") String username) {
         try {
