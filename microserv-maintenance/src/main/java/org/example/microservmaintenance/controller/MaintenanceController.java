@@ -55,14 +55,6 @@ public class MaintenanceController {
                                             """
                                     )
                             )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar los mantenimientos",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
                     )
             }
     )
@@ -101,23 +93,57 @@ public class MaintenanceController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 9,
+                                                  "id_scooter": 14,
+                                                  "fecha_mantenimiento": "2024-01-01",
+                                                  "finalizado": false,
+                                                  "empty": false
+                                                }
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "El ID del monopatin no existe",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "El monopatin no existe",
+                                                  "details": "/api/maintenance",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "El ID del monopatin no existe",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
                             description = "Error al crear el mantenimiento",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/maintenance"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -138,7 +164,24 @@ public class MaintenanceController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                 {
+                                                      "id": 1,
+                                                      "scooter": {
+                                                        "id_scooter": 1,
+                                                        "latitude": 37.7749,
+                                                        "longitude": -122.4194,
+                                                        "kilometers": 1500,
+                                                        "usageTime": 120,
+                                                        "maintenence": true,
+                                                        "empty": false
+                                                      }
+                                                 }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -146,7 +189,17 @@ public class MaintenanceController {
                             description = "No se encontro mantenimiento con ese scooter",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                 {
+                                                   "message": "El id ingresado no existe",
+                                                   "details": "/api/maintenance/122",
+                                                   "status": "CONFLICT"
+                                                 }
+                                            """
+                                    )
                             )
                     )
             }
@@ -189,9 +242,53 @@ public class MaintenanceController {
         }
     }
 
-    @PutMapping("/finishMaintenance/{id}")//crea registro de mantenimiento
+    @Operation(
+            summary = "Finalizar mantenimiento por id",
+            description = "Marca como finalizado un registro de mantenimiento mediante un id ingresado",
+            tags = {"Delete","Maintenance","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                  {
+                                                    "id": 1,
+                                                    "idScooter": 1,
+                                                    "fecha_inicio": "2024-01-10",
+                                                    "finalizado": true
+                                                  }
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Error al finalizar el mantenimiento con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "el id no existe",
+                                                  "details": "/api/maintenance/finishMaintenance/455",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
+                            )
+                    )
+            }
+    )
+    @PutMapping("/finishMaintenance/{id}")//marca un registro de mantenimiento como terminado
     public ResponseEntity<?> finishMaintenance(@PathVariable (value="id")Long id) {
-        return  ResponseEntity.status(HttpStatus.CREATED).body(maintenanceService.finishMaintenance(id));
+        return  ResponseEntity.status(HttpStatus.OK).body(maintenanceService.finishMaintenance(id));
     }
 }
 

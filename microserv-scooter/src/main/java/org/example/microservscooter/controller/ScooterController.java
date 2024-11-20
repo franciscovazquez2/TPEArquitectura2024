@@ -1,4 +1,5 @@
 package org.example.microservscooter.controller;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,14 +66,6 @@ public class ScooterController {
                                             """
                                     )
                             )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar los monopatines",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
                     )
             }
     )
@@ -98,11 +91,7 @@ public class ScooterController {
                                                   "latitude": 0,
                                                   "longitude": 0,
                                                   "kilometers": 0,
-                                                  "usageTime": 0,
-                                                  "start": true,
-                                                  "available": true,
-                                                  "maintenance": false,
-                                                  "idParking": 0
+                                                  "usageTime": 0
                                                 }
                                             """
                             )
@@ -114,7 +103,22 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id_scooter": 13,
+                                                  "latitude": 0,
+                                                  "longitude": 0,
+                                                  "kilometers": 0,
+                                                  "usageTime": 0,
+                                                  "available": false,
+                                                  "maintenance": false,
+                                                  "id_parking": null
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -122,7 +126,19 @@ public class ScooterController {
                             description = "Error al crear el monopatin",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/scooter"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -163,8 +179,8 @@ public class ScooterController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al buscar monopatin",
+                            responseCode = "204",
+                            description = "No se encontro el monopatin",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -188,20 +204,27 @@ public class ScooterController {
                             description = "El scooter fue eliminado correctamente",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "id_scooter": 12,
+                                                      "latitude": 51.5074,
+                                                      "longitude": -0.1278,
+                                                      "kilometers": 2500,
+                                                      "usageTime": 90,
+                                                      "available": false,
+                                                      "maintenance": true,
+                                                      "id_parking": null
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "404",
+                            responseCode = "204",
                             description = "ID no encontrado",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al eliminar el scooter",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(type = "object")
@@ -214,40 +237,8 @@ public class ScooterController {
             return ResponseEntity.status(HttpStatus.OK).body(scooterService.delete(id));
     }
 
-    // ENDPOINT PARA QUE EL MICROSERVICIO MAINTENANCE
-    /* NO DEBERIA ESTAR VISIBLE ¿BORRAR SWAGGER?
-    @Operation(
-            summary = "Buscar monopatin desde mentenimiento",
-            description = "Busca un monopatin desde mantenimiento ",
-            tags = {"Get","Scooter","Id"},
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Successful request",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ScooterDTO.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "204",
-                            description = "Id inexistente",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
-
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al solicitar el id",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
-                    )
-            }
-    )*/
+    // ENDPOINT PARA EL MICROSERVICIO MAINTENANCE
+    @Hidden //lo oculta de swagger porque es un endpoint privado
     @GetMapping("/search-maintenance/{id}")
     public @ResponseBody Optional<ScooterDTO> getScooterMaintenance(@PathVariable(value = "id") Long id) {
         Optional<ScooterDTO> scooterDTO = scooterService.getScooterByMaintenance(id);
@@ -269,11 +260,27 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                            
+                                                    {
+                                                      "id_scooter": 12,
+                                                      "latitude": 51.5074,
+                                                      "longitude": -0.1278,
+                                                      "kilometers": 2500,
+                                                      "usageTime": 90,
+                                                      "available": false,
+                                                      "maintenance": true,
+                                                      "id_parking": null
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "204",
                             description = "No se puede iniciar el mantenimiento",
                             content = @Content(
                                     mediaType = "application/json",
@@ -298,11 +305,27 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                            
+                                                    {
+                                                      "id_scooter": 12,
+                                                      "latitude": 51.5074,
+                                                      "longitude": -0.1278,
+                                                      "kilometers": 2500,
+                                                      "usageTime": 90,
+                                                      "available": false,
+                                                      "maintenance": true,
+                                                      "id_parking": null
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "204",
                             description = "Error al finalizar el mantenimiento con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
@@ -327,15 +350,58 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "id_scooter": 12,
+                                                      "latitude": 51.5074,
+                                                      "longitude": -0.1278,
+                                                      "kilometers": 2500,
+                                                      "usageTime": 90,
+                                                      "available": true,
+                                                      "maintenance": false,
+                                                      "id_parking": 1
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al ubicar el monopatin con los ID ingresados",
+                            responseCode = "404",
+                            description = "Error al ubicar el monopatin, la parada no esta disponible",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "message": "No esta disponible la parada ID: 2",
+                                                      "details": "/api/scooter/3/ubicar/2",
+                                                      "status": "NOT_FOUND"
+                                                    }
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Error, ID de monopatin no encontrado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "message": "[409] during [GET] to [http://microserv-parking/api/parking/6555/estacionar] [ParkingClient#findParkingBuyId(Long)]: [{\\"message\\":\\"El parking no existe id: 6555\\",\\"details\\":\\"/api/parking/6555/estacionar\\",\\"status\\":\\"CONFLICT\\"}]",
+                                                      "details": "/api/scooter/1/ubicar/6555",
+                                                      "status": "NOT_FOUND"
+                                                    }
+                                            """
+                                    )
                             )
                     )
             }
@@ -357,15 +423,17 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar los monopatines",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                            
+                                                    {
+                                                      "cantScooterActive": 9,
+                                                      "cantScooterInactive": 7
+                                                    }
+                                            """
+                                    )
                             )
                     )
             }
@@ -387,15 +455,34 @@ public class ScooterController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar los monopatines",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                    {
+                                                      "id_scooter": 1,
+                                                      "latitude": 37.7749,
+                                                      "longitude": -122.4194,
+                                                      "kilometers": 1500,
+                                                      "usageTime": 120,
+                                                      "available": true,
+                                                      "maintenance": false,
+                                                      "id_parking": 1
+                                                    },
+                                                    {
+                                                      "id_scooter": 2,
+                                                      "latitude": 34.0522,
+                                                      "longitude": -118.2437,
+                                                      "kilometers": 2000,
+                                                      "usageTime": 180,
+                                                      "available": true,
+                                                      "maintenance": false,
+                                                      "id_parking": 2
+                                                    }
+                                                ]
+                                            """
+                                    )
                             )
                     )
             }

@@ -1,5 +1,6 @@
 package org.example.microservuseraccount.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.ws.rs.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,10 +30,6 @@ public class UserController {
 
 
 
-    // FALTA EL DELETE !!!!
-
-
-
     // Obtener listado de usuarios
     @Operation(
             summary = "Obtener usuarios",
@@ -44,15 +41,58 @@ public class UserController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar los usuarios",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                      {
+                                                        "id": 4,
+                                                        "nombre": "Juan",
+                                                        "apellido": "Perez",
+                                                        "email": null,
+                                                        "telefono": "1234567890",
+                                                        "accounts": [
+                                                          {
+                                                            "id": 2,
+                                                            "cuentaMP": 500987654321,
+                                                            "fechaAlta": "3924-03-15T03:00:00.000+00:00",
+                                                            "saldo": 2500,
+                                                            "active": true
+                                                          },
+                                                          {
+                                                            "id": 3,
+                                                            "cuentaMP": 500555666777,
+                                                            "fechaAlta": "3924-04-01T03:00:00.000+00:00",
+                                                            "saldo": 3200,
+                                                            "active": true
+                                                          }
+                                                        ],
+                                                        "rol": [
+                                                          {
+                                                            "name": "USER"
+                                                          },
+                                                          {
+                                                            "name": "USER"
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "id": 5,
+                                                        "nombre": "Carlos",
+                                                        "apellido": "Diaz",
+                                                        "email": null,
+                                                        "telefono": "5556667777",
+                                                        "accounts": [],
+                                                        "rol": [
+                                                          {
+                                                            "name": "USER"
+                                                          }
+                                                        ]
+                                                      }
+                                                ]
+                                            """
+                                    )
                             )
                     )
             }
@@ -76,7 +116,25 @@ public class UserController {
                 required = true,
                 content = @Content(
                         mediaType = "application/json",
-                        schema = @Schema(implementation = User.class)
+                        schema = @Schema(
+                                type = "object",
+                                additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                example = """
+                                            {
+                                              "nombre": "Juan",
+                                              "apellido": "Perez",
+                                              "email": "juanperez@gmail.com",
+                                              "telefono": "123456789",
+                                              "user": "JuanPerez",
+                                              "password": "12345",
+                                              "roles": [
+                                                {
+                                                  "name": "USER"
+                                                }
+                                              ]
+                                            }
+                                            """
+                        )
                 )
         ),
         responses = {
@@ -207,7 +265,7 @@ public class UserController {
         }
     }
 
-    //PREGUNTAR SI ES DE COMUNICACION, ¿¿HAY QUE HACER EL SWAGGER??
+    @Hidden
     @GetMapping("/auth/{username}")
     public UserTokenDto getUserByUsername(@PathVariable(name= "username") String username) {
         try {
