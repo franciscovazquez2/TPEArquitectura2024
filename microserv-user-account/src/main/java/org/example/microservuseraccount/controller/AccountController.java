@@ -35,7 +35,60 @@ public class AccountController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                   {
+                                                     "id": 1,
+                                                     "cuentaMP": 500123456789,
+                                                     "fechaAlta": "3924-02-10T03:00:00.000+00:00",
+                                                     "saldo": 1000,
+                                                     "active": true,
+                                                     "users": [
+                                                       {
+                                                         "id": 1,
+                                                         "nombre": "Juan",
+                                                         "apellido": "Perez",
+                                                         "email": "juan.perez@example.com",
+                                                         "telefono": "1234567890",
+                                                         "user": "juan",
+                                                         "password": "$2a$10$EudYGgQcb1dJTq3bAQGoS.5peowhjLrlZQ1X.CCTsn3NaReA2YmsK",
+                                                         "roles": [
+                                                           {
+                                                             "name": "USER"
+                                                           }
+                                                         ]
+                                                       }
+                                                     ]
+                                                   },
+                                                   {
+                                                     "id": 2,
+                                                     "cuentaMP": 500987654321,
+                                                     "fechaAlta": "3924-03-15T03:00:00.000+00:00",
+                                                     "saldo": 2500,
+                                                     "active": true,
+                                                     "users": [
+                                                       {
+                                                         "id": 1,
+                                                         "nombre": "Juan",
+                                                         "apellido": "Perez",
+                                                         "email": "juan.perez@example.com",
+                                                         "telefono": "1234567890",
+                                                         "user": "juan",
+                                                         "password": "$2a$10$EudYGgQcb1dJTq3bAQGoS.5peowhjLrlZQ1X.CCTsn3NaReA2YmsK",
+                                                         "roles": [
+                                                           {
+                                                             "name": "USER"
+                                                           }
+                                                         ]
+                                                       }
+                                                     ]
+                                                   }
+                                                ]
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -67,7 +120,18 @@ public class AccountController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Account.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                            {
+                                              "cuentaMP": 0,
+                                              "fechaAlta": "2024-11-21T00:45:18.238Z",
+                                              "saldo": 0,
+                                              "active": true
+                                            }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -76,7 +140,20 @@ public class AccountController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 9,
+                                                  "cuentaMP": 10,
+                                                  "fechaAlta": "2024-11-21T00:45:18.238+00:00",
+                                                  "saldo": 0,
+                                                  "active": true,
+                                                  "users": null
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -84,7 +161,19 @@ public class AccountController {
                             description = "Error al crear la cuenta",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/account"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -109,15 +198,53 @@ public class AccountController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 1,
+                                                  "cuentaMP": 500123456789,
+                                                  "fechaAlta": "3924-02-10T03:00:00.000+00:00",
+                                                  "saldo": 1000,
+                                                  "active": true,
+                                                  "users": [
+                                                    {
+                                                      "id": 1,
+                                                      "nombre": "Juan",
+                                                      "apellido": "Perez",
+                                                      "email": "juan.perez@example.com",
+                                                      "telefono": "1234567890",
+                                                      "user": "juan",
+                                                      "password": "$2a$10$EudYGgQcb1dJTq3bAQGoS.5peowhjLrlZQ1X.CCTsn3NaReA2YmsK",
+                                                      "roles": [
+                                                        {
+                                                          "name": "USER"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "404",
                             description = "Error al buscar la cuenta",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "java.lang.ClassNotFoundException: Provider for jakarta.ws.rs.ext.RuntimeDelegate cannot be found",
+                                                  "details": "/api/account/1555",
+                                                  "status": "NOT_FOUND"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -142,15 +269,38 @@ public class AccountController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 9,
+                                                  "cuentaMP": 10,
+                                                  "fechaAlta": "2024-11-21T00:45:18.238+00:00",
+                                                  "saldo": 0,
+                                                  "active": false,
+                                                  "users": []
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "404",
                             description = "No se puede anular la cuenta",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "java.lang.ClassNotFoundException: Provider for jakarta.ws.rs.ext.RuntimeDelegate cannot be found",
+                                                  "details": "/api/account/anular/934",
+                                                  "status": "NOT_FOUND"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -174,15 +324,33 @@ public class AccountController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "Error al eliminar la cuenta con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "El id que intentas eliminar no existe ID: 9999",
+                                                  "details": "/api/account/9999",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }

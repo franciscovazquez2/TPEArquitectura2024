@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 public class TravelDto {
 
-        private Long id_viaje;
+        private String id_viaje;
 
         private Long id_user;
 
