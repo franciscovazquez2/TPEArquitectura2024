@@ -14,7 +14,6 @@ import java.util.Date;
 
 @Document()
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Travel {

@@ -34,15 +34,28 @@ public class BillingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar las facturas",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                   {
+                                                     "id": 1,
+                                                     "fechaEmision": "2024-01-15",
+                                                     "idReserva": 101,
+                                                     "idUsuario": 2001,
+                                                     "montoTotal": 150.75
+                                                   },
+                                                   {
+                                                     "id": 2,
+                                                     "fechaEmision": "2024-01-16",
+                                                     "idReserva": 102,
+                                                     "idUsuario": 2002,
+                                                     "montoTotal": 120.5
+                                                   }
+                                                ]
+                                            """
+                                    )
                             )
                     )
             }
@@ -63,15 +76,37 @@ public class BillingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "id": 1,
+                                                      "fechaEmision": "2024-01-15",
+                                                      "idReserva": 101,
+                                                      "idUsuario": 2001,
+                                                      "montoTotal": 150.75
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "404",
                             description = "Factura no encontrada con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "message": "no se encontro factura id: 155",
+                                                      "details": "/api/billing/155",
+                                                      "status": "NOT_FOUND"
+                                                    }
+                                            """
+                                    )
                             )
                     )
             }
@@ -91,7 +126,18 @@ public class BillingController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Billing.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                  "fechaEmision": "2024-11-20",
+                                                  "idReserva": 0,
+                                                  "idUsuario": 0,
+                                                  "montoTotal": 0
+                                                }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -100,7 +146,19 @@ public class BillingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 5,
+                                                  "fechaEmision": "2024-11-20",
+                                                  "idReserva": 0,
+                                                  "idUsuario": 15,
+                                                  "montoTotal": 0
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -108,7 +166,19 @@ public class BillingController {
                             description = "Error al crear la factura",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/billing"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -118,6 +188,33 @@ public class BillingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(billingService.createBilling(newBilling));
     }
 
+
+    @Operation(
+            summary = "Obtener total facturado entre meses",
+            description = "Obtiene un registro de facturacion entre dos meses ingresados e cierto año",
+            tags = {"Get","Billing"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "totalFacturado": 406.5,
+                                                  "year": 2024,
+                                                  "startMonth": 1,
+                                                  "endMonth": 6
+                                                }
+                                            """
+                                    )
+                            )
+                    )
+            }
+    )
     //devuelve reporte de total facturado (servicio D)
     @GetMapping("/totalFacturado/{year}/{startMonth}/{endMonth}")
     public TotalFacturadoDto reporteTotalFacturadoEnFecha(@PathVariable(value="year")int year,
@@ -126,6 +223,52 @@ public class BillingController {
             return billingService.reporteTotalFacturadoEnFecha(year,startMonth,endMonth);
     }
 
+
+    @Operation(
+            summary = "Borrar factura por id",
+            description = "Borra un registro de factura mediante un id ingresado",
+            tags = {"Delete","Billing","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 5,
+                                                  "fechaEmision": "2024-11-20",
+                                                  "idReserva": 0,
+                                                  "idUsuario": 15,
+                                                  "montoTotal": 0
+                                                }
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Error al eliminar la factura con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "El id: 555 no Existe",
+                                                  "details": "/api/billing/%7Bid%7D",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @DeleteMapping("{id}")
     public ResponseEntity<?>deleteBilling(@PathVariable(value="id")Long id){
             return ResponseEntity.status(HttpStatus.OK).body(billingService.deleteBilling(id));

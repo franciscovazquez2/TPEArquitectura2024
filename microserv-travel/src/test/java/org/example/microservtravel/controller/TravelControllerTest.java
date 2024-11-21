@@ -27,25 +27,25 @@ public class TravelControllerTest {
     @BeforeEach
     public void setup() {
         TravelDto travel = TravelDto.builder()
-                .id_viaje(1L)
+                .id_viaje("1L")
                 .id_user(1L)
                 .id_scooter(1L)
-                .price(100L)
+                .price(100.00)
                 .build();
 
-        when(travelService.getTravel(1L)).thenReturn(travel);
+        when(travelService.getTravel("1L")).thenReturn(travel);
 
         when(travelService.getAllTravels()).thenReturn(List.of(
-                TravelDto.builder().id_viaje(1L).id_user(1L).id_scooter(1L).price(100L).build(),
-                TravelDto.builder().id_viaje(2L).id_user(2L).id_scooter(2L).price(200L).build()
+                TravelDto.builder().id_viaje("1L").id_user(1L).id_scooter(1L).price(100.00).build(),
+                TravelDto.builder().id_viaje("2L").id_user(2L).id_scooter(2L).price(200.00).build()
         ));
     }
 
     @Test
     public void testGetAllTravels() throws Exception {
         when(travelService.getAllTravels()).thenReturn(List.of(
-                TravelDto.builder().id_viaje(1L).id_user(1L).id_scooter(1L).price(100L).build(),
-                TravelDto.builder().id_viaje(2L).id_user(2L).id_scooter(2L).price(200L).build()
+                TravelDto.builder().id_viaje("1L").id_user(1L).id_scooter(1L).price(100.00).build(),
+                TravelDto.builder().id_viaje("2L").id_user(2L).id_scooter(2L).price(200.00).build()
         ));
 
         mockMvc.perform(get("/api/travel"))
@@ -58,13 +58,13 @@ public class TravelControllerTest {
     @Test
     public void testGetTravel() throws Exception {
         TravelDto travel = TravelDto.builder()
-                .id_viaje(1L)
+                .id_viaje("1L")
                 .id_user(1L)
                 .id_scooter(1L)
-                .price(100L)
+                .price(100.00)
                 .build();
 
-        when(travelService.getTravel(1L)).thenReturn(travel);
+        when(travelService.getTravel("1L")).thenReturn(travel);
 
         mockMvc.perform(get("/api/travel/1"))
                 .andExpect(status().isOk())
@@ -75,16 +75,16 @@ public class TravelControllerTest {
     @Test
     public void testCreateTravel() throws Exception {
         TravelDto createdTravel = TravelDto.builder()
-                .id_viaje(1L)
+                .id_viaje("1L")
                 .id_user(1L)
                 .id_scooter(1L)
-                .price(100L)
+                .price(100.00)
                 .build();
 
         Travel newTravel = Travel.builder()
                 .id_user(1L)
                 .id_scooter(1L)
-                .price(100L)
+                .price(100.00)
                 .build();
 
         when(travelService.createTravel(newTravel)).thenReturn(createdTravel);
@@ -99,7 +99,7 @@ public class TravelControllerTest {
 
     @Test
     public void testDeleteByID() throws Exception {
-        doNothing().when(travelService).delete(1L);
+        doNothing().when(travelService).delete("1L");
 
         mockMvc.perform(delete("/api/travel/1"))
                 .andExpect(status().isOk())

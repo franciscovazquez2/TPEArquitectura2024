@@ -19,14 +19,14 @@ public class OpenAPIConfig {
     @Primary
     public OpenAPI userOpenAPI() {
         return new OpenAPI()
-                .servers(List.of(new Server().url("http://localhost:8080/api/billing")))
-                .info(new Info().title("User Service API").version("1.0.0"));
+                .servers(List.of(new Server().url("http://localhost:8080")))
+                .info(new Info().title("Billing Service API").version("1.0.0"));
     }
 
     @Bean
     public OpenAPI accountOpenAPI() {
         return new OpenAPI()
-                .servers(List.of(new Server().url("http://localhost:8080/api/fee")))
-                .info(new Info().title("Account Service API").version("1.0.0"));
+                .servers(List.of(new Server().url("http://localhost:8080")))
+                .info(new Info().title("Fee Service API").version("1.0.0"));
     }
 }

@@ -17,6 +17,14 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 )
         }
 )
-
+@SecurityScheme(
+        name = "Security Token",
+        description = "Access Token For My API",
+        type = SecuritySchemeType.HTTP,
+        paramName = HttpHeaders.AUTHORIZATION,
+        in = SecuritySchemeIn.HEADER,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
 public class SwaggerConfig {
 }

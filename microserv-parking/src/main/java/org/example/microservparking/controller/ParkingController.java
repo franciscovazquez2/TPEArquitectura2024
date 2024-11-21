@@ -1,5 +1,6 @@
 package org.example.microservparking.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,15 +35,30 @@ public class ParkingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar las paradas",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                      {
+                                                        "id": 1,
+                                                        "latitude": 37.7749,
+                                                        "longitude": -122.4194,
+                                                        "capacity": 3,
+                                                        "actualCapacity": 2,
+                                                        "available": true
+                                                      },
+                                                      {
+                                                        "id": 2,
+                                                        "latitude": 34.0522,
+                                                        "longitude": -118.2437,
+                                                        "capacity": 3,
+                                                        "actualCapacity": 2,
+                                                        "available": true
+                                                      }
+                                                ]
+                                            """
+                                    )
                             )
                     )
             }
@@ -62,7 +78,19 @@ public class ParkingController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Parking.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                  "latitude": 0,
+                                                  "longitude": 0,
+                                                  "capacity": 10,
+                                                  "actualCapacity": 10,
+                                                  "available": true
+                                                }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -71,7 +99,20 @@ public class ParkingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 10,
+                                                  "latitude": 1,
+                                                  "longitude": 1,
+                                                  "capacity": 10,
+                                                  "actualCapacity": 10,
+                                                  "available": true
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -79,7 +120,19 @@ public class ParkingController {
                             description = "Error al crear el estacionamiento",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/parking"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -101,15 +154,38 @@ public class ParkingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 5,
+                                                  "latitude": 0,
+                                                  "longitude": 0,
+                                                  "capacity": 10,
+                                                  "actualCapacity": 10,
+                                                  "available": true
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "Error al eliminar el estacionamiento con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "La parada no existe. ID: 444",
+                                                  "details": "/api/parking/444",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -122,12 +198,13 @@ public class ParkingController {
 
 
     // Este endpoint es de comunicacion entre microservicio scooter y parking
+    @Hidden //lo oculta de swagger porque es un endpoint privado
     @GetMapping("/{id}/estacionar")
     public @ResponseBody ParkingDto getParkingByScooter (@PathVariable(value="id")Long id) {
             return parkingService.getParking(id);
     }
 
-
+    @Hidden //lo oculta de swagger porque es un endpoint privado
     @PutMapping("/{id}/ocupada")
     public @ResponseBody ParkingDto ocuparParking (@PathVariable(value="id") Long id){
         return parkingService.ocuparEstacionamiento(id);
@@ -145,15 +222,38 @@ public class ParkingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 3,
+                                                  "latitude": 40.7128,
+                                                  "longitude": -74.006,
+                                                  "capacity": 3,
+                                                  "actualCapacity": 2,
+                                                  "available": true
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "No se puede liberar el espacio del estacionamiento",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "no existe parking con ID: 3256",
+                                                  "details": "/api/parking/3256/liberarEstacionamiento",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -173,23 +273,38 @@ public class ParkingController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 3,
+                                                  "latitude": 40.7128,
+                                                  "longitude": -74.006,
+                                                  "capacity": 3,
+                                                  "actualCapacity": 2,
+                                                  "available": true
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "No existe el parking con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404",
-                            description = "Fallo al buscar el parking con el ID ingresado",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "El parking no existe id: 11520",
+                                                  "details": "/api/parking/11520",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }

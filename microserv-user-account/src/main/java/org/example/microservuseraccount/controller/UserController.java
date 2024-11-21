@@ -1,5 +1,6 @@
 package org.example.microservuseraccount.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.ws.rs.BadRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,6 +33,7 @@ public class UserController {
     private UserService userService;
 
 
+
     // Obtener listado de usuarios
     @Operation(
             summary = "Obtener usuarios",
@@ -43,15 +45,58 @@ public class UserController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar los usuarios",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                      {
+                                                        "id": 4,
+                                                        "nombre": "Juan",
+                                                        "apellido": "Perez",
+                                                        "email": null,
+                                                        "telefono": "1234567890",
+                                                        "accounts": [
+                                                          {
+                                                            "id": 2,
+                                                            "cuentaMP": 500987654321,
+                                                            "fechaAlta": "3924-03-15T03:00:00.000+00:00",
+                                                            "saldo": 2500,
+                                                            "active": true
+                                                          },
+                                                          {
+                                                            "id": 3,
+                                                            "cuentaMP": 500555666777,
+                                                            "fechaAlta": "3924-04-01T03:00:00.000+00:00",
+                                                            "saldo": 3200,
+                                                            "active": true
+                                                          }
+                                                        ],
+                                                        "rol": [
+                                                          {
+                                                            "name": "USER"
+                                                          },
+                                                          {
+                                                            "name": "USER"
+                                                          }
+                                                        ]
+                                                      },
+                                                      {
+                                                        "id": 5,
+                                                        "nombre": "Carlos",
+                                                        "apellido": "Diaz",
+                                                        "email": null,
+                                                        "telefono": "5556667777",
+                                                        "accounts": [],
+                                                        "rol": [
+                                                          {
+                                                            "name": "USER"
+                                                          }
+                                                        ]
+                                                      }
+                                                ]
+                                            """
+                                    )
                             )
                     )
             }
@@ -75,7 +120,24 @@ public class UserController {
                 required = true,
                 content = @Content(
                         mediaType = "application/json",
-                        schema = @Schema(implementation = User.class)
+                        schema = @Schema(
+                                type = "object",
+                                additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                example = """
+                                            {
+                                              "nombre": "Juan",
+                                              "apellido": "Perez",
+                                              "email": "juanperez@gmail.com",
+                                              "telefono": "123456789",
+                                              "user": "JuanPerez",
+                                              "password": "12345",
+                                              "rol":
+                                                {
+                                                  "name": "USER"
+                                                }
+                                            }
+                                            """
+                        )
                 )
         ),
         responses = {
@@ -84,7 +146,25 @@ public class UserController {
                         description = "Successful request",
                         content = @Content(
                                 mediaType = "application/json",
-                                schema = @Schema(implementation = ResponseEntity.class)
+                                schema = @Schema(
+                                        type = "object",
+                                        additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                        example = """
+                                                {
+                                                  "id": 3,
+                                                  "nombre": "Nico",
+                                                  "apellido": "Papa",
+                                                  "email": null,
+                                                  "telefono": "111112222",
+                                                  "accounts": [],
+                                                  "rol": [
+                                                    {
+                                                      "name": "USER"
+                                                    }
+                                                  ]
+                                                }
+                                            """
+                                )
                         )
                 ),
                 @ApiResponse(
@@ -92,7 +172,17 @@ public class UserController {
                         description = "Error al crear el usuario",
                         content = @Content(
                                 mediaType = "application/json",
-                                schema = @Schema(type = "object")
+                                schema = @Schema(
+                                        type = "object",
+                                        additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                        example = """
+                                                {
+                                                  "message": "rawPassword cannot be null",
+                                                  "details": "/api/user",
+                                                  "status": "NOT_FOUND"
+                                                }
+                                            """
+                                )
                         )
                 )
         }
@@ -117,15 +207,51 @@ public class UserController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 3,
+                                                  "nombre": "Nico",
+                                                  "apellido": "Papa",
+                                                  "email": "npnp@gmail.com",
+                                                  "telefono": "111112222",
+                                                  "accounts": [
+                                                    {
+                                                      "id": 3,
+                                                      "cuentaMP": 500555666777,
+                                                      "fechaAlta": "3924-04-01T03:00:00.000+00:00",
+                                                      "saldo": 3200,
+                                                      "active": true
+                                                    }
+                                                  ],
+                                                  "rol": [
+                                                    {
+                                                      "name": "USER"
+                                                    }
+                                                  ]
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "No se puede asociar cuenta",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "No existe la cuenta/usuario con el ID: 234",
+                                                  "details": "/api/user/asociarCuenta/3/234",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -151,15 +277,51 @@ public class UserController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 1,
+                                                  "nombre": "Juan",
+                                                  "apellido": "Perez",
+                                                  "email": null,
+                                                  "telefono": "1234567890",
+                                                  "accounts": [
+                                                    {
+                                                      "id": 1,
+                                                      "cuentaMP": 500123456789,
+                                                      "fechaAlta": "3924-02-10T03:00:00.000+00:00",
+                                                      "saldo": 1000,
+                                                      "active": true
+                                                    }
+                                                  ],
+                                                  "rol": [
+                                                    {
+                                                      "name": "USER"
+                                                    }
+                                                  ]
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "Error al buscar el usuario",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "El usuario no existe ID: 1222",
+                                                  "details": "/api/user/1222",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -173,11 +335,53 @@ public class UserController {
         }
     }
 
+    @Operation(
+            summary = "Borrar usuario por id",
+            description = "Borra un registro de usuario mediante un id ingresado",
+            tags = {"Delete","User","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  
+                                                }
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Error al eliminar el usuario con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "Consulta invalida",
+                                                  "details": "/api/user/834",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity<?>deleteUser(@PathVariable(value = "id")Long id)throws NotExistsException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.deleteUser(id));
     }
 
+    @Hidden
     @GetMapping("/auth/{username}")
     public UserTokenDto getUserByUsername(@PathVariable(name= "username") String username) {
         try {
@@ -190,7 +394,7 @@ public class UserController {
 
     //iniciar viaje
     @PostMapping("/iniciarViaje/{id_user}/{id_scooter}")
-    public TravelDto inciarViaje(@RequestParam(value="id_scooter")Long id_user, @RequestParam(value="id_scooter")Long id_scooter){
+    public TravelDto inciarViaje(@RequestParam(value="id_user")Long id_user, @RequestParam(value="id_scooter")Long id_scooter){
 
             return userService.iniciarViaje(id_user,id_scooter);
     }

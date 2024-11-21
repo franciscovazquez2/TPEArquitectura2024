@@ -2,6 +2,7 @@ package org.example.microservbilling.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.microservbilling.entity.Fee;
@@ -35,15 +36,26 @@ public class FeeController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Error al listar las tarifas",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                [
+                                                  {
+                                                    "id": 1,
+                                                    "monto": 50,
+                                                    "fechaInicio": "2024-06-30",
+                                                    "tipo": "normal"
+                                                  },
+                                                  {
+                                                    "id": 2,
+                                                    "monto": 75,
+                                                    "fechaInicio": "2024-07-01",
+                                                    "tipo": "extra"
+                                                  }
+                                                ]
+                                            """
+                                    )
                             )
                     )
             }
@@ -64,15 +76,36 @@ public class FeeController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "id": 1,
+                                                      "monto": 50,
+                                                      "fechaInicio": "2024-06-30",
+                                                      "tipo": "normal"
+                                                    }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "Tarifa no encontrada con el ID ingresado",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                    {
+                                                      "message": "El id: 15555 No existe",
+                                                      "details": "/api/fee/15555",
+                                                      "status": "CONFLICT"
+                                                    }
+                                            """
+                                    )
                             )
                     )
             }
@@ -92,7 +125,15 @@ public class FeeController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Fee.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                  "monto": 10
+                                                }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -101,7 +142,18 @@ public class FeeController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 5,
+                                                  "monto": 10,
+                                                  "fechaInicio": "2024-11-20",
+                                                  "tipo": "normal"
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -109,7 +161,19 @@ public class FeeController {
                             description = "No se pudo crear la tarifa",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/fee/normalFee"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -130,7 +194,15 @@ public class FeeController {
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = Fee.class)
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                  "monto": 50
+                                                }
+                                            """
+                            )
                     )
             ),
             responses = {
@@ -139,7 +211,18 @@ public class FeeController {
                             description = "Successful request",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 6,
+                                                  "monto": 50,
+                                                  "fechaInicio": "2024-11-20",
+                                                  "tipo": "extra"
+                                                }
+                                            """
+                                    )
                             )
                     ),
                     @ApiResponse(
@@ -147,7 +230,19 @@ public class FeeController {
                             description = "Error al crear la tarifa extra",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(type = "object")
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/fee/normalFee"
+                                                }
+                                            """
+                                    )
                             )
                     )
             }
@@ -159,11 +254,110 @@ public class FeeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 
+
+    @Operation(
+            summary = "Crear tarifa activa desde una fecha",
+            description = "Crea una tarifa que sera habilitada a partir de cierta fecha",
+            tags = {"Post","Fee"},
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos de la tarifa a crear",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    type = "object",
+                                    additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                    example = """
+                                                {
+                                                    "monto": 50.0,
+                                                    "fechaInicio": "2024-01-01",
+                                                    "tipo": "normal"
+                                                }
+                                            """
+                            )
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "id": 10,
+                                                  "monto": 8,
+                                                  "fechaInicio": "2024-12-12",
+                                                  "tipo": "normal"
+                                                }
+                                            """
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Error al crear la tarifa extra",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "type": "about:blank",
+                                                  "title": "Bad Request",
+                                                  "status": 400,
+                                                  "detail": "Failed to read request",
+                                                  "instance": "/api/fee/feePriceSince"
+                                                }
+                                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @PostMapping("/feePriceSince")
     public ResponseEntity<?> createFeeSinceDate(@RequestBody Fee newFee){
         return ResponseEntity.status(HttpStatus.CREATED).body(feeService.createFee(newFee));
     }
 
+
+    @Operation(
+            summary = "Borrar tarifa por id",
+            description = "Borra un registro de tarifa mediante un id ingresado",
+            tags = {"Delete","Fee","Id"},
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful request",
+                            content = @Content(
+                                    mediaType = "text/plain",
+                                    schema = @Schema(type = "string", example = "Tarifa eliminada: 123")
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Error al eliminar la tarifa con el ID ingresado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            type = "object",
+                                            additionalProperties = Schema.AdditionalPropertiesValue.FALSE,
+                                            example = """
+                                                {
+                                                  "message": "El id que quieres eliminar no existe. ID: 955",
+                                                  "details": "/api/fee/%7Bid%7D",
+                                                  "status": "CONFLICT"
+                                                }
+                                            """
+                                    )
+                            )
+                    )
+            }
+    )
     @DeleteMapping("{id}")
     public ResponseEntity<?>deleteFee(@PathVariable(value="id")Long id){
         feeService.delteFee(id);
