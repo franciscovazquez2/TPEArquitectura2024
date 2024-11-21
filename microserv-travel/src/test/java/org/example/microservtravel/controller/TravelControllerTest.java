@@ -1,12 +1,9 @@
 package org.example.microservtravel.controller;
-import org.example.microservtravel.dto.ScooterReportXviajesDto;
 import org.example.microservtravel.dto.TravelDto;
 import org.example.microservtravel.entity.Travel;
 import org.example.microservtravel.service.TravelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

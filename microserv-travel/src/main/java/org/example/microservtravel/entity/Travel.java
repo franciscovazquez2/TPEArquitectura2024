@@ -17,7 +17,6 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Travel {
 
     @Id

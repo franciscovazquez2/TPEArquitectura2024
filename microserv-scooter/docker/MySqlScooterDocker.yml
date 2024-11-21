@@ -1,10 +1,10 @@
 version: '3.8'
 services:
-  db:
+  db_Scooter:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: Integrador4
+      MYSQL_DATABASE: db_Scooter
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:

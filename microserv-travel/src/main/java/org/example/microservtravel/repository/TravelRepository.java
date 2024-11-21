@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface TravelRepository extends MongoRepository<Travel,Long> {
+public interface TravelRepository extends MongoRepository<Travel,String> {
     @Aggregation(pipeline = {
             "{ $group: { _id: '$id_scooter', totalKilometers: { $sum: '$kilometers' }, totalUsageTime: { $sum: '$usageTime' }, totalPauseTime: { $sum: '$pauseTime' } } }",
             "{ $project: { idScooter: '$_id', totalKilometers: 1, totalUsageTime: 1, totalPauseTime: 1, _id: 0 } }"

@@ -119,7 +119,7 @@ public class TravelController {
             }
     )
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> getTravel(@PathVariable(value = "id") Long id){
+    public @ResponseBody ResponseEntity<?> getTravel(@PathVariable(value = "id") String id){
         return ResponseEntity.status(HttpStatus.OK).body(travelService.getTravel(id));
     }
 
@@ -156,7 +156,7 @@ public class TravelController {
             }
     )
     @DeleteMapping("/{id}")
-    public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") Long id) throws RequestBadException {
+    public @ResponseBody ResponseEntity<?> deleteByID(@PathVariable(value = "id") String id) throws RequestBadException {
         try{
             travelService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(new MessageDTO("El viaje fue eliminado correctamente","id eliminado: "+id,HttpStatus.OK));
@@ -189,23 +189,25 @@ public class TravelController {
                     )
             }
     )
+
+
     @GetMapping("/reporte/scooter/{includePause}")
-    public @ResponseBody ResponseEntity<?>reporteScooterPorKilometros(@RequestParam(defaultValue="false")boolean includePause){
+    public @ResponseBody ResponseEntity<?> reporteScooterPorKilometros ( @RequestParam ( defaultValue="false" ) boolean includePause ){
         return ResponseEntity.status(HttpStatus.OK).body(travelService.reporteScooterPorKilometros(includePause));
     }
 
 
     @GetMapping("/reporte/anio/{anio}/cantViaje/{cantViaje}")
-    public @ResponseBody ResponseEntity<?>reporteScooterConMasDeXkilometros(@RequestParam(value="anio")int anio,@RequestParam(value="cantViaje")int cantViaje){
+    public @ResponseBody ResponseEntity<?> reporteScooterConMasDeXkilometros ( @RequestParam(value="anio") int anio, @RequestParam (value="cantViaje") int cantViaje){
         return ResponseEntity.status(HttpStatus.OK).body(travelService.reporteScooterConMasDeXkilometros(anio,cantViaje));
 
     }
 
     @GetMapping(value="api/travel/startTravel/{id_user}/{id_scooter}")
-    TravelDto startTravel(@PathVariable(value = "id_user")Long id_user, @PathVariable(value="id_scooter")Long id_scooter){
+    TravelDto startTravel (@PathVariable (value = "id_user") Long id_user, @PathVariable (value="id_scooter") Long id_scooter){
         Travel travel=travelRepository.save(new Travel(id_user,id_scooter,new Date(), 0.0, 0L,0L,0L,false));
         return TravelDto.builder()
-                .id_viaje(Long.valueOf(travel.getId_viaje()))
+                .id_viaje(travel.getId_viaje())
                 .id_user(travel.getId_user())
                 .id_scooter(travel.getId_scooter())
                 .date(travel.getDate())

@@ -1,11 +1,11 @@
 version: '3.8'
 services:
-  db:
+  db_Billing:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: Integrador4
+      MYSQL_DATABASE: db_Billing
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "3306:3306"
+      - "3310:3306"
